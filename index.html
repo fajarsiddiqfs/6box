@@ -128,6 +128,21 @@
     .icon-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .plus-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; }
 
+    /* ── enlarged panel (fills the board) ── */
+    .box.enlarged {
+      position: fixed;
+      inset: 8px;
+      z-index: 4000;
+      width: auto;
+      height: auto;
+      border-radius: var(--radius);
+      border-color: var(--border-h);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* enlarge btn */
+    .enlarge-btn { bottom: 8px; left: 8px; }
+
     /* ── fullscreen overlay ── */
     #overlay {
       display: none;
@@ -295,13 +310,47 @@
         <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </div>
 
+      <!-- enlarge bottom-left -->
+      <div class="icon-btn enlarge-btn" id="en${i}" onclick="toggleEnlarge(${i})" title="Enlarge">
+        <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      </div>
+
       <!-- fullscreen bottom-right -->
       <div class="icon-btn fs-btn" onclick="openOverlay(${i})" title="Fullscreen">
-        <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
       </div>
     `;
 
     board.appendChild(box);
+  }
+
+  let enlargedIdx = null;
+
+  function toggleEnlarge(idx) {
+    const box = document.getElementById('b' + idx);
+    const btn = document.getElementById('en' + idx);
+    if (enlargedIdx === idx) {
+      // shrink back
+      box.classList.remove('enlarged');
+      // restore icon: expand arrows
+      btn.querySelector('svg').innerHTML = '<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>';
+      btn.title = 'Enlarge';
+      enlargedIdx = null;
+    } else {
+      // un-enlarge any other
+      if (enlargedIdx !== null) {
+        const prev = document.getElementById('b' + enlargedIdx);
+        const prevBtn = document.getElementById('en' + enlargedIdx);
+        prev.classList.remove('enlarged');
+        prevBtn.querySelector('svg').innerHTML = '<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>';
+        prevBtn.title = 'Enlarge';
+      }
+      box.classList.add('enlarged');
+      // change icon: compress arrows
+      btn.querySelector('svg').innerHTML = '<path d="M8 3v5H3M21 8h-5V3M3 16h5v5M16 21v-5h5"/>';
+      btn.title = 'Shrink';
+      enlargedIdx = idx;
+    }
   }
 
   function openModal(idx) {
@@ -332,6 +381,10 @@
     const fr  = document.getElementById('fr' + idx);
     fr.src = '';
     box.classList.remove('loaded');
+    if (enlargedIdx === idx) {
+      box.classList.remove('enlarged');
+      enlargedIdx = null;
+    }
   }
 
   function openOverlay(idx) {
