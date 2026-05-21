@@ -25,129 +25,116 @@ html, body {
   display: flex;
   flex-direction: column;
   padding: 2.5vw 5vw 3vw;
-  gap: 0;
 }
 
-/* ─── TOP BAR: Day / Date / Location / Temp ─── */
-#row-top {
+/* ─── SINGLE INFO ROW ─── */
+#row-info {
   display: flex;
   align-items: center;
-  gap: 2.2vw;
-  flex-shrink: 0;
-  padding-bottom: 1.4vh;
-}
-
-#day-name {
-  font-size: clamp(0.7rem, 1.6vw, 1.5rem);
-  font-weight: 800;
-  color: rgba(255,255,255,0.35);
-  text-transform: uppercase;
-  letter-spacing: 3px;
-}
-
-#full-date {
-  font-size: clamp(0.75rem, 1.7vw, 1.6rem);
-  font-weight: 800;
-  color: #fff;
-}
-
-.top-sep {
-  width: 3px; height: 3px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  flex-shrink: 0;
-}
-
-#loc-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0.5vw;
-}
-#loc-wrap svg {
-  width: clamp(12px, 1.5vw, 18px);
-  height: clamp(12px, 1.5vw, 18px);
-  color: rgba(255,255,255,0.3);
-  flex-shrink: 0;
-}
-#loc-text {
-  font-size: clamp(0.7rem, 1.5vw, 1.4rem);
-  font-weight: 700;
-  color: rgba(255,255,255,0.38);
-}
-
-#temp-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0.5vw;
-  margin-left: auto;
-}
-#temp-wrap svg {
-  width: clamp(12px, 1.5vw, 18px);
-  height: clamp(12px, 1.5vw, 18px);
-  color: rgba(255,255,255,0.35);
-  flex-shrink: 0;
-}
-#wx-temp {
-  font-size: clamp(0.75rem, 1.7vw, 1.6rem);
-  font-weight: 800;
-  color: #fff;
-}
-
-/* ─── PRAYER TIMES ─── */
-#row-prayer {
-  display: flex;
-  align-items: stretch;
-  gap: 0;
   flex-shrink: 0;
   border-top: 1px solid rgba(255,255,255,0.08);
   border-bottom: 1px solid rgba(255,255,255,0.08);
-  padding: 1.2vh 0;
-  margin-bottom: 0;
+  padding: 1.1vh 0;
+  gap: 0;
 }
 
+/* Meta group: date / day / location / temp */
+#info-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.4vw;
+  flex-shrink: 0;
+  padding-right: 2vw;
+  margin-right: 0;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+#day-name {
+  font-size: clamp(0.55rem, 1.1vw, 1rem);
+  font-weight: 800;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+#full-date {
+  font-size: clamp(0.6rem, 1.2vw, 1.1rem);
+  font-weight: 800;
+  color: #fff;
+  white-space: nowrap;
+}
+.sep {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  flex-shrink: 0;
+}
+#loc-wrap {
+  display: flex; align-items: center; gap: 0.4vw;
+}
+#loc-wrap svg {
+  width: clamp(10px,1.1vw,14px); height: clamp(10px,1.1vw,14px);
+  color: rgba(255,255,255,0.28); flex-shrink: 0;
+}
+#loc-text {
+  font-size: clamp(0.55rem, 1.1vw, 1rem);
+  font-weight: 700; color: rgba(255,255,255,0.35); white-space: nowrap;
+}
+#temp-wrap {
+  display: flex; align-items: center; gap: 0.4vw;
+}
+#temp-wrap svg {
+  width: clamp(10px,1.1vw,14px); height: clamp(10px,1.1vw,14px);
+  color: rgba(255,255,255,0.28); flex-shrink: 0;
+}
+#wx-temp {
+  font-size: clamp(0.6rem, 1.2vw, 1.1rem);
+  font-weight: 800; color: #fff; white-space: nowrap;
+}
+
+/* Prayer items — fill remaining space evenly */
 .prayer-item {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.3vh;
-  padding: 0.4vh 0;
-  border-right: 1px solid rgba(255,255,255,0.07);
+  justify-content: center;
+  gap: 0.1vh;
+  padding: 0.3vh 0.3vw;
+  border-right: 1px solid rgba(255,255,255,0.06);
   position: relative;
 }
 .prayer-item:last-child { border-right: none; }
 
 .prayer-name {
-  font-size: clamp(0.55rem, 1.1vw, 1rem);
+  font-size: clamp(0.48rem, 0.85vw, 0.8rem);
   font-weight: 700;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.25);
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
 }
-
 .prayer-time {
-  font-size: clamp(0.9rem, 2vw, 1.9rem);
+  font-size: clamp(0.7rem, 1.4vw, 1.3rem);
   font-weight: 900;
-  color: #fff;
-  letter-spacing: -0.5px;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: -0.3px;
 }
-
-.prayer-item.active .prayer-name { color: rgba(255,255,255,0.7); }
+.prayer-item.active .prayer-name { color: rgba(255,255,255,0.6); }
 .prayer-item.active .prayer-time { color: #fff; }
-.prayer-item.active::after {
+.prayer-item.active::before {
   content: '';
   position: absolute;
-  bottom: -1.2vh;
-  left: 50%;
+  top: -1.1vh; left: 50%;
   transform: translateX(-50%);
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: #fff;
+  width: 3px; height: 3px;
+  border-radius: 50%; background: #fff;
 }
-.prayer-item.next .prayer-time { color: rgba(255,255,255,0.55); }
-.prayer-item.past .prayer-time { color: rgba(255,255,255,0.2); }
+.prayer-item.next .prayer-time  { color: rgba(255,255,255,0.45); }
+.prayer-item.next .prayer-name  { color: rgba(255,255,255,0.4); }
+.prayer-item.past .prayer-time  { color: rgba(255,255,255,0.12); }
+.prayer-item.past .prayer-name  { color: rgba(255,255,255,0.15); }
 
-/* ─── CLOCK (full-width stretch) ─── */
+/* ─── CLOCK ─── */
 #row-time {
   flex: 1;
   display: flex;
@@ -156,14 +143,12 @@ html, body {
   overflow: hidden;
   min-height: 0;
 }
-
 #time {
   font-weight: 900;
   letter-spacing: -0.05em;
   line-height: 1;
   color: #fff;
   white-space: nowrap;
-  /* JS will set font-size to fill width */
   font-size: 30vw;
   width: 100%;
   text-align: center;
@@ -179,199 +164,114 @@ html, body {
   border-top: 1px solid rgba(255,255,255,0.08);
   padding-top: 1.5vh;
 }
-
 #radio-main {
   display: flex;
   align-items: center;
-  gap: 0;
 }
-
-/* LEFT: play + station name */
 #radio-left {
   display: flex;
   align-items: center;
   gap: 1.8vw;
   flex-shrink: 0;
-  min-width: 0;
 }
-
 #play-btn {
-  width: clamp(40px, 5.5vw, 68px);
-  height: clamp(40px, 5.5vw, 68px);
-  border-radius: 50%;
-  border: none;
-  background: #fff;
-  color: #000;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  transition: background 0.15s, transform 0.1s;
+  width: clamp(40px,5.5vw,68px); height: clamp(40px,5.5vw,68px);
+  border-radius: 50%; border: none; background: #fff; color: #000;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: background 0.15s, transform 0.1s;
 }
 #play-btn:hover { background: rgba(255,255,255,0.85); }
 #play-btn:active { transform: scale(0.94); }
 #play-btn svg { width: 36%; height: 36%; }
-
-#station-label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15vh;
-  min-width: 0;
-}
-
+#station-label { display: flex; flex-direction: column; gap: 0.1vh; }
 #live-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: clamp(0.5rem, 0.9vw, 0.8rem);
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.25);
+  display: flex; align-items: center; gap: 5px;
+  font-size: clamp(0.45rem,0.85vw,0.75rem); font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.22);
 }
 .live-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: #fff;
-  animation: blink 2s ease infinite;
-  flex-shrink: 0;
+  width: 5px; height: 5px; border-radius: 50%; background: #fff;
+  animation: blink 2s ease infinite; flex-shrink: 0;
 }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.12} }
-
 #station-name {
-  font-size: clamp(1rem, 2.8vw, 2.6rem);
-  font-weight: 900;
-  letter-spacing: -1px;
-  line-height: 1;
-  color: #fff;
-  white-space: nowrap;
+  font-size: clamp(1rem,2.8vw,2.6rem); font-weight: 900;
+  letter-spacing: -1px; line-height: 1; color: #fff; white-space: nowrap;
 }
-
 #stream-status {
-  font-size: clamp(0.55rem, 0.9vw, 0.85rem);
-  font-weight: 600;
-  color: rgba(255,255,255,0.2);
-  letter-spacing: 0.5px;
-  transition: color 0.3s;
+  font-size: clamp(0.5rem,0.85vw,0.8rem); font-weight: 600;
+  color: rgba(255,255,255,0.18); letter-spacing: 0.5px; transition: color 0.3s;
 }
 #stream-status.on { color: rgba(255,255,255,0.55); }
 
-/* RIGHT: station list */
+/* Station buttons — right side */
 #station-toggle {
   margin-left: auto;
-  display: flex;
-  gap: 1vw;
-  align-items: center;
-  flex-wrap: nowrap;
+  display: flex; gap: 1vw; align-items: center;
 }
-
 .st-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.6vw;
-  padding: clamp(6px,1vh,12px) clamp(10px,1.4vw,20px);
-  border-radius: 50px;
-  border: 1.5px solid rgba(255,255,255,0.12);
-  background: transparent;
-  color: rgba(255,255,255,0.32);
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(0.6rem, 1.1vw, 1rem);
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
+  display: flex; align-items: center; gap: 0.6vw;
+  padding: clamp(5px,0.9vh,11px) clamp(9px,1.3vw,18px);
+  border-radius: 50px; border: 1.5px solid rgba(255,255,255,0.11);
+  background: transparent; color: rgba(255,255,255,0.3);
+  font-family: 'Inter', sans-serif; font-size: clamp(0.58rem,1vw,0.95rem);
+  font-weight: 800; cursor: pointer; transition: all 0.2s; white-space: nowrap;
 }
-.st-btn svg {
-  width: clamp(12px, 1.4vw, 18px);
-  height: clamp(12px, 1.4vw, 18px);
-  flex-shrink: 0;
-}
+.st-btn svg { width: clamp(11px,1.3vw,17px); height: clamp(11px,1.3vw,17px); flex-shrink: 0; }
 .st-btn:hover { color: #fff; border-color: rgba(255,255,255,0.35); }
 .st-btn.active { background: #fff; border-color: #fff; color: #000; }
 
-/* Volume row */
-#vol-row {
-  display: flex;
-  align-items: center;
-  gap: 1.5vw;
-}
-#vol-row svg {
-  width: clamp(14px, 1.8vw, 22px);
-  height: clamp(14px, 1.8vw, 22px);
-  color: rgba(255,255,255,0.25);
-  flex-shrink: 0;
-}
+/* Volume */
+#vol-row { display: flex; align-items: center; gap: 1.5vw; }
+#vol-row svg { width: clamp(13px,1.7vw,21px); height: clamp(13px,1.7vw,21px); color: rgba(255,255,255,0.22); flex-shrink: 0; }
 #vol-slider {
-  flex: 1;
-  -webkit-appearance: none;
-  height: 3px;
-  background: rgba(255,255,255,0.12);
-  border-radius: 2px;
-  cursor: pointer;
-  outline: none;
+  flex: 1; -webkit-appearance: none; height: 3px;
+  background: rgba(255,255,255,0.11); border-radius: 2px; cursor: pointer; outline: none;
 }
 #vol-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: clamp(16px, 2.2vw, 26px);
-  height: clamp(16px, 2.2vw, 26px);
-  border-radius: 50%;
-  background: #fff;
-  cursor: pointer;
+  -webkit-appearance: none; width: clamp(15px,2vw,24px); height: clamp(15px,2vw,24px);
+  border-radius: 50%; background: #fff; cursor: pointer;
 }
-#vol-num {
-  font-size: clamp(0.65rem, 1vw, 0.95rem);
-  font-weight: 800;
-  color: rgba(255,255,255,0.28);
-  min-width: 3ch;
-  text-align: right;
-}
+#vol-num { font-size: clamp(0.6rem,0.95vw,0.9rem); font-weight: 800; color: rgba(255,255,255,0.25); min-width: 3ch; text-align: right; }
 
 /* Fullscreen */
 #fs-btn {
-  position: fixed;
-  bottom: 18px; right: 20px;
-  width: clamp(36px, 4.5vw, 52px);
-  height: clamp(36px, 4.5vw, 52px);
-  border-radius: 12px;
-  border: 1.5px solid rgba(255,255,255,0.13);
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(12px);
-  color: #fff;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  z-index: 999;
-  transition: border-color 0.2s;
+  position: fixed; bottom: 18px; right: 20px;
+  width: clamp(34px,4vw,48px); height: clamp(34px,4vw,48px);
+  border-radius: 11px; border: 1.5px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(12px);
+  color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  z-index: 999; transition: border-color 0.2s;
 }
-#fs-btn:hover { border-color: rgba(255,255,255,0.4); }
+#fs-btn:hover { border-color: rgba(255,255,255,0.38); }
 #fs-btn svg { width: 44%; height: 44%; }
 </style>
 </head>
 <body>
-
 <div id="app">
 
-  <!-- TOP BAR: Day · Date · Location · Temp -->
-  <div id="row-top">
-    <div id="day-name">—</div>
-    <div class="top-sep"></div>
-    <div id="full-date">—</div>
-    <div class="top-sep"></div>
-    <div id="loc-wrap">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-        <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
-        <circle cx="12" cy="10" r="3"/>
-      </svg>
-      <div id="loc-text">Locating...</div>
+  <!-- SINGLE INFO ROW: Date · Day · Location · Temp | Subuh · Zohor · Asar · Maghrib · Isyak -->
+  <div id="row-info">
+    <div id="info-meta">
+      <div id="full-date">—</div>
+      <div class="sep"></div>
+      <div id="day-name">—</div>
+      <div class="sep"></div>
+      <div id="loc-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+        <div id="loc-text">Locating...</div>
+      </div>
+      <div class="sep"></div>
+      <div id="temp-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+        </svg>
+        <div id="wx-temp">—°C</div>
+      </div>
     </div>
-    <div id="temp-wrap">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-        <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
-      </svg>
-      <div id="wx-temp">—°C</div>
-    </div>
-  </div>
 
-  <!-- PRAYER TIMES -->
-  <div id="row-prayer">
     <div class="prayer-item" id="p-subuh">
       <div class="prayer-name">Subuh</div>
       <div class="prayer-time" id="pt-subuh">—:——</div>
@@ -402,8 +302,6 @@ html, body {
   <!-- RADIO -->
   <div id="row-radio">
     <div id="radio-main">
-
-      <!-- LEFT: play + station name -->
       <div id="radio-left">
         <button id="play-btn" onclick="togglePlay()">
           <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none">
@@ -416,60 +314,33 @@ html, body {
           <div id="stream-status">Tap play to begin</div>
         </div>
       </div>
-
-      <!-- RIGHT: station list -->
       <div id="station-toggle">
         <button class="st-btn active" id="btn-0" onclick="switchStation(0)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           Quran FM
         </button>
         <button class="st-btn" id="btn-1" onclick="switchStation(1)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-            <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
           SomaFM
         </button>
         <button class="st-btn" id="btn-2" onclick="switchStation(2)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-            <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
-            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/>
-            <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
           Lofi
         </button>
         <button class="st-btn" id="btn-3" onclick="switchStation(3)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-            <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/>
-            <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.4"/>
-            <circle cx="12" cy="12" r="2"/>
-            <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.4"/>
-            <path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.4"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.4"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></svg>
           Jazz
         </button>
         <button class="st-btn" id="btn-4" onclick="switchStation(4)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-            <path d="M12 22V12"/>
-            <path d="M5 12H2a10 10 0 0 0 20 0h-3"/>
-            <path d="M12 12a5 5 0 0 0 5-5c0-2-1-3.9-2.5-5C13.4 3.6 12 6 12 6s-1.4-2.4-2.5-4C8 3.1 7 5 7 7a5 5 0 0 0 5 5z"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M12 12a5 5 0 0 0 5-5c0-2-1-3.9-2.5-5C13.4 3.6 12 6 12 6s-1.4-2.4-2.5-4C8 3.1 7 5 7 7a5 5 0 0 0 5 5z"/></svg>
           Nature
         </button>
       </div>
     </div>
-
-    <!-- Volume -->
     <div id="vol-row">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>
       <input type="range" id="vol-slider" min="0" max="100" value="85" oninput="setVol(this.value)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
       <div id="vol-num">85</div>
     </div>
   </div>
@@ -478,34 +349,27 @@ html, body {
 
 <button id="fs-btn" onclick="toggleFS()">
   <svg id="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-    <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
-    <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
-    <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
-    <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+    <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+    <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
   </svg>
 </button>
 
 <audio id="aud" preload="none"></audio>
 
 <script>
-// ════════════════════
-//  CLOCK
-// ════════════════════
 const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
+// ── CLOCK ──
 function fitClock() {
   var el = document.getElementById('time');
   var container = document.getElementById('row-time');
-  var w = container.clientWidth;
-  var h = container.clientHeight;
-  // binary search for font size that fills width without exceeding height
+  var w = container.clientWidth, h = container.clientHeight;
   var lo = 10, hi = 2000, fs = 400;
   for (var i = 0; i < 22; i++) {
     fs = (lo + hi) / 2;
     el.style.fontSize = fs + 'px';
-    if (el.scrollWidth <= w && el.offsetHeight <= h) lo = fs;
-    else hi = fs;
+    if (el.scrollWidth <= w && el.offsetHeight <= h) lo = fs; else hi = fs;
   }
   el.style.fontSize = lo + 'px';
 }
@@ -514,30 +378,23 @@ function tick() {
   var n = new Date();
   var timeStr = String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
   var el = document.getElementById('time');
-  if (el.textContent !== timeStr) {
-    el.textContent = timeStr;
-    fitClock();
-  }
+  if (el.textContent !== timeStr) { el.textContent = timeStr; fitClock(); }
   document.getElementById('day-name').textContent  = DAYS[n.getDay()].toUpperCase();
   document.getElementById('full-date').textContent = n.getDate() + ' ' + MONTHS[n.getMonth()] + ' ' + n.getFullYear();
   highlightPrayer();
 }
-
 window.addEventListener('resize', fitClock);
 tick();
 setInterval(tick, 1000);
 
-// ════════════════════
-//  WEATHER
-// ════════════════════
+// ── WEATHER / GEO ──
 async function fetchWeather(lat, lon) {
   try {
-    var r = await fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,weather_code&timezone=auto');
+    var r = await fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m&timezone=auto');
     var d = await r.json();
     document.getElementById('wx-temp').textContent = Math.round(d.current.temperature_2m) + '°C';
   } catch(e) {}
 }
-
 async function fetchLocName(lat, lon) {
   try {
     var r = await fetch('https://nominatim.openstreetmap.org/reverse?lat='+lat+'&lon='+lon+'&format=json');
@@ -549,32 +406,23 @@ async function fetchLocName(lat, lon) {
 }
 
 var _lat = 2.9980, _lon = 101.5850;
-
 function initGeo() {
   if (!navigator.geolocation) {
     document.getElementById('loc-text').textContent = 'Selangor, MY';
-    fetchWeather(_lat, _lon);
-    fetchPrayerTimes(_lat, _lon);
-    return;
+    fetchWeather(_lat, _lon); fetchPrayerTimes(_lat, _lon); return;
   }
   navigator.geolocation.getCurrentPosition(function(p) {
     _lat = p.coords.latitude; _lon = p.coords.longitude;
-    fetchLocName(_lat, _lon);
-    fetchWeather(_lat, _lon);
-    fetchPrayerTimes(_lat, _lon);
+    fetchLocName(_lat, _lon); fetchWeather(_lat, _lon); fetchPrayerTimes(_lat, _lon);
     setInterval(function(){ fetchWeather(_lat, _lon); }, 5*60*1000);
   }, function() {
     document.getElementById('loc-text').textContent = 'Putra Heights, Selangor';
-    fetchWeather(_lat, _lon);
-    fetchPrayerTimes(_lat, _lon);
+    fetchWeather(_lat, _lon); fetchPrayerTimes(_lat, _lon);
   }, { timeout: 10000, enableHighAccuracy: true });
 }
 
-// ════════════════════
-//  PRAYER TIMES
-// ════════════════════
+// ── PRAYER TIMES ──
 var prayerTimes = {};
-
 async function fetchPrayerTimes(lat, lon) {
   try {
     var today = new Date();
@@ -583,13 +431,7 @@ async function fetchPrayerTimes(lat, lon) {
     var r = await fetch(url);
     var d = await r.json();
     var t = d.data.timings;
-    prayerTimes = {
-      subuh:   t.Fajr,
-      zohor:   t.Dhuhr,
-      asar:    t.Asr,
-      maghrib: t.Maghrib,
-      isyak:   t.Isha
-    };
+    prayerTimes = { subuh: t.Fajr, zohor: t.Dhuhr, asar: t.Asr, maghrib: t.Maghrib, isyak: t.Isha };
     document.getElementById('pt-subuh').textContent   = fmtTime(t.Fajr);
     document.getElementById('pt-zohor').textContent   = fmtTime(t.Dhuhr);
     document.getElementById('pt-asar').textContent    = fmtTime(t.Asr);
@@ -597,7 +439,6 @@ async function fetchPrayerTimes(lat, lon) {
     document.getElementById('pt-isyak').textContent   = fmtTime(t.Isha);
     highlightPrayer();
   } catch(e) {
-    // fallback — typical Selangor times
     var fb = { subuh:'05:50', zohor:'13:09', asar:'16:29', maghrib:'19:22', isyak:'20:33' };
     prayerTimes = fb;
     document.getElementById('pt-subuh').textContent   = fb.subuh;
@@ -608,35 +449,22 @@ async function fetchPrayerTimes(lat, lon) {
     highlightPrayer();
   }
 }
-
 function fmtTime(s) {
   if (!s) return '—:——';
-  var parts = s.split(':');
-  var h = parseInt(parts[0]), m = parts[1];
-  return String(h).padStart(2,'0') + ':' + m;
+  var p = s.split(':');
+  return String(parseInt(p[0])).padStart(2,'0') + ':' + p[1];
 }
-
-function toMins(s) {
-  var parts = s.split(':');
-  return parseInt(parts[0]) * 60 + parseInt(parts[1]);
-}
-
+function toMins(s) { var p = s.split(':'); return parseInt(p[0])*60 + parseInt(p[1]); }
 function highlightPrayer() {
   if (!prayerTimes || !prayerTimes.subuh) return;
-  var now = new Date();
-  var cur = now.getHours() * 60 + now.getMinutes();
+  var cur = new Date().getHours()*60 + new Date().getMinutes();
   var order = ['subuh','zohor','asar','maghrib','isyak'];
   var mins  = order.map(function(k){ return toMins(prayerTimes[k]); });
-
-  // find current (last passed) and next
   var activeIdx = -1;
-  for (var i = mins.length - 1; i >= 0; i--) {
-    if (cur >= mins[i]) { activeIdx = i; break; }
-  }
-  var nextIdx = (activeIdx === -1) ? 0 : (activeIdx + 1 < order.length ? activeIdx + 1 : -1);
-
-  order.forEach(function(k, i) {
-    var el = document.getElementById('p-' + k);
+  for (var i = mins.length-1; i >= 0; i--) { if (cur >= mins[i]) { activeIdx = i; break; } }
+  var nextIdx = activeIdx === -1 ? 0 : (activeIdx+1 < order.length ? activeIdx+1 : -1);
+  order.forEach(function(k,i) {
+    var el = document.getElementById('p-'+k);
     el.className = 'prayer-item';
     if (i === activeIdx) el.classList.add('active');
     else if (i === nextIdx) el.classList.add('next');
@@ -644,31 +472,25 @@ function highlightPrayer() {
   });
 }
 
-// ════════════════════
-//  RADIO
-// ════════════════════
+// ── RADIO ──
 var STATIONS = [
-  { name:'Quran FM',     url:'https://qurango.net/radio/tarateel' },
-  { name:'SomaFM',       url:'https://ice1.somafm.com/dronezone-128-mp3' },
-  { name:'Lofi',         url:'https://streams.fluxfm.de/Chillhop/mp3-320/audio/' },
-  { name:'Jazz Radio',   url:'https://streaming.radio.co/s3f6a75f88/listen' },
-  { name:'Nature FM',    url:'https://ice4.somafm.com/deepspaceone-128-mp3' }
+  { name:'Quran FM',   url:'https://qurango.net/radio/tarateel' },
+  { name:'SomaFM',     url:'https://ice1.somafm.com/dronezone-128-mp3' },
+  { name:'Lofi',       url:'https://streams.fluxfm.de/Chillhop/mp3-320/audio/' },
+  { name:'Jazz Radio', url:'https://streaming.radio.co/s3f6a75f88/listen' },
+  { name:'Nature FM',  url:'https://ice4.somafm.com/deepspaceone-128-mp3' }
 ];
-
 var stIdx = 0, isPlaying = false;
 var aud = document.getElementById('aud');
 
 function setStatus(txt, live) {
   var el = document.getElementById('stream-status');
-  el.textContent = txt;
-  el.className = live ? 'on' : '';
+  el.textContent = txt; el.className = live ? 'on' : '';
 }
-
 function updateUI() {
   document.getElementById('station-name').textContent = STATIONS[stIdx].name;
   document.querySelectorAll('.st-btn').forEach(function(b,i){ b.classList.toggle('active', i===stIdx); });
 }
-
 function startStream() {
   setStatus('Connecting...', false);
   aud.src = STATIONS[stIdx].url;
@@ -676,40 +498,29 @@ function startStream() {
   aud.load();
   aud.play().catch(function(){ setStatus('Could not connect', false); isPlaying=false; setPlayIcon(false); });
 }
-
 function setPlayIcon(p) {
   document.getElementById('play-icon').innerHTML = p
     ? '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>'
     : '<polygon points="6 3 20 12 6 21 6 3"/>';
 }
-
 function togglePlay() {
   if (!isPlaying) { isPlaying=true; setPlayIcon(true); startStream(); }
   else { isPlaying=false; aud.pause(); setPlayIcon(false); setStatus('Paused', false); }
 }
-
 function switchStation(i) {
-  stIdx = i; updateUI();
-  setStatus('Tap play to begin', false);
+  stIdx = i; updateUI(); setStatus('Tap play to begin', false);
   if (isPlaying) startStream();
 }
-
-function setVol(v) {
-  aud.volume = v/100;
-  document.getElementById('vol-num').textContent = v;
-}
+function setVol(v) { aud.volume = v/100; document.getElementById('vol-num').textContent = v; }
 
 aud.addEventListener('playing', function(){ setStatus('Playing Live', true); });
 aud.addEventListener('waiting', function(){ setStatus('Buffering...', false); });
 aud.addEventListener('error',   function(){ setStatus('Stream error', false); isPlaying=false; setPlayIcon(false); });
 aud.addEventListener('stalled', function(){ setStatus('Reconnecting...', false); setTimeout(function(){ if(isPlaying) startStream(); }, 3000); });
 
-// ════════════════════
-//  FULLSCREEN
-// ════════════════════
+// ── FULLSCREEN ──
 var FSE = '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>';
 var FSS = '<path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>';
-
 function toggleFS() {
   if (!document.fullscreenElement) {
     (document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen).call(document.documentElement);
@@ -723,12 +534,9 @@ document.addEventListener('fullscreenchange', function(){
   if (!document.fullscreenElement) document.getElementById('fs-icon').innerHTML = FSE;
 });
 
-// ════════════════════
-//  INIT
-// ════════════════════
+// ── INIT ──
 initGeo();
 updateUI();
-// fit clock after layout
 setTimeout(fitClock, 100);
 </script>
 </body>
