@@ -142,7 +142,6 @@ html, body {
   justify-content: center;
   overflow: hidden;
   min-height: 0;
-  padding: 0 4vw;
 }
 #time {
   font-weight: 900;
@@ -151,9 +150,10 @@ html, body {
   color: #fff;
   white-space: nowrap;
   font-size: 30vw;
-  width: 100%;
+  width: auto;
   text-align: center;
   display: block;
+  margin: 0 auto;
 }
 
 /* ─── RADIO ─── */
@@ -365,7 +365,7 @@ const MONTHS = ['January','February','March','April','May','June','July','August
 function fitClock() {
   var el = document.getElementById('time');
   var container = document.getElementById('row-time');
-  var w = container.clientWidth * 0.96, h = container.clientHeight;
+  var w = container.clientWidth * 0.90, h = container.clientHeight;
   var lo = 10, hi = 2000, fs = 400;
   for (var i = 0; i < 22; i++) {
     fs = (lo + hi) / 2;
