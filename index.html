@@ -242,9 +242,11 @@ html, body {
   background: rgba(255,255,255,0.08);
   color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
   z-index: 9999; transition: background 0.2s, border-color 0.2s;
+  -webkit-filter: none; filter: none; opacity: 1 !important;
 }
 #fs-btn:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.5); }
-#fs-btn svg { width: 44%; height: 44%; stroke: #fff; opacity: 1; }
+#fs-btn svg { width: 44%; height: 44%; }
+#fs-btn svg path { stroke: #ffffff !important; opacity: 1 !important; }
 </style>
 </head>
 <body>
@@ -339,7 +341,7 @@ html, body {
 </div>
 
 <button id="fs-btn" onclick="toggleFS()">
-  <svg id="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+  <svg id="fs-icon" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round">
     <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
     <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
   </svg>
@@ -513,17 +515,22 @@ aud.addEventListener('stalled', function(){ setStatus('Reconnecting...', false);
 // ── FULLSCREEN ──
 var FSE = '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>';
 var FSS = '<path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>';
+function setFSIcon(paths) {
+  var svg = document.getElementById('fs-icon');
+  svg.innerHTML = paths;
+  svg.setAttribute('stroke','#ffffff');
+}
 function toggleFS() {
   if (!document.fullscreenElement) {
     (document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen).call(document.documentElement);
-    document.getElementById('fs-icon').innerHTML = FSS;
+    setFSIcon(FSS);
   } else {
     (document.exitFullscreen||document.webkitExitFullscreen).call(document);
-    document.getElementById('fs-icon').innerHTML = FSE;
+    setFSIcon(FSE);
   }
 }
 document.addEventListener('fullscreenchange', function(){
-  if (!document.fullscreenElement) document.getElementById('fs-icon').innerHTML = FSE;
+  if (!document.fullscreenElement) setFSIcon(FSE);
 });
 
 // ── KEYBOARD ──
