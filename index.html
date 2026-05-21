@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>MyDash</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -22,575 +22,579 @@ html, body {
 #app {
   width: 100vw;
   height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr;
-  grid-template-rows: 1fr;
-}
-
-.divider {
-  background: rgba(255,255,255,0.12);
-  height: 100%;
-}
-
-/* ═══════════════════
-   LEFT — CLOCK + WEATHER
-═══════════════════ */
-#left {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 5vh 5vw;
-  height: 100vh;
+  padding: 5vw 6vw;
 }
 
-/* TIME */
-#time {
-  font-size: clamp(5rem, 18vw, 16rem);
-  font-weight: 900;
-  letter-spacing: -4px;
-  line-height: 0.9;
-  color: #fff;
-}
-
-/* DAY */
-#day {
-  font-size: clamp(1.4rem, 3.5vw, 3.5rem);
-  font-weight: 700;
-  color: rgba(255,255,255,0.45);
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  margin-top: 2vh;
-}
-
-/* DATE */
-#date {
-  font-size: clamp(1.6rem, 4vw, 4rem);
-  font-weight: 800;
-  color: #fff;
-  margin-top: 0.5vh;
-  line-height: 1.1;
-}
-
-/* WEATHER BLOCK */
-#weather-block {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2vh;
-  border-top: 1px solid rgba(255,255,255,0.12);
-  padding-top: 3vh;
-}
-
-#loc-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: clamp(0.9rem, 1.8vw, 1.6rem);
-  font-weight: 600;
-  color: rgba(255,255,255,0.4);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-#loc-row svg { width: 1.3em; height: 1.3em; flex-shrink: 0; }
-
-#temp-line {
+/* ─── ROW 1: Time ─── */
+#row-time {
   display: flex;
   align-items: flex-end;
-  gap: 3vw;
+  justify-content: space-between;
+  flex-shrink: 0;
 }
 
-#temp {
-  font-size: clamp(3.5rem, 10vw, 9rem);
+#time {
+  font-size: clamp(5rem, 22vw, 18rem);
   font-weight: 900;
-  letter-spacing: -3px;
-  line-height: 1;
+  letter-spacing: -6px;
+  line-height: 0.88;
   color: #fff;
 }
 
-#wx-right {
+#date-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  padding-bottom: 1.2vw;
+}
+
+#day-name {
+  font-size: clamp(1rem, 3vw, 2.8rem);
+  font-weight: 800;
+  color: rgba(255,255,255,0.38);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+#full-date {
+  font-size: clamp(1.2rem, 3.5vw, 3.2rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+/* ─── ROW 2: Weather strip ─── */
+#row-weather {
+  display: flex;
+  align-items: center;
+  gap: 4vw;
+  flex-shrink: 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 2.5vh 0;
+}
+
+.wx-item {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+}
+
+.wx-item svg {
+  width: clamp(22px, 3.5vw, 42px);
+  height: clamp(22px, 3.5vw, 42px);
+  color: rgba(255,255,255,0.45);
+  flex-shrink: 0;
+}
+
+.wx-val {
+  font-size: clamp(1.1rem, 3vw, 2.8rem);
+  font-weight: 800;
+  color: #fff;
+}
+
+.wx-lbl {
+  font-size: clamp(0.65rem, 1.4vw, 1.2rem);
+  font-weight: 700;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+#wx-sep { flex: 1; }
+
+#loc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8vw;
+  margin-left: auto;
+}
+#loc-item svg {
+  width: clamp(18px, 2.5vw, 32px);
+  height: clamp(18px, 2.5vw, 32px);
+  color: rgba(255,255,255,0.35);
+  flex-shrink: 0;
+}
+#loc-text {
+  font-size: clamp(0.85rem, 2vw, 1.8rem);
+  font-weight: 700;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.5px;
+}
+
+/* ─── ROW 3: Radio ─── */
+#row-radio {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5vh;
+  flex-shrink: 0;
+}
+
+#radio-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+#radio-left {
   display: flex;
   flex-direction: column;
   gap: 0.6vh;
-  padding-bottom: 0.8vh;
 }
 
-#wx-desc {
-  font-size: clamp(1.2rem, 2.8vw, 2.5rem);
-  font-weight: 800;
-  color: #fff;
-  line-height: 1.1;
-}
-
-.wx-stat {
-  font-size: clamp(0.85rem, 1.6vw, 1.4rem);
-  font-weight: 600;
-  color: rgba(255,255,255,0.4);
-}
-.wx-stat b { color: rgba(255,255,255,0.8); font-weight: 700; }
-
-
-/* ═══════════════════
-   RIGHT — RADIO
-═══════════════════ */
-#right {
+#live-badge {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 5vh 5vw;
-  height: 100vh;
-}
-
-#radio-label {
-  font-size: clamp(0.75rem, 1.5vw, 1.2rem);
+  align-items: center;
+  gap: 8px;
+  font-size: clamp(0.6rem, 1.2vw, 1rem);
   font-weight: 700;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: rgba(255,255,255,0.3);
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 .live-dot {
-  width: 9px; height: 9px;
+  width: 8px; height: 8px;
   border-radius: 50%;
   background: #fff;
-  animation: blink 1.8s ease infinite;
-  flex-shrink: 0;
+  animation: blink 2s ease infinite;
 }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
-
-/* Now playing */
-#now-playing {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1.5vh;
-}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
 
 #station-name {
-  font-size: clamp(2.4rem, 7vw, 6.5rem);
+  font-size: clamp(1.8rem, 6vw, 5.5rem);
   font-weight: 900;
   letter-spacing: -2px;
-  line-height: 1.0;
+  line-height: 1;
   color: #fff;
 }
 
-#station-tag {
-  font-size: clamp(1rem, 2.2vw, 2rem);
+#station-sub {
+  font-size: clamp(0.8rem, 1.8vw, 1.6rem);
   font-weight: 700;
-  color: rgba(255,255,255,0.4);
-  letter-spacing: 1px;
+  color: rgba(255,255,255,0.35);
 }
 
 #stream-status {
-  font-size: clamp(0.85rem, 1.6vw, 1.4rem);
+  font-size: clamp(0.7rem, 1.3vw, 1.1rem);
   font-weight: 600;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.25);
   letter-spacing: 1px;
-  min-height: 1.5em;
-  transition: color 0.4s;
+  min-height: 1em;
+  transition: color 0.3s;
 }
-#stream-status.on { color: rgba(255,255,255,0.65); }
+#stream-status.on { color: rgba(255,255,255,0.6); }
 
-/* Station switch buttons */
-#station-btns {
-  display: flex;
-  gap: 2vw;
-  margin-bottom: 2vh;
-}
-
-.st-btn {
-  flex: 1;
-  padding: 2.2vh 0;
-  border-radius: 18px;
-  border: 2px solid rgba(255,255,255,0.15);
-  background: transparent;
-  color: rgba(255,255,255,0.5);
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(0.9rem, 1.8vw, 1.6rem);
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  line-height: 1.2;
-  text-align: center;
-}
-.st-btn:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
-.st-btn.active {
-  background: #fff;
-  border-color: #fff;
-  color: #000;
-}
-
-/* Play controls */
-#controls {
+/* Controls right side */
+#radio-controls {
   display: flex;
   flex-direction: column;
-  gap: 2.5vh;
-  border-top: 1px solid rgba(255,255,255,0.12);
-  padding-top: 3vh;
-}
-
-#play-row {
-  display: flex;
-  align-items: center;
-  gap: 2vw;
+  align-items: flex-end;
+  gap: 2vh;
 }
 
 #play-btn {
-  width: clamp(68px, 10vw, 100px);
-  height: clamp(68px, 10vw, 100px);
+  width: clamp(64px, 9vw, 110px);
+  height: clamp(64px, 9vw, 110px);
   border-radius: 50%;
   border: none;
   background: #fff;
   color: #000;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
   transition: background 0.15s, transform 0.1s;
 }
-#play-btn:hover { background: rgba(255,255,255,0.88); }
-#play-btn:active { transform: scale(0.95); }
-#play-btn svg { width: 38%; height: 38%; }
+#play-btn:hover { background: rgba(255,255,255,0.85); }
+#play-btn:active { transform: scale(0.94); }
+#play-btn svg { width: 36%; height: 36%; }
 
-#play-info {
+/* Station toggle */
+#station-toggle {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-#play-info-title {
-  font-size: clamp(1rem, 2vw, 1.8rem);
-  font-weight: 800;
-  color: #fff;
-}
-#play-info-sub {
-  font-size: clamp(0.75rem, 1.3vw, 1.1rem);
-  font-weight: 600;
-  color: rgba(255,255,255,0.35);
+  gap: 1.5vw;
 }
 
-/* Volume */
+.st-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.8vw;
+  padding: clamp(10px,1.5vh,18px) clamp(16px,2.5vw,32px);
+  border-radius: 50px;
+  border: 2px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: rgba(255,255,255,0.4);
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.8rem, 1.6vw, 1.4rem);
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.st-btn svg {
+  width: clamp(16px, 2.2vw, 26px);
+  height: clamp(16px, 2.2vw, 26px);
+  flex-shrink: 0;
+}
+.st-btn:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
+.st-btn.active {
+  background: #fff;
+  border-color: #fff;
+  color: #000;
+}
+
+/* Volume row */
 #vol-row {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 1.5vw;
+  width: 100%;
 }
-#vol-row svg { width: clamp(18px,2.5vw,28px); height: clamp(18px,2.5vw,28px); color: rgba(255,255,255,0.35); flex-shrink: 0; }
+#vol-row svg {
+  width: clamp(18px, 2.5vw, 30px);
+  height: clamp(18px, 2.5vw, 30px);
+  color: rgba(255,255,255,0.3);
+  flex-shrink: 0;
+}
 #vol-slider {
   flex: 1;
   -webkit-appearance: none;
-  height: 5px;
+  height: 4px;
   background: rgba(255,255,255,0.15);
-  border-radius: 3px;
+  border-radius: 2px;
   cursor: pointer;
   outline: none;
 }
 #vol-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: clamp(22px, 3vw, 32px);
-  height: clamp(22px, 3vw, 32px);
+  width: clamp(20px, 3vw, 34px);
+  height: clamp(20px, 3vw, 34px);
   border-radius: 50%;
   background: #fff;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
-#vol-label {
-  font-size: clamp(0.8rem, 1.3vw, 1.1rem);
-  font-weight: 700;
-  color: rgba(255,255,255,0.4);
+#vol-num {
+  font-size: clamp(0.8rem, 1.4vw, 1.2rem);
+  font-weight: 800;
+  color: rgba(255,255,255,0.35);
   min-width: 3ch;
   text-align: right;
 }
 
-/* Fullscreen btn */
+/* Fullscreen */
 #fs-btn {
   position: fixed;
-  bottom: 18px; right: 20px;
-  width: clamp(42px, 5vw, 54px);
-  height: clamp(42px, 5vw, 54px);
+  bottom: 20px; right: 22px;
+  width: clamp(40px, 5vw, 56px);
+  height: clamp(40px, 5vw, 56px);
   border-radius: 14px;
-  border: 2px solid rgba(255,255,255,0.18);
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(12px);
   color: #fff;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   z-index: 999;
   transition: border-color 0.2s;
 }
-#fs-btn:hover { border-color: rgba(255,255,255,0.5); }
-#fs-btn svg { width: 45%; height: 45%; }
+#fs-btn:hover { border-color: rgba(255,255,255,0.45); }
+#fs-btn svg { width: 44%; height: 44%; }
 </style>
 </head>
 <body>
+
 <div id="app">
 
-  <!-- LEFT: Clock + Weather -->
-  <div id="left">
-    <div>
-      <div id="time">00:00</div>
-      <div id="day">—</div>
-      <div id="date">—</div>
-    </div>
-
-    <div id="weather-block">
-      <div id="loc-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <span id="loc-text">Locating...</span>
-      </div>
-      <div id="temp-line">
-        <div id="temp">—°</div>
-        <div id="wx-right">
-          <div id="wx-desc">—</div>
-          <div class="wx-stat">Humidity <b id="w-hum">—</b></div>
-          <div class="wx-stat">Wind <b id="w-wind">—</b></div>
-        </div>
-      </div>
+  <!-- TIME + DATE -->
+  <div id="row-time">
+    <div id="time">00:00</div>
+    <div id="date-block">
+      <div id="day-name">—</div>
+      <div id="full-date">—</div>
     </div>
   </div>
 
-  <div class="divider"></div>
-
-  <!-- RIGHT: Radio -->
-  <div id="right">
-    <div id="radio-label">
-      <span class="live-dot"></span> Live Radio
+  <!-- WEATHER STRIP -->
+  <div id="row-weather">
+    <!-- Temp -->
+    <div class="wx-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+      </svg>
+      <div>
+        <div class="wx-val" id="wx-temp">—°</div>
+        <div class="wx-lbl">Feels</div>
+      </div>
     </div>
 
-    <div id="now-playing">
-      <div id="station-name">Quran Radio</div>
-      <div id="station-tag">Tarateel Quran · Live</div>
-      <div id="stream-status">Tap play to begin</div>
+    <!-- Weather desc -->
+    <div class="wx-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+      </svg>
+      <div>
+        <div class="wx-val" id="wx-desc" style="font-size:clamp(1rem,2.4vw,2.2rem)">—</div>
+        <div class="wx-lbl">Weather</div>
+      </div>
     </div>
 
-    <div id="station-btns">
-      <button class="st-btn active" id="btn-0" onclick="switchStation(0)">
-        Quran<br>Radio
-      </button>
-      <button class="st-btn" id="btn-1" onclick="switchStation(1)">
-        SomaFM<br>Drone Zone
-      </button>
+    <!-- Humidity -->
+    <div class="wx-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+      </svg>
+      <div>
+        <div class="wx-val" id="wx-hum">—</div>
+        <div class="wx-lbl">Humidity</div>
+      </div>
     </div>
 
-    <div id="controls">
-      <div id="play-row">
+    <!-- Wind -->
+    <div class="wx-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>
+      </svg>
+      <div>
+        <div class="wx-val" id="wx-wind">—</div>
+        <div class="wx-lbl">Wind</div>
+      </div>
+    </div>
+
+    <div id="wx-sep"></div>
+
+    <!-- Location -->
+    <div id="loc-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>
+      <div id="loc-text">Locating...</div>
+    </div>
+  </div>
+
+  <!-- RADIO -->
+  <div id="row-radio">
+    <div id="radio-top">
+      <div id="radio-left">
+        <div id="live-badge"><span class="live-dot"></span> Live Radio</div>
+        <div id="station-name">Quran Radio</div>
+        <div id="station-sub">Tarateel · Live Stream</div>
+        <div id="stream-status">Tap play to begin</div>
+      </div>
+      <div id="radio-controls">
         <button id="play-btn" onclick="togglePlay()">
-          <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+          <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+            <polygon points="6 3 20 12 6 21 6 3"/>
+          </svg>
         </button>
-        <div id="play-info">
-          <div id="play-info-title">Play</div>
-          <div id="play-info-sub">Select station above</div>
+        <div id="station-toggle">
+          <button class="st-btn active" id="btn-0" onclick="switchStation(0)">
+            <!-- Moon / Quran icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            Quran
+          </button>
+          <button class="st-btn" id="btn-1" onclick="switchStation(1)">
+            <!-- Music / wave icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <path d="M9 18V5l12-2v13"/>
+              <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+            </svg>
+            SomaFM
+          </button>
         </div>
       </div>
-      <div id="vol-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>
-        <input type="range" id="vol-slider" min="0" max="100" value="85" oninput="setVol(this.value)">
-        <div id="vol-label">85</div>
-      </div>
+    </div>
+
+    <!-- Volume -->
+    <div id="vol-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      </svg>
+      <input type="range" id="vol-slider" min="0" max="100" value="85" oninput="setVol(this.value)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      </svg>
+      <div id="vol-num">85</div>
     </div>
   </div>
 
 </div>
 
+<!-- Fullscreen button -->
 <button id="fs-btn" onclick="toggleFS()">
   <svg id="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-    <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
-    <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+    <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+    <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+    <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+    <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
   </svg>
 </button>
 
 <audio id="aud" preload="none"></audio>
 
 <script>
-// ══════════════════════
+// ════════════════════
 //  CLOCK
-// ══════════════════════
+// ════════════════════
 const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 function tick() {
   const n  = new Date();
-  const hh = String(n.getHours()).padStart(2,'0');
-  const mm = String(n.getMinutes()).padStart(2,'0');
-  document.getElementById('time').textContent = hh + ':' + mm;
-  document.getElementById('day').textContent  = DAYS[n.getDay()].toUpperCase();
-  document.getElementById('date').textContent = n.getDate() + ' ' + MONTHS[n.getMonth()] + ' ' + n.getFullYear();
+  document.getElementById('time').textContent     = String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
+  document.getElementById('day-name').textContent = DAYS[n.getDay()].toUpperCase();
+  document.getElementById('full-date').textContent= n.getDate() + ' ' + MONTHS[n.getMonth()] + ' ' + n.getFullYear();
 }
 tick();
 setInterval(tick, 1000);
 
-// ══════════════════════
+// ════════════════════
 //  WEATHER
-// ══════════════════════
-const WX = {0:'Clear Sky',1:'Mostly Clear',2:'Partly Cloudy',3:'Overcast',45:'Foggy',48:'Icy Fog',51:'Light Drizzle',53:'Drizzle',55:'Heavy Drizzle',61:'Light Rain',63:'Raining',65:'Heavy Rain',71:'Light Snow',73:'Snowing',75:'Heavy Snow',80:'Rain Showers',81:'Heavy Showers',82:'Storm Showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
+// ════════════════════
+const WX_DESC = {
+  0:'Clear',1:'Mostly Clear',2:'Partly Cloudy',3:'Overcast',
+  45:'Foggy',48:'Icy Fog',
+  51:'Drizzle',53:'Drizzle',55:'Drizzle',
+  61:'Light Rain',63:'Rain',65:'Heavy Rain',
+  71:'Light Snow',73:'Snow',75:'Heavy Snow',
+  80:'Showers',81:'Showers',82:'Heavy Showers',
+  95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'
+};
 
-async function getWeather(lat, lon) {
+async function fetchWeather(lat, lon) {
   try {
     const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&wind_speed_unit=kmh&timezone=auto');
     const d = await r.json();
     const c = d.current;
-    document.getElementById('temp').textContent    = Math.round(c.temperature_2m) + '°';
-    document.getElementById('wx-desc').textContent = WX[c.weather_code] || 'Unknown';
-    document.getElementById('w-hum').textContent   = c.relative_humidity_2m + '%';
-    document.getElementById('w-wind').textContent  = Math.round(c.wind_speed_10m) + ' km/h';
+    document.getElementById('wx-temp').textContent = Math.round(c.temperature_2m) + '°C';
+    document.getElementById('wx-desc').textContent = WX_DESC[c.weather_code] || 'Unknown';
+    document.getElementById('wx-hum').textContent  = c.relative_humidity_2m + '%';
+    document.getElementById('wx-wind').textContent = Math.round(c.wind_speed_10m) + ' km/h';
   } catch(e) {
-    document.getElementById('wx-desc').textContent = 'Unavailable';
+    document.getElementById('wx-desc').textContent = 'No data';
   }
 }
 
-async function getLocName(lat, lon) {
+async function fetchLocName(lat, lon) {
   try {
     const r = await fetch('https://nominatim.openstreetmap.org/reverse?lat='+lat+'&lon='+lon+'&format=json');
     const d = await r.json();
     const a = d.address;
-    const name  = a.suburb || a.village || a.town || a.city || a.county || '';
-    const state = a.state || '';
-    document.getElementById('loc-text').textContent = [name, state].filter(Boolean).join(', ');
+    const parts = [a.suburb||a.village||a.town||a.city||a.county, a.state].filter(Boolean);
+    document.getElementById('loc-text').textContent = parts.join(', ');
   } catch(e) {}
 }
 
 function initGeo() {
   if (!navigator.geolocation) {
     document.getElementById('loc-text').textContent = 'Selangor, MY';
-    getWeather(2.9980, 101.5850);
+    fetchWeather(2.9980, 101.5850);
     return;
   }
-  navigator.geolocation.getCurrentPosition(function(pos) {
-    const lat = pos.coords.latitude, lon = pos.coords.longitude;
-    getLocName(lat, lon);
-    getWeather(lat, lon);
-    setInterval(function(){ getWeather(lat, lon); }, 5 * 60 * 1000);
+  navigator.geolocation.getCurrentPosition(function(p) {
+    var lat = p.coords.latitude, lon = p.coords.longitude;
+    fetchLocName(lat, lon);
+    fetchWeather(lat, lon);
+    setInterval(function(){ fetchWeather(lat, lon); }, 5*60*1000);
   }, function() {
     document.getElementById('loc-text').textContent = 'Putra Heights, Selangor';
-    getWeather(2.9980, 101.5850);
+    fetchWeather(2.9980, 101.5850);
   }, { timeout: 10000, enableHighAccuracy: true });
 }
 
-// ══════════════════════
+// ════════════════════
 //  RADIO
-// ══════════════════════
-const STATIONS = [
-  {
-    name: 'Quran Radio',
-    tag:  'Tarateel Quran · Live',
-    url:  'https://qurango.net/radio/tarateel'
-  },
-  {
-    name: 'SomaFM',
-    tag:  'Drone Zone · Ambient',
-    url:  'https://ice1.somafm.com/dronezone-128-mp3'
-  }
+// ════════════════════
+var STATIONS = [
+  { name:'Quran Radio',  sub:'Tarateel · Live Stream',  url:'https://qurango.net/radio/tarateel' },
+  { name:'SomaFM',       sub:'Drone Zone · Ambient',     url:'https://ice1.somafm.com/dronezone-128-mp3' }
 ];
 
-let stIdx     = 0;
-let isPlaying = false;
-const aud     = document.getElementById('aud');
+var stIdx = 0, isPlaying = false;
+var aud   = document.getElementById('aud');
 
-function setStatus(txt, on) {
-  const el = document.getElementById('stream-status');
+function setStatus(txt, live) {
+  var el = document.getElementById('stream-status');
   el.textContent = txt;
-  el.className   = on ? 'on' : '';
+  el.className   = live ? 'on' : '';
 }
 
-function updateNowPlaying() {
-  const s = STATIONS[stIdx];
-  document.getElementById('station-name').textContent  = s.name;
-  document.getElementById('station-tag').textContent   = s.tag;
-  document.getElementById('play-info-title').textContent = s.name;
-  document.getElementById('play-info-sub').textContent   = s.tag;
-  document.querySelectorAll('.st-btn').forEach(function(b, i) {
-    b.classList.toggle('active', i === stIdx);
-  });
-}
-
-function switchStation(i) {
-  stIdx = i;
-  updateNowPlaying();
-  setStatus('Tap play to begin', false);
-  if (isPlaying) {
-    aud.pause();
-    startStream();
-  }
+function updateUI() {
+  var s = STATIONS[stIdx];
+  document.getElementById('station-name').textContent = s.name;
+  document.getElementById('station-sub').textContent  = s.sub;
+  document.querySelectorAll('.st-btn').forEach(function(b, i){ b.classList.toggle('active', i===stIdx); });
 }
 
 function startStream() {
   setStatus('Connecting...', false);
-  aud.src    = STATIONS[stIdx].url;
+  aud.src = STATIONS[stIdx].url;
   aud.volume = document.getElementById('vol-slider').value / 100;
   aud.load();
-  aud.play().catch(function() {
-    setStatus('Could not connect — check network', false);
-    isPlaying = false;
-    setPlayIcon(false);
-  });
+  aud.play().catch(function(){ setStatus('Could not connect', false); isPlaying=false; setPlayIcon(false); });
 }
 
-function setPlayIcon(playing) {
-  document.getElementById('play-icon').innerHTML = playing
+function setPlayIcon(p) {
+  document.getElementById('play-icon').innerHTML = p
     ? '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>'
     : '<polygon points="6 3 20 12 6 21 6 3"/>';
 }
 
 function togglePlay() {
-  if (!isPlaying) {
-    isPlaying = true;
-    setPlayIcon(true);
-    startStream();
-  } else {
-    isPlaying = false;
-    aud.pause();
-    setPlayIcon(false);
-    setStatus('Paused', false);
-  }
+  if (!isPlaying) { isPlaying=true; setPlayIcon(true); startStream(); }
+  else            { isPlaying=false; aud.pause(); setPlayIcon(false); setStatus('Paused', false); }
+}
+
+function switchStation(i) {
+  stIdx = i;
+  updateUI();
+  setStatus('Tap play to begin', false);
+  if (isPlaying) startStream();
 }
 
 function setVol(v) {
-  aud.volume = v / 100;
-  document.getElementById('vol-label').textContent = v;
+  aud.volume = v/100;
+  document.getElementById('vol-num').textContent = v;
 }
 
-aud.addEventListener('playing', function() { setStatus('Playing Live', true); });
-aud.addEventListener('waiting', function() { setStatus('Buffering...', false); });
-aud.addEventListener('stalled', function() { setStatus('Stream stalled — retrying...', false); });
-aud.addEventListener('error',   function() {
-  setStatus('Stream error — check connection', false);
-  isPlaying = false;
-  setPlayIcon(false);
+aud.addEventListener('playing', function(){ setStatus('Playing Live', true); });
+aud.addEventListener('waiting', function(){ setStatus('Buffering...', false); });
+aud.addEventListener('error',   function(){ setStatus('Stream error', false); isPlaying=false; setPlayIcon(false); });
+aud.addEventListener('stalled', function(){
+  setStatus('Reconnecting...', false);
+  setTimeout(function(){ if(isPlaying) startStream(); }, 3000);
 });
 
-// Auto-retry on stall
-let retryTimer = null;
-aud.addEventListener('stalled', function() {
-  clearTimeout(retryTimer);
-  retryTimer = setTimeout(function() {
-    if (isPlaying) startStream();
-  }, 4000);
-});
-
-// ══════════════════════
+// ════════════════════
 //  FULLSCREEN
-// ══════════════════════
-const FS_EXPAND = '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>';
-const FS_SHRINK = '<path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>';
+// ════════════════════
+var FSE = '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>';
+var FSS = '<path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>';
 
 function toggleFS() {
   if (!document.fullscreenElement) {
-    (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen).call(document.documentElement);
-    document.getElementById('fs-icon').innerHTML = FS_SHRINK;
+    (document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen).call(document.documentElement);
+    document.getElementById('fs-icon').innerHTML = FSS;
   } else {
-    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
-    document.getElementById('fs-icon').innerHTML = FS_EXPAND;
+    (document.exitFullscreen||document.webkitExitFullscreen).call(document);
+    document.getElementById('fs-icon').innerHTML = FSE;
   }
 }
-document.addEventListener('fullscreenchange', function() {
-  if (!document.fullscreenElement)
-    document.getElementById('fs-icon').innerHTML = FS_EXPAND;
+document.addEventListener('fullscreenchange', function(){
+  if (!document.fullscreenElement) document.getElementById('fs-icon').innerHTML = FSE;
 });
 
-// ══════════════════════
+// ════════════════════
 //  INIT
-// ══════════════════════
+// ════════════════════
 initGeo();
-updateNowPlaying();
+updateUI();
 </script>
 </body>
 </html>
