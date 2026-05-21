@@ -4,714 +4,578 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>MyDash</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-:root {
-  --black: #000000;
-  --white: #ffffff;
-  --grey: rgba(255,255,255,0.12);
-  --grey2: rgba(255,255,255,0.06);
-  --dim: rgba(255,255,255,0.38);
-  --radius: 20px;
-}
-
 html, body {
   width: 100%; height: 100%;
-  background: var(--black);
-  color: var(--white);
+  background: #000;
+  color: #fff;
   font-family: 'DM Sans', sans-serif;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
+/* ══════════════════════════════
+   LAYOUT: two columns, full screen
+══════════════════════════════ */
 #app {
+  display: flex;
   width: 100vw;
   height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: rgba(255,255,255,0.08);
 }
 
-/* ── TOP LEFT: Clock + Weather ── */
-#panel-clock {
-  grid-column: 1;
-  grid-row: 1;
-  background: var(--black);
-  padding: 36px 40px 28px;
+/* ── LEFT: Clock / Weather ── */
+#left {
+  flex: 1 1 55%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 6px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  justify-content: space-between;
+  padding: 52px 56px 48px;
   border-right: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+  overflow: hidden;
 }
 
+/* Subtle vertical label */
+#left::after {
+  content: 'WEATHER';
+  position: absolute;
+  right: 28px; top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  font-size: 0.55rem;
+  letter-spacing: 4px;
+  color: rgba(255,255,255,0.1);
+  font-weight: 500;
+  pointer-events: none;
+}
+
+/* Time */
 #time {
   font-family: 'DM Mono', monospace;
-  font-size: clamp(3.5rem, 7vw, 5.5rem);
-  font-weight: 400;
-  letter-spacing: -2px;
+  font-size: clamp(5rem, 13vw, 11rem);
+  font-weight: 300;
+  letter-spacing: -4px;
   line-height: 1;
-  color: var(--white);
+  color: #fff;
 }
 
+/* Day + Date */
+#day-date {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 18px;
+}
+#day {
+  font-size: clamp(1.1rem, 2.4vw, 2rem);
+  font-weight: 300;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
 #date {
-  font-size: 0.9rem;
-  color: var(--dim);
-  font-weight: 400;
-  letter-spacing: 0.5px;
+  font-size: clamp(1.6rem, 3.2vw, 2.8rem);
+  font-weight: 300;
+  color: #fff;
+  letter-spacing: -0.5px;
 }
 
-#weather-row {
+/* Weather block */
+#weather-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#location {
+  font-size: clamp(0.75rem, 1.2vw, 1rem);
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+#location svg { width:13px;height:13px; opacity:0.5; flex-shrink:0; }
+
+#temp-row {
   display: flex;
   align-items: flex-end;
-  gap: 20px;
-  margin-top: 10px;
+  gap: 24px;
 }
 
 #temp {
-  font-size: clamp(2.2rem, 4vw, 3.2rem);
-  font-weight: 300;
-  letter-spacing: -1px;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 200;
+  letter-spacing: -3px;
   line-height: 1;
+  color: #fff;
 }
 
-#weather-details {
+#weather-right {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  padding-bottom: 4px;
+  gap: 5px;
+  padding-bottom: 10px;
 }
 
-#weather-desc { font-size: 0.85rem; color: var(--white); font-weight: 500; }
-#weather-loc  { font-size: 0.75rem; color: var(--dim); }
-#weather-sub  { font-size: 0.72rem; color: var(--dim); }
+#weather-desc {
+  font-size: clamp(1rem, 1.8vw, 1.5rem);
+  font-weight: 400;
+  color: #fff;
+}
 
-/* ── TOP RIGHT: Live Radio ── */
-#panel-radio {
-  grid-column: 2;
-  grid-row: 1;
-  background: var(--black);
-  padding: 36px 40px 28px;
+#weather-meta {
+  display: flex;
+  gap: 14px;
+}
+.wmeta {
+  font-size: clamp(0.72rem, 1.1vw, 0.9rem);
+  color: rgba(255,255,255,0.4);
+}
+.wmeta span { color: rgba(255,255,255,0.75); }
+
+/* ── RIGHT: Radio ── */
+#right {
+  flex: 0 0 45%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
+  padding: 52px 52px 48px;
+}
+
+#radio-top {
+  display: flex;
+  flex-direction: column;
   gap: 6px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 #radio-eyebrow {
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 3px;
+  font-size: 0.62rem;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--dim);
+  color: rgba(255,255,255,0.3);
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 4px;
 }
-
 .live-dot {
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--white);
-  animation: pulse 2s ease infinite;
+  background: #fff;
+  animation: blink 2s ease infinite;
 }
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.3; transform: scale(0.8); }
-}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
 
 #station-name {
-  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-  font-weight: 300;
-  letter-spacing: -0.5px;
-  line-height: 1.1;
-  transition: opacity 0.3s;
+  font-size: clamp(2rem, 5vw, 4.2rem);
+  font-weight: 200;
+  letter-spacing: -1px;
+  line-height: 1.05;
+  color: #fff;
+  transition: opacity 0.25s ease;
 }
-
 #station-freq {
-  font-size: 0.82rem;
-  color: var(--dim);
   font-family: 'DM Mono', monospace;
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  font-weight: 300;
+  color: rgba(255,255,255,0.35);
+  margin-top: 4px;
 }
+#stream-status {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.3);
+  margin-top: 2px;
+  min-height: 1.1em;
+  transition: color 0.3s;
+}
+#stream-status.live { color: rgba(255,255,255,0.55); }
 
-#radio-controls {
+/* Station list */
+#station-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  margin: 28px 0;
+  overflow-y: auto;
+}
+#station-list::-webkit-scrollbar { width: 2px; }
+#station-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+
+.st-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 14px;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  cursor: pointer;
+  transition: opacity 0.15s;
+  border-radius: 4px;
+}
+.st-row:hover .st-name { opacity: 1; }
+.st-row:last-child { border-bottom: none; }
+
+.st-name {
+  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+  font-weight: 400;
+  color: #fff;
+  opacity: 0.45;
+  transition: opacity 0.2s;
+}
+.st-freq {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.25);
+}
+.st-row.active .st-name { opacity: 1; }
+.st-row.active .st-freq { color: rgba(255,255,255,0.55); }
+.st-row.active::before {
+  content: '';
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #fff;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+.st-row:not(.active)::before {
+  content: '';
+  display: inline-block;
+  width: 5px; height: 5px;
+  margin-right: 12px;
+  flex-shrink: 0;
 }
 
-.r-btn {
-  width: 44px; height: 44px;
+/* Controls */
+#controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#btn-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ctrl-btn {
+  width: 52px; height: 52px;
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.18);
   background: transparent;
-  color: var(--white);
+  color: #fff;
   cursor: pointer;
   display: flex; align-items:center; justify-content:center;
   transition: background 0.15s, border-color 0.15s;
   flex-shrink: 0;
 }
-.r-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4); }
-.r-btn:active { background: rgba(255,255,255,0.15); }
-.r-btn svg { width: 16px; height: 16px; }
+.ctrl-btn svg { width:18px; height:18px; }
+.ctrl-btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.35); }
+.ctrl-btn:active { background: rgba(255,255,255,0.14); }
 
 #play-btn {
-  width: 52px; height: 52px;
-  background: var(--white);
+  width: 64px; height: 64px;
+  background: #fff;
   border: none;
-  color: var(--black);
+  color: #000;
 }
-#play-btn:hover { background: rgba(255,255,255,0.85); }
-#play-btn:active { background: rgba(255,255,255,0.7); }
+#play-btn:hover { background: rgba(255,255,255,0.88); }
+#play-btn:active { background: rgba(255,255,255,0.72); }
+#play-btn svg { width:22px;height:22px; }
 
-.station-dots {
-  display: flex; gap: 5px; margin-left: auto;
-}
-.sdot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.sdot.active { background: var(--white); }
-
+/* Volume */
 #vol-row {
-  display: flex; align-items:center; gap: 10px; margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
-#vol-row svg { width:14px;height:14px; color: var(--dim); flex-shrink:0; }
+#vol-row svg { width:15px;height:15px; color:rgba(255,255,255,0.35); flex-shrink:0; }
 #vol-slider {
   flex: 1;
   -webkit-appearance: none;
-  height: 2px;
-  background: rgba(255,255,255,0.15);
+  height: 1px;
+  background: rgba(255,255,255,0.18);
   border-radius: 1px;
   cursor: pointer;
   outline: none;
 }
 #vol-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 14px; height: 14px;
+  width: 16px; height: 16px;
   border-radius: 50%;
-  background: var(--white);
+  background: #fff;
   cursor: pointer;
 }
 
-/* ── BOTTOM: Nearby ── */
-#panel-nearby {
-  grid-column: 1 / -1;
-  grid-row: 2;
-  background: var(--black);
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 24px 40px 0;
-}
-
-#nearby-header {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  margin-bottom: 16px;
-  flex-shrink: 0;
-}
-
-#nearby-label {
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-
-#cat-tabs {
-  display: flex;
-  gap: 8px;
-  flex: 1;
-}
-
-.cat-btn {
-  padding: 8px 18px;
-  border-radius: 50px;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: transparent;
-  color: var(--dim);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
-}
-.cat-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.35); }
-.cat-btn.active {
-  background: var(--white);
-  color: var(--black);
-  border-color: var(--white);
-}
-
-#loc-state {
-  font-size: 0.72rem;
-  color: var(--dim);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-#loc-state svg { width:13px;height:13px; }
-
-/* Places grid */
-#places-wrap {
-  flex: 1;
-  overflow-y: auto;
-  padding-bottom: 24px;
-}
-#places-wrap::-webkit-scrollbar { width: 2px; }
-#places-wrap::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
-
-#places-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 10px;
-}
-
-.place-card {
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: var(--radius);
-  padding: 18px 20px;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.2s;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-height: 90px;
-}
-.place-card:hover {
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.3);
-}
-.place-card:active { background: rgba(255,255,255,0.09); }
-
-.pc-dist {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.7rem;
-  color: var(--dim);
-  font-weight: 400;
-}
-
-.pc-name {
-  font-size: 0.95rem;
-  font-weight: 500;
-  line-height: 1.25;
-  color: var(--white);
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.pc-sub {
-  font-size: 0.72rem;
-  color: var(--dim);
-}
-
-/* State screens */
-#places-state {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 120px;
-  color: var(--dim);
-  font-size: 0.85rem;
-  gap: 10px;
-  letter-spacing: 1px;
-}
-
-.spin { animation: spin 1.2s linear infinite; display:inline-block; }
-@keyframes spin { to { transform:rotate(360deg); } }
-
-/* ── Fullscreen btn ── */
+/* Fullscreen */
 #fs-btn {
   position: fixed;
-  bottom: 20px; right: 24px;
-  width: 42px; height: 42px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(0,0,0,0.8);
+  bottom: 20px; right: 22px;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.7);
   backdrop-filter: blur(12px);
-  color: var(--white);
+  color: #fff;
   cursor: pointer;
   display: flex; align-items:center; justify-content:center;
-  z-index: 9999;
-  transition: border-color 0.2s, background 0.2s;
+  z-index: 999;
+  transition: border-color 0.2s;
 }
-#fs-btn:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.08); }
-#fs-btn svg { width:17px; height:17px; }
-
-/* ── Fade in ── */
-.fade-in { animation: fadeIn 0.5s ease both; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+#fs-btn:hover { border-color: rgba(255,255,255,0.4); }
+#fs-btn svg { width:16px;height:16px; }
 </style>
 </head>
 <body>
 
 <div id="app">
 
-  <!-- CLOCK + WEATHER -->
-  <div id="panel-clock">
-    <div id="time">00:00</div>
-    <div id="date">—</div>
-    <div id="weather-row">
-      <div id="temp">—°</div>
-      <div id="weather-details">
-        <div id="weather-desc">Fetching weather</div>
-        <div id="weather-loc">Locating...</div>
-        <div id="weather-sub">— · — km/h</div>
+  <!-- ── LEFT PANEL ── -->
+  <div id="left">
+    <div>
+      <div id="time">00:00</div>
+      <div id="day-date">
+        <div id="day">—</div>
+        <div id="date">—</div>
+      </div>
+    </div>
+
+    <div id="weather-block">
+      <div id="location">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span id="loc-text">Locating...</span>
+      </div>
+      <div id="temp-row">
+        <div id="temp">—°</div>
+        <div id="weather-right">
+          <div id="weather-desc">—</div>
+          <div id="weather-meta">
+            <div class="wmeta">Humidity <span id="w-hum">—</span></div>
+            <div class="wmeta">Wind <span id="w-wind">—</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- RADIO -->
-  <div id="panel-radio">
-    <div id="radio-eyebrow"><span class="live-dot"></span> Live Radio</div>
-    <div id="station-name">ERA FM</div>
-    <div id="station-freq">99.6 FM</div>
-    <div id="radio-controls">
-      <button class="r-btn" onclick="prevStation()" title="Previous">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <button class="r-btn" id="play-btn" onclick="togglePlay()" title="Play/Pause">
-        <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-      </button>
-      <button class="r-btn" onclick="nextStation()" title="Next">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-      <div class="station-dots" id="station-dots"></div>
+  <!-- ── RIGHT PANEL ── -->
+  <div id="right">
+    <div id="radio-top">
+      <div id="radio-eyebrow"><span class="live-dot"></span> Live Radio</div>
+      <div id="station-name">ERA FM</div>
+      <div id="station-freq">99.6 FM</div>
+      <div id="stream-status">Tap play to start</div>
     </div>
-    <div id="vol-row">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>
-      <input type="range" id="vol-slider" min="0" max="100" value="80" oninput="setVolume(this.value)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-    </div>
-  </div>
 
-  <!-- NEARBY -->
-  <div id="panel-nearby">
-    <div id="nearby-header">
-      <div id="nearby-label">Nearby</div>
-      <div id="cat-tabs">
-        <button class="cat-btn active" onclick="setCategory('petrolstation')" id="cat-petrolstation">Petrol</button>
-        <button class="cat-btn" onclick="setCategory('food')" id="cat-food">Food</button>
-        <button class="cat-btn" onclick="setCategory('rr')" id="cat-rr">R&R</button>
-        <button class="cat-btn" onclick="setCategory('cafe')" id="cat-cafe">Cafe</button>
-        <button class="cat-btn" onclick="setCategory('mosque')" id="cat-mosque">Masjid</button>
-        <button class="cat-btn" onclick="setCategory('surau')" id="cat-surau">Surau</button>
+    <div id="station-list"></div>
+
+    <div id="controls">
+      <div id="btn-row">
+        <button class="ctrl-btn" onclick="skip(-1)" title="Previous">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="ctrl-btn" id="play-btn" onclick="togglePlay()">
+          <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+        </button>
+        <button class="ctrl-btn" onclick="skip(1)" title="Next">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
       </div>
-      <div id="loc-state">
-        <svg class="spin" id="loc-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-        <span id="loc-text">Locating</span>
+      <div id="vol-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>
+        <input type="range" id="vol-slider" min="0" max="100" value="80" oninput="setVol(this.value)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
       </div>
-    </div>
-    <div id="places-wrap">
-      <div id="places-state">
-        <svg class="spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-        Waiting for location
-      </div>
-      <div id="places-grid" style="display:none"></div>
     </div>
   </div>
 
 </div>
 
-<!-- Fullscreen -->
-<button id="fs-btn" onclick="toggleFS()" title="Fullscreen">
+<button id="fs-btn" onclick="toggleFS()">
   <svg id="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
     <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
     <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
   </svg>
 </button>
 
-<audio id="audio" preload="none"></audio>
+<audio id="aud" preload="none"></audio>
 
 <script>
-// ═══════════════════════════════
+// ══════════════════════════════
 //  CLOCK
-// ═══════════════════════════════
-const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+// ══════════════════════════════
+const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 function tick() {
   const n = new Date();
-  const h = String(n.getHours()).padStart(2,'0');
-  const m = String(n.getMinutes()).padStart(2,'0');
-  document.getElementById('time').textContent = `${h}:${m}`;
-  document.getElementById('date').textContent =
-    `${DAYS[n.getDay()]}, ${n.getDate()} ${MONTHS[n.getMonth()]} ${n.getFullYear()}`;
+  const hh = String(n.getHours()).padStart(2,'0');
+  const mm = String(n.getMinutes()).padStart(2,'0');
+  document.getElementById('time').textContent = `${hh}:${mm}`;
+  document.getElementById('day').textContent  = DAYS[n.getDay()];
+  document.getElementById('date').textContent = `${n.getDate()} ${MONTHS[n.getMonth()]} ${n.getFullYear()}`;
 }
 tick();
 setInterval(tick, 1000);
 
-// ═══════════════════════════════
+// ══════════════════════════════
 //  WEATHER
-// ═══════════════════════════════
-const WX_DESC = {
-  0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',
-  45:'Foggy',48:'Icy fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',
-  61:'Light rain',63:'Rain',65:'Heavy rain',
-  71:'Light snow',73:'Snow',75:'Heavy snow',
-  80:'Showers',81:'Heavy showers',82:'Violent showers',
-  95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'
-};
-function wxDesc(code){ return WX_DESC[code] || 'Unknown'; }
+// ══════════════════════════════
+const WX = {0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Icy fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',80:'Rain showers',81:'Heavy showers',82:'Violent showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
 
-let userLat=null, userLon=null;
-
-async function fetchWeather(lat,lon){
+async function getWeather(lat, lon) {
   try {
     const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&wind_speed_unit=kmh&timezone=auto`);
     const d = await r.json();
     const c = d.current;
-    document.getElementById('temp').textContent = `${Math.round(c.temperature_2m)}°`;
-    document.getElementById('weather-desc').textContent = wxDesc(c.weather_code);
-    document.getElementById('weather-sub').textContent = `${c.relative_humidity_2m}% humidity · ${Math.round(c.wind_speed_10m)} km/h`;
-  } catch(e){ document.getElementById('weather-desc').textContent='Unavailable'; }
+    document.getElementById('temp').textContent       = `${Math.round(c.temperature_2m)}°`;
+    document.getElementById('weather-desc').textContent = WX[c.weather_code] || 'Unknown';
+    document.getElementById('w-hum').textContent       = `${c.relative_humidity_2m}%`;
+    document.getElementById('w-wind').textContent      = `${Math.round(c.wind_speed_10m)} km/h`;
+  } catch(e) {
+    document.getElementById('weather-desc').textContent = 'Unavailable';
+  }
 }
 
-async function reverseGeo(lat,lon){
+async function getLocation(lat, lon) {
   try {
     const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
     const d = await r.json();
     const a = d.address;
-    const name = a.suburb||a.village||a.town||a.city||a.county||'';
-    const state = a.state||'';
-    document.getElementById('weather-loc').textContent = [name,state].filter(Boolean).join(', ');
-  } catch(e){}
+    const name = a.suburb || a.village || a.town || a.city || a.county || '';
+    const state = a.state || '';
+    document.getElementById('loc-text').textContent = [name, state].filter(Boolean).join(', ');
+  } catch(e) {}
 }
 
-function initGeo(){
-  if(!navigator.geolocation){
-    document.getElementById('loc-text').textContent = 'GPS unavailable';
-    document.getElementById('loc-spin').style.display='none';
+function initGeo() {
+  if (!navigator.geolocation) {
+    document.getElementById('loc-text').textContent = 'Location unavailable';
+    getWeather(2.9980, 101.5850); // fallback Putra Heights
     return;
   }
-  navigator.geolocation.getCurrentPosition(pos=>{
-    userLat = pos.coords.latitude;
-    userLon = pos.coords.longitude;
-    document.getElementById('loc-spin').style.display='none';
-    document.getElementById('loc-text').textContent = 'Live';
-    reverseGeo(userLat,userLon);
-    fetchWeather(userLat,userLon);
-    setInterval(()=>fetchWeather(userLat,userLon), 5*60*1000);
-    loadPlaces(currentCat);
-  }, ()=>{
-    // Default: Putra Heights, Selangor
-    userLat=2.9980; userLon=101.5850;
-    document.getElementById('loc-spin').style.display='none';
-    document.getElementById('loc-text').textContent='Default location';
-    document.getElementById('weather-loc').textContent='Putra Heights, Selangor';
-    fetchWeather(userLat,userLon);
-    loadPlaces(currentCat);
-  }, {timeout:10000, enableHighAccuracy:true});
+  navigator.geolocation.getCurrentPosition(pos => {
+    const {latitude: lat, longitude: lon} = pos.coords;
+    getLocation(lat, lon);
+    getWeather(lat, lon);
+    setInterval(() => getWeather(lat, lon), 5 * 60 * 1000);
+  }, () => {
+    document.getElementById('loc-text').textContent = 'Putra Heights, Selangor';
+    getWeather(2.9980, 101.5850);
+  }, { timeout: 10000, enableHighAccuracy: true });
 }
 
-// ═══════════════════════════════
+// ══════════════════════════════
 //  RADIO
-// ═══════════════════════════════
+// ══════════════════════════════
 const STATIONS = [
-  { name:'ERA FM',   freq:'99.6 FM',  url:'https://hls-radio.rtm.gov.my/era/era.m3u8' },
-  { name:'MY FM',    freq:'101.8 FM', url:'https://myradio24.com/item/9506/listen' },
-  { name:'Fly FM',   freq:'95.8 FM',  url:'https://9413.live.streamtheworld.com/FLYFLIVE.mp3' },
-  { name:'Hot FM',   freq:'95.5 FM',  url:'https://hotfm.my/radio/8000/radio.mp3' },
-  { name:'Hitz FM',  freq:'92.9 FM',  url:'https://hitzfm.my/radio/8002/radio.mp3' },
-  { name:'Sinar FM', freq:'96.7 FM',  url:'https://sinarfm.rtm.gov.my/sinarfm' },
-  { name:'TraXX FM', freq:'90.3 FM',  url:'https://traxxfm.rtm.gov.my/traxxfm' },
-  { name:'IKIM FM',  freq:'91.5 FM',  url:'https://ikim.gov.my/radio/8000/radio.mp3' },
+  { name:'ERA FM',     freq:'99.6 FM',   url:'https://hls-radio.rtm.gov.my/era/era.m3u8' },
+  { name:'MY FM',      freq:'101.8 FM',  url:'https://myfm.my/radio/8012/radio.mp3' },
+  { name:'Fly FM',     freq:'95.8 FM',   url:'https://9413.live.streamtheworld.com/FLYFLIVE.mp3' },
+  { name:'Hot FM',     freq:'95.5 FM',   url:'https://streaming.hotfm.com.my/hotfm' },
+  { name:'Hitz FM',    freq:'92.9 FM',   url:'https://hitzfm.my/radio/8002/radio.mp3' },
+  { name:'Sinar FM',   freq:'96.7 FM',   url:'https://streaming.sinarfm.com.my/sinarfm' },
+  { name:'TraXX FM',   freq:'90.3 FM',   url:'https://traxxfm.rtm.gov.my/traxxfm' },
+  { name:'IKIM FM',    freq:'91.5 FM',   url:'https://ikim.gov.my/radio/8000/radio.mp3' },
 ];
 
-let stIdx=0, playing=false;
-const aud = document.getElementById('audio');
+let idx = 0, isPlaying = false;
+const aud = document.getElementById('aud');
 
-// Build dots
-function buildDots(){
-  const c = document.getElementById('station-dots');
-  c.innerHTML='';
-  STATIONS.forEach((_,i)=>{
-    const d=document.createElement('div');
-    d.className='sdot'+(i===stIdx?' active':'');
-    d.onclick=()=>goStation(i);
-    c.appendChild(d);
+// Build station list rows
+function buildList() {
+  const list = document.getElementById('station-list');
+  list.innerHTML = '';
+  STATIONS.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'st-row' + (i === idx ? ' active' : '');
+    row.id = `st-${i}`;
+    row.innerHTML = `<span class="st-name">${s.name}</span><span class="st-freq">${s.freq}</span>`;
+    row.onclick = () => { goTo(i); if (!isPlaying) togglePlay(); };
+    list.appendChild(row);
   });
 }
-buildDots();
+buildList();
 
-function goStation(i){
-  stIdx=(i+STATIONS.length)%STATIONS.length;
-  const s=STATIONS[stIdx];
-  document.getElementById('station-name').textContent=s.name;
-  document.getElementById('station-freq').textContent=s.freq;
-  buildDots();
-  if(playing){ aud.src=s.url; aud.play().catch(()=>{}); }
+function setStatus(txt, live = false) {
+  const el = document.getElementById('stream-status');
+  el.textContent = txt;
+  el.className = live ? 'live' : '';
 }
 
-function prevStation(){ goStation(stIdx-1); }
-function nextStation(){ goStation(stIdx+1); }
+function updateUI() {
+  const s = STATIONS[idx];
+  document.getElementById('station-name').textContent = s.name;
+  document.getElementById('station-freq').textContent = s.freq;
+  document.querySelectorAll('.st-row').forEach((r,i) => r.classList.toggle('active', i === idx));
+  // scroll into view
+  document.getElementById(`st-${idx}`)?.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
 
-function togglePlay(){
-  const icon=document.getElementById('play-icon');
-  if(!playing){
-    playing=true;
-    aud.src=STATIONS[stIdx].url;
-    aud.volume=document.getElementById('vol-slider').value/100;
-    aud.play().catch(()=>{});
-    // pause icon
-    icon.innerHTML='<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+function goTo(i) {
+  idx = (i + STATIONS.length) % STATIONS.length;
+  updateUI();
+  if (isPlaying) startStream();
+}
+
+function startStream() {
+  setStatus('Connecting...');
+  aud.src = STATIONS[idx].url;
+  aud.volume = document.getElementById('vol-slider').value / 100;
+  aud.load();
+  aud.play().catch(() => setStatus('Stream unavailable — try next'));
+}
+
+function togglePlay() {
+  const icon = document.getElementById('play-icon');
+  if (!isPlaying) {
+    isPlaying = true;
+    icon.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+    startStream();
   } else {
-    playing=false;
+    isPlaying = false;
     aud.pause();
-    // play icon
-    icon.innerHTML='<polygon points="6 3 20 12 6 21 6 3"/>';
+    icon.innerHTML = '<polygon points="6 3 20 12 6 21 6 3"/>';
+    setStatus('Paused');
   }
 }
 
-function setVolume(v){
-  aud.volume=v/100;
-}
+function skip(dir) { goTo(idx + dir); }
+function setVol(v)  { aud.volume = v / 100; }
 
-// ═══════════════════════════════
-//  NEARBY PLACES (Overpass)
-// ═══════════════════════════════
-let currentCat='petrolstation';
+aud.addEventListener('playing', () => setStatus('Live — ' + STATIONS[idx].freq, true));
+aud.addEventListener('waiting', () => setStatus('Buffering...'));
+aud.addEventListener('error',   () => setStatus('Stream unavailable — try next'));
+aud.addEventListener('stalled', () => setStatus('Stream stalled...'));
 
-const CATS = {
-  petrolstation:{
-    q:(lat,lon,r)=>`[out:json][timeout:20];(node["amenity"="fuel"](around:${r},${lat},${lon});way["amenity"="fuel"](around:${r},${lat},${lon}););out center 20;`,
-    r:4000, getName:t=>t.brand||t.name||t.operator||'Petrol Station', getSub:t=>t.brand||t.operator||'Fuel Station'
-  },
-  food:{
-    q:(lat,lon,r)=>`[out:json][timeout:20];(node["amenity"~"^(restaurant|fast_food|food_court)$"](around:${r},${lat},${lon});way["amenity"~"^(restaurant|fast_food|food_court)$"](around:${r},${lat},${lon}););out center 25;`,
-    r:3000, getName:t=>t.name||t.brand||'Restaurant', getSub:t=>t.cuisine||t.amenity||'Food'
-  },
-  rr:{
-    q:(lat,lon,r)=>`[out:json][timeout:20];(node["highway"="rest_area"](around:${r},${lat},${lon});node["amenity"="rest_area"](around:${r},${lat},${lon});way["highway"="rest_area"](around:${r},${lat},${lon});node["name"~"[Rr]est [Aa]rea|[Pp]laza [Tt]ol|R&R|r&r"](around:${r},${lat},${lon}););out center 10;`,
-    r:60000, getName:t=>t.name||'Rest Area', getSub:t=>t.operator||'R&R / Rest Area'
-  },
-  cafe:{
-    q:(lat,lon,r)=>`[out:json][timeout:20];(node["amenity"="cafe"](around:${r},${lat},${lon});way["amenity"="cafe"](around:${r},${lat},${lon}););out center 20;`,
-    r:3000, getName:t=>t.name||t.brand||'Cafe', getSub:t=>t.cuisine||t.brand||'Cafe'
-  },
-  mosque:{
-    q:(lat,lon,r)=>`[out:json][timeout:20];(node["amenity"="place_of_worship"]["religion"="muslim"]["place_of_worship"!="surau"]["name"!~"[Ss]urau"](around:${r},${lat},${lon});way["amenity"="place_of_worship"]["religion"="muslim"]["name"!~"[Ss]urau"](around:${r},${lat},${lon}););out center 20;`,
-    r:5000, getName:t=>t.name||'Masjid', getSub:t=>t['name:en']||t.operator||'Mosque'
-  },
-  surau:{
-    q:(lat,lon,r)=>`[out:json][timeout:20];(node["amenity"="place_of_worship"]["place_of_worship"="surau"](around:${r},${lat},${lon});node["amenity"="place_of_worship"]["religion"="muslim"]["name"~"[Ss]urau"](around:${r},${lat},${lon});way["amenity"="place_of_worship"]["name"~"[Ss]urau"](around:${r},${lat},${lon}););out center 20;`,
-    r:5000, getName:t=>t.name||'Surau', getSub:t=>t.operator||'Prayer Room'
-  }
-};
-
-function dist(lat1,lon1,lat2,lon2){
-  const R=6371000,dL=(lat2-lat1)*Math.PI/180,dO=(lon2-lon1)*Math.PI/180;
-  const a=Math.sin(dL/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dO/2)**2;
-  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-}
-function fmtDist(m){ return m<1000?`${Math.round(m)} m`:`${(m/1000).toFixed(1)} km`; }
-
-async function loadPlaces(cat){
-  const cfg=CATS[cat];
-  const state=document.getElementById('places-state');
-  const grid=document.getElementById('places-grid');
-
-  state.style.display='flex';
-  state.innerHTML=`<svg class="spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Searching nearby...`;
-  grid.style.display='none'; grid.innerHTML='';
-
-  try {
-    const res=await fetch('https://overpass-api.de/api/interpreter',{
-      method:'POST', body:cfg.q(userLat,userLon,cfg.r)
-    });
-    const data=await res.json();
-    let els=data.elements||[];
-
-    // Deduplicate
-    const seen=new Set();
-    els=els.filter(e=>{
-      const k=(e.tags?.name||e.tags?.brand||String(e.id));
-      if(seen.has(k))return false; seen.add(k); return true;
-    });
-
-    // Sort by distance
-    els=els.map(e=>{
-      const lat=e.lat||e.center?.lat, lon=e.lon||e.center?.lon;
-      return {...e, _d:(lat&&lon)?dist(userLat,userLon,lat,lon):9e9};
-    }).sort((a,b)=>a._d-b._d).slice(0,30);
-
-    if(!els.length){
-      state.innerHTML='Nothing found nearby'; return;
-    }
-
-    state.style.display='none';
-    grid.style.display='grid';
-
-    els.forEach((el,i)=>{
-      const t=el.tags||{};
-      const card=document.createElement('div');
-      card.className='place-card fade-in';
-      card.style.animationDelay=`${i*0.03}s`;
-      card.innerHTML=`
-        <div class="pc-dist">${fmtDist(el._d)}</div>
-        <div class="pc-name">${cfg.getName(t)}</div>
-        <div class="pc-sub">${cfg.getSub(t)}</div>
-      `;
-      const lat=el.lat||el.center?.lat, lon=el.lon||el.center?.lon;
-      if(lat&&lon) card.onclick=()=>window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`,'_blank');
-      grid.appendChild(card);
-    });
-
-  } catch(e){
-    state.innerHTML='Could not load — check connection';
-  }
-}
-
-function setCategory(cat){
-  currentCat=cat;
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(`cat-${cat}`)?.classList.add('active');
-  if(userLat) loadPlaces(cat);
-  else { document.getElementById('places-state').style.display='flex'; document.getElementById('places-state').textContent='Waiting for location...'; }
-}
-
-// ═══════════════════════════════
+// ══════════════════════════════
 //  FULLSCREEN
-// ═══════════════════════════════
-function toggleFS(){
-  const icon=document.getElementById('fs-icon');
-  if(!document.fullscreenElement){
-    document.documentElement.requestFullscreen?.()|| document.documentElement.webkitRequestFullscreen?.();
-    icon.innerHTML=`<path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>`;
+// ══════════════════════════════
+function toggleFS() {
+  const expand = `<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>`;
+  const shrink = `<path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>`;
+  if (!document.fullscreenElement) {
+    (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen).call(document.documentElement);
+    document.getElementById('fs-icon').innerHTML = shrink;
   } else {
-    document.exitFullscreen?.()|| document.webkitExitFullscreen?.();
-    icon.innerHTML=`<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>`;
+    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    document.getElementById('fs-icon').innerHTML = expand;
   }
 }
-document.addEventListener('fullscreenchange',()=>{
-  if(!document.fullscreenElement) document.getElementById('fs-icon').innerHTML=`<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>`;
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement)
+    document.getElementById('fs-icon').innerHTML = `<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>`;
 });
 
-// ═══════════════════════════════
+// ══════════════════════════════
 //  INIT
-// ═══════════════════════════════
+// ══════════════════════════════
 initGeo();
 </script>
 </body>
