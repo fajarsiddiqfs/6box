@@ -24,7 +24,7 @@ html, body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 2.5vw 5vw 3vw;
+  padding: 2.5vw 5vw 1vw;
 }
 
 /* ─── SINGLE INFO ROW ─── */
@@ -38,20 +38,16 @@ html, body {
   gap: 0;
 }
 
-/* Prayer items — fill remaining space evenly (override below) */
-#row-info {
-  justify-content: flex-start;
-}
-
-/* Meta group: day / date stacked — pushed to far right */
+/* Meta group: day / date — matches prayer-item style, pushed to right */
 #info-meta {
+  flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  flex-shrink: 0;
-  padding-left: 2vw;
-  margin-left: auto;
-  border-left: 1px solid rgba(255,255,255,0.08);
-  border-right: none;
+  justify-content: center;
+  gap: 0.1vh;
+  padding: 0.3vh 0.3vw;
+  border-left: 1px solid rgba(255,255,255,0.06);
 }
 
 #date-stack {
@@ -62,15 +58,15 @@ html, body {
 }
 
 #day-name {
-  font-size: clamp(1rem, 2vw, 1.8rem);
-  font-weight: 800;
+  font-size: clamp(0.9rem, 1.7vw, 1.6rem);
+  font-weight: 700;
   color: rgba(255,255,255,0.7);
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   white-space: nowrap;
 }
 #full-date {
-  font-size: clamp(1.1rem, 2.2vw, 2rem);
+  font-size: clamp(1.4rem, 3vw, 2.8rem);
   font-weight: 900;
   color: #fff;
   white-space: nowrap;
@@ -129,6 +125,16 @@ html, body {
   overflow: hidden;
   min-height: 0;
 }
+#clock-wrap {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.5vw;
+  line-height: 1;
+  overflow: hidden;
+  max-width: 100%;
+  max-height: 100%;
+}
 #time {
   font-weight: 900;
   letter-spacing: -0.05em;
@@ -136,10 +142,15 @@ html, body {
   color: #fff;
   white-space: nowrap;
   font-size: 30vw;
-  width: auto;
-  text-align: center;
   display: block;
-  margin: 0 auto;
+}
+#ampm {
+  font-weight: 900;
+  color: #fff;
+  white-space: nowrap;
+  font-size: 5vw;
+  letter-spacing: -0.05em;
+  padding-bottom: 1.8vw;
 }
 
 /* ─── RADIO ─── */
@@ -272,7 +283,10 @@ html, body {
 
   <!-- BIG CLOCK -->
   <div id="row-time">
-    <div id="time">00:00</div>
+    <div id="clock-wrap">
+      <div id="time">00:00</div>
+      <div id="ampm">AM</div>
+    </div>
   </div>
 
   <!-- RADIO -->
@@ -340,7 +354,7 @@ const MONTHS = ['January','February','March','April','May','June','July','August
 function fitClock() {
   var el = document.getElementById('time');
   var container = document.getElementById('row-time');
-  var w = container.clientWidth * 0.90, h = container.clientHeight;
+  var w = container.clientWidth * 0.82, h = container.clientHeight;
   var lo = 10, hi = 2000, fs = 400;
   for (var i = 0; i < 22; i++) {
     fs = (lo + hi) / 2;
@@ -352,9 +366,13 @@ function fitClock() {
 
 function tick() {
   var n = new Date();
-  var timeStr = String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
+  var h = n.getHours();
+  var ampm = h >= 12 ? 'PM' : 'AM';
+  var h12 = h % 12 || 12;
+  var timeStr = String(h12).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
   var el = document.getElementById('time');
   if (el.textContent !== timeStr) { el.textContent = timeStr; fitClock(); }
+  document.getElementById('ampm').textContent = ampm;
   document.getElementById('day-name').textContent  = DAYS[n.getDay()].toUpperCase();
   document.getElementById('full-date').textContent = String(n.getDate()).padStart(2,'0') + '/' + String(n.getMonth()+1).padStart(2,'0');
   highlightPrayer();
