@@ -4,49 +4,41 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>CarPlayer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg:       #000000;
-    --panel:    #111111;
-    --panel2:   #0d0d0d;
-    --border:   #2a2a2a;
-    --border2:  #1f1f1f;
-    --white:    #ffffff;
-    --white80:  rgba(255,255,255,0.8);
-    --white50:  rgba(255,255,255,0.5);
-    --white20:  rgba(255,255,255,0.2);
-    --white10:  rgba(255,255,255,0.1);
-    --white05:  rgba(255,255,255,0.05);
-    --radius:   16px;
-    --gap:      10px;
+    --bg:      #000;
+    --panel:   #111;
+    --border:  #222;
+    --white:   #fff;
+    --w80:     rgba(255,255,255,0.8);
+    --w50:     rgba(255,255,255,0.5);
+    --w25:     rgba(255,255,255,0.25);
+    --w10:     rgba(255,255,255,0.1);
+    --w05:     rgba(255,255,255,0.05);
+    --r:       14px;
+    --gap:     10px;
+    --font:    -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   }
 
   html, body {
     width: 100%; height: 100%;
     background: var(--bg);
     color: var(--white);
-    font-family: 'Barlow', sans-serif;
+    font-family: var(--font);
     overflow: hidden;
     -webkit-tap-highlight-color: transparent;
-    user-select: none;
   }
 
-  /* ── MAIN GRID matches the reference image ── */
   #app {
     display: grid;
-    grid-template-columns: 380px 1fr;
-    grid-template-rows: 100%;
+    grid-template-columns: 360px 1fr;
     height: 100vh;
-    width: 100vw;
     gap: var(--gap);
     padding: var(--gap);
   }
 
-  /* Left column: two stacked panels */
   #left {
     display: flex;
     flex-direction: column;
@@ -54,113 +46,97 @@
     min-height: 0;
   }
 
-  /* ─── PANEL BASE ─── */
   .panel {
     background: var(--panel);
-    border-radius: var(--radius);
+    border-radius: var(--r);
+    border: 1px solid var(--border);
     overflow: hidden;
-    border: 1px solid var(--border2);
   }
 
-  /* ─── WEATHER / CLOCK PANEL (top-left) ─── */
-  #weather-panel {
-    flex: 0 0 auto;
-    padding: 22px 24px 20px;
+  /* ── WEATHER / CLOCK ── */
+  #wp {
+    padding: 18px 20px 16px;
+    flex-shrink: 0;
   }
 
-  #clock-line {
+  #clock-row {
     display: flex;
-    align-items: flex-end;
-    gap: 8px;
+    align-items: baseline;
+    gap: 6px;
     margin-bottom: 2px;
   }
 
   #clock {
-    font-family: 'Rajdhani', monospace;
-    font-size: 56px;
+    font-size: 52px;
     font-weight: 700;
-    color: var(--white);
-    letter-spacing: 1px;
+    letter-spacing: -1px;
     line-height: 1;
+    color: var(--white);
   }
 
   #ampm {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
-    color: var(--white50);
-    letter-spacing: 2px;
-    margin-bottom: 8px;
+    color: var(--w50);
+    letter-spacing: 1px;
   }
 
-  #date-line {
-    font-family: 'Barlow Condensed', sans-serif;
+  #dateline {
     font-size: 12px;
-    font-weight: 400;
-    color: var(--white50);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 18px;
+    color: var(--w50);
+    letter-spacing: 1px;
+    margin-bottom: 14px;
   }
 
-  /* divider */
-  .div-line {
-    height: 1px;
-    background: var(--border);
-    margin: 0 0 16px;
-  }
+  #div { height: 1px; background: var(--border); margin-bottom: 14px; }
 
   #weather-row {
     display: flex;
     align-items: center;
-    gap: 0;
     justify-content: space-between;
+    gap: 12px;
   }
 
-  #weather-main {
+  #w-left {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
   }
 
-  #w-icon { font-size: 36px; line-height: 1; }
+  #w-icon { font-size: 32px; line-height: 1; }
 
   #w-temp {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 38px;
-    font-weight: 600;
-    color: var(--white);
+    font-size: 32px;
+    font-weight: 700;
     line-height: 1;
+    color: var(--white);
   }
 
-  #w-desc {
-    font-family: 'Barlow', sans-serif;
+  #w-cond {
     font-size: 11px;
-    color: var(--white50);
-    letter-spacing: 2px;
+    color: var(--w50);
+    letter-spacing: 1px;
     text-transform: uppercase;
     margin-top: 3px;
   }
 
-  #weather-stats {
+  #w-stats {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px 18px;
-    font-family: 'Barlow Condensed', sans-serif;
+    grid-template-columns: auto auto;
+    column-gap: 10px;
+    row-gap: 4px;
     font-size: 12px;
-    color: var(--white50);
-    letter-spacing: 1px;
     text-align: right;
   }
 
-  #weather-stats .val { color: var(--white80); font-weight: 500; }
+  #w-stats .lbl { color: var(--w25); }
+  #w-stats .val { color: var(--w80); font-weight: 500; }
 
-  #w-location {
-    margin-top: 14px;
+  #w-loc {
+    margin-top: 12px;
     font-size: 11px;
-    color: var(--white20);
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    color: var(--w25);
+    letter-spacing: 1px;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -170,234 +146,326 @@
     width: 5px; height: 5px;
     border-radius: 50%;
     background: var(--white);
-    opacity: 0.4;
+    opacity: 0.3;
     animation: blink 2s infinite;
+    flex-shrink: 0;
   }
 
-  @keyframes blink { 0%,100%{opacity:.4} 50%{opacity:.1} }
+  @keyframes blink { 0%,100%{opacity:.3} 50%{opacity:.08} }
 
-  /* ─── RADIO PANEL (bottom-left) ─── */
-  #radio-panel {
+  /* ── RADIO ── */
+  #rp {
     flex: 1;
     display: flex;
     flex-direction: column;
     min-height: 0;
   }
 
-  #radio-top {
-    padding: 16px 20px 12px;
-    border-bottom: 1px solid var(--border2);
+  #r-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 13px 18px 11px;
+    border-bottom: 1px solid var(--border);
     flex-shrink: 0;
   }
 
-  #radio-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--white20);
+  #r-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--w25);
     text-transform: uppercase;
   }
 
-  #eq-bars {
+  #eq {
     display: flex;
     align-items: flex-end;
     gap: 2px;
     height: 14px;
     opacity: 0;
-    transition: opacity 0.4s;
+    transition: opacity 0.3s;
   }
-  #eq-bars.on { opacity: 1; }
-  .eq { width: 3px; background: var(--white); border-radius: 1px; }
-  .eq:nth-child(1){height:6px;animation:eq .7s 0s infinite alternate ease-in-out}
-  .eq:nth-child(2){height:12px;animation:eq .7s .1s infinite alternate ease-in-out}
-  .eq:nth-child(3){height:8px;animation:eq .7s .2s infinite alternate ease-in-out}
-  .eq:nth-child(4){height:14px;animation:eq .7s .05s infinite alternate ease-in-out}
-  .eq:nth-child(5){height:5px;animation:eq .7s .15s infinite alternate ease-in-out}
+  #eq.on { opacity: 1; }
+  .b { width: 3px; background: var(--w50); border-radius: 1px; }
+  .b:nth-child(1){height:6px;animation:eq .7s 0s infinite alternate}
+  .b:nth-child(2){height:13px;animation:eq .7s .1s infinite alternate}
+  .b:nth-child(3){height:8px;animation:eq .7s .2s infinite alternate}
+  .b:nth-child(4){height:13px;animation:eq .7s .05s infinite alternate}
+  .b:nth-child(5){height:5px;animation:eq .7s .15s infinite alternate}
   @keyframes eq { from{transform:scaleY(.2)} to{transform:scaleY(1)} }
 
-  #stations {
+  #stn-list {
     flex: 1;
     overflow-y: auto;
-    padding: 8px 12px;
+    padding: 6px 10px;
     scrollbar-width: none;
   }
-  #stations::-webkit-scrollbar { display: none; }
+  #stn-list::-webkit-scrollbar { display: none; }
 
   .stn {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 10px 10px;
+    gap: 11px;
+    padding: 9px 10px;
     border-radius: 10px;
     cursor: pointer;
     border: 1px solid transparent;
-    transition: background .15s, border-color .15s;
-    margin-bottom: 3px;
+    transition: background .15s;
+    margin-bottom: 2px;
   }
-  .stn:active { opacity: .7; }
-  .stn.active {
-    background: var(--white05);
-    border-color: var(--border);
-  }
+  .stn.active { background: var(--w05); border-color: var(--border); }
 
-  .stn-logo {
+  .stn-abbr {
     width: 40px; height: 40px;
     border-radius: 8px;
-    background: var(--white10);
+    background: var(--w10);
     border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Rajdhani', sans-serif;
     font-size: 11px; font-weight: 700;
-    color: var(--white80);
-    letter-spacing: .5px;
+    color: var(--w80);
     flex-shrink: 0;
+    letter-spacing: 0.5px;
   }
-  .stn.active .stn-logo { background: var(--white); color: #000; border-color: var(--white); }
+  .stn.active .stn-abbr { background: var(--white); color: #000; border-color: var(--white); }
 
   .stn-info { flex: 1; min-width: 0; }
   .stn-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 15px; font-weight: 600;
-    color: var(--white80);
-    letter-spacing: .5px;
+    font-size: 14px; font-weight: 600;
+    color: var(--w80);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .stn.active .stn-name { color: var(--white); }
   .stn-genre {
-    font-size: 11px; color: var(--white20);
-    letter-spacing: 1px; text-transform: uppercase;
+    font-size: 11px; color: var(--w25);
+    letter-spacing: 0.5px; text-transform: uppercase;
     margin-top: 1px;
   }
 
-  /* loading ring */
   .stn-ring {
     display: none;
-    width: 28px; height: 28px;
+    width: 26px; height: 26px;
     border: 1.5px solid var(--border);
-    border-top-color: var(--white50);
+    border-top-color: var(--w50);
     border-radius: 50%;
     animation: spin .7s linear infinite;
     flex-shrink: 0;
   }
   .stn.loading .stn-ring { display: block; }
-  .stn.loading .stn-btn { display: none; }
+  .stn.loading .stn-btn  { display: none; }
   @keyframes spin { to{ transform: rotate(360deg); } }
 
   .stn-btn {
-    width: 28px; height: 28px;
+    width: 26px; height: 26px;
     border-radius: 50%;
     border: 1px solid var(--border);
     background: transparent;
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; flex-shrink: 0;
-    transition: background .15s, border-color .15s;
-    padding: 0;
+    cursor: pointer; flex-shrink: 0; padding: 0;
+    transition: background .15s;
   }
   .stn.active .stn-btn { background: var(--white); border-color: var(--white); }
-  .stn-btn svg { width: 12px; height: 12px; }
-  .stn-btn .ico { fill: var(--white50); }
-  .stn.active .stn-btn .ico { fill: #000; }
+  .stn-btn svg { width: 11px; height: 11px; }
+  .btn-ico { fill: var(--w50); }
+  .stn.active .stn-btn .btn-ico { fill: #000; }
 
-  /* Now-playing bar */
-  #np-bar {
-    padding: 12px 18px;
-    border-top: 1px solid var(--border2);
+  #np {
+    padding: 11px 16px 13px;
+    border-top: 1px solid var(--border);
     flex-shrink: 0;
   }
-  #np-label { font-size: 10px; letter-spacing: 2px; color: var(--white20); text-transform: uppercase; margin-bottom: 3px; }
-  #np-name { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 500; color: var(--white80); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #np-lbl { font-size: 10px; color: var(--w25); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2px; }
+  #np-name { font-size: 14px; font-weight: 600; color: var(--w80); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  #vol-row {
-    display: flex; align-items: center; gap: 10px; margin-top: 8px;
-  }
-  #vol-row svg { width: 14px; height: 14px; fill: var(--white20); flex-shrink: 0; }
+  #vol-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  #vol-row svg { width: 14px; height: 14px; fill: var(--w25); flex-shrink: 0; }
   #vol {
     flex: 1; -webkit-appearance: none;
-    height: 2px; border-radius: 1px;
-    background: var(--border); outline: none; cursor: pointer;
+    height: 2px; border-radius: 1px; background: var(--border); outline: none; cursor: pointer;
   }
   #vol::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 14px; height: 14px; border-radius: 50%;
-    background: var(--white); cursor: pointer;
+    width: 14px; height: 14px; border-radius: 50%; background: var(--white); cursor: pointer;
   }
 
-  /* ─── MAP PANEL (right, full height) ─── */
-  #map-panel {
-    position: relative;
+  /* ── NAV LAUNCHER (right panel) ── */
+  #nav-panel {
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
   }
 
-  #map-frame {
-    width: 100%; height: 100%;
-    border: none; display: block;
-    filter: grayscale(1) invert(0.88) contrast(1.1);
+  #nav-head {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
   }
 
-  /* Top HUD overlay */
-  #map-hud {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    padding: 16px 20px;
+  #nav-head-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(to bottom, rgba(0,0,0,.85) 60%, transparent);
-    pointer-events: none;
-    z-index: 10;
+    margin-bottom: 14px;
   }
 
-  #app-name {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 18px; font-weight: 700;
-    color: var(--white);
-    letter-spacing: 5px;
+  #nav-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--w25);
     text-transform: uppercase;
   }
 
   #spd-box {
     display: flex; align-items: baseline; gap: 4px;
   }
-  #spd-num {
-    font-family: 'Rajdhani', monospace;
-    font-size: 30px; font-weight: 700; color: var(--white);
-    line-height: 1;
-  }
-  #spd-unit { font-size: 11px; color: var(--white50); letter-spacing: 2px; text-transform: uppercase; }
+  #spd-num { font-size: 28px; font-weight: 700; color: var(--white); line-height: 1; }
+  #spd-unit { font-size: 11px; color: var(--w50); letter-spacing: 1px; }
 
-  /* Search bar */
-  #map-search-wrap {
-    position: absolute;
-    top: 58px; left: 14px; right: 14px;
-    z-index: 10;
-  }
-  #map-search {
+  /* Search */
+  #search-wrap { position: relative; }
+  #dest-input {
     width: 100%;
-    padding: 10px 16px;
-    background: rgba(0,0,0,.82);
+    padding: 11px 44px 11px 14px;
+    background: var(--w05);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 9px;
     color: var(--white);
-    font-family: 'Barlow', sans-serif;
+    font-family: var(--font);
     font-size: 14px;
     outline: none;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
   }
-  #map-search::placeholder { color: var(--white20); }
-  #map-search:focus { border-color: var(--white50); }
+  #dest-input::placeholder { color: var(--w25); }
+  #dest-input:focus { border-color: var(--w25); }
 
-  /* Bottom fade */
-  #map-fade {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 60px;
-    background: linear-gradient(to top, rgba(0,0,0,.6), transparent);
-    pointer-events: none;
+  #search-btn {
+    position: absolute; right: 0; top: 0; bottom: 0;
+    width: 44px;
+    background: transparent; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--w50);
+    font-size: 16px;
+    border-radius: 0 9px 9px 0;
+    transition: color .15s;
   }
+  #search-btn:hover { color: var(--white); }
+
+  /* App buttons */
+  #nav-apps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 18px 24px;
+    flex-shrink: 0;
+  }
+
+  .app-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 22px 14px;
+    background: var(--w05);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+    text-decoration: none;
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .app-btn:hover { background: var(--w10); border-color: var(--w25); }
+  .app-btn:active { opacity: 0.7; }
+
+  .app-icon {
+    font-size: 36px;
+    line-height: 1;
+  }
+
+  .app-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    text-align: center;
+  }
+
+  .app-sub {
+    font-size: 11px;
+    color: var(--w50);
+    text-align: center;
+    letter-spacing: 0.3px;
+  }
+
+  /* Quick destinations */
+  #quick-head {
+    padding: 4px 24px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--w25);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  #quick-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 16px 16px;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  #quick-list::-webkit-scrollbar { display: none; }
+
+  .quick-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    background: var(--w05);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background .15s;
+    text-decoration: none;
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .quick-item:hover { background: var(--w10); }
+  .quick-item:active { opacity: 0.7; }
+
+  .qi-icon {
+    font-size: 22px;
+    line-height: 1;
+    width: 28px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .qi-info { flex: 1; min-width: 0; }
+  .qi-name { font-size: 14px; font-weight: 600; color: var(--w80); }
+  .qi-addr { font-size: 12px; color: var(--w25); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .qi-arrow { font-size: 14px; color: var(--w25); flex-shrink: 0; }
+
+  /* app launch buttons (waze/gmaps) per quick item */
+  .qi-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .qi-app-btn {
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--w50);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .qi-app-btn:hover { background: var(--w10); color: var(--white); }
 
   #audio-el { display: none; }
 </style>
@@ -406,49 +474,47 @@
 
 <div id="app">
 
-  <!-- LEFT COLUMN -->
+  <!-- LEFT -->
   <div id="left">
 
     <!-- WEATHER + CLOCK -->
-    <div class="panel" id="weather-panel">
-      <div id="clock-line">
+    <div class="panel" id="wp">
+      <div id="clock-row">
         <div id="clock">00:00</div>
         <div id="ampm">AM</div>
       </div>
-      <div id="date-line">—</div>
-      <div class="div-line"></div>
+      <div id="dateline">—</div>
+      <div id="div"></div>
       <div id="weather-row">
-        <div id="weather-main">
+        <div id="w-left">
           <div id="w-icon">⛅</div>
           <div>
             <div id="w-temp">—°C</div>
-            <div id="w-desc">Loading</div>
+            <div id="w-cond">Loading</div>
           </div>
         </div>
-        <div id="weather-stats">
-          <div>Humidity</div><div class="val" id="ws-hum">--%</div>
-          <div>Wind</div><div class="val" id="ws-wind">-- km/h</div>
-          <div>Feels</div><div class="val" id="ws-feel">--°C</div>
-          <div>UV</div><div class="val" id="ws-uv">--</div>
+        <div id="w-stats">
+          <span class="lbl">Humidity</span><span class="val" id="ws-hum">--%</span>
+          <span class="lbl">Wind</span><span class="val" id="ws-wind">--</span>
+          <span class="lbl">Feels</span><span class="val" id="ws-feel">--°C</span>
+          <span class="lbl">UV</span><span class="val" id="ws-uv">--</span>
         </div>
       </div>
-      <div id="w-location"><div id="w-dot"></div>Putra Heights, Selangor</div>
+      <div id="w-loc"><div id="w-dot"></div>Putra Heights, Selangor</div>
     </div>
 
     <!-- RADIO -->
-    <div class="panel" id="radio-panel">
-      <div id="radio-top">
-        <div id="radio-label">Radio</div>
-        <div id="eq-bars">
-          <div class="eq"></div><div class="eq"></div><div class="eq"></div>
-          <div class="eq"></div><div class="eq"></div>
+    <div class="panel" id="rp">
+      <div id="r-head">
+        <div id="r-title">Radio</div>
+        <div id="eq">
+          <div class="b"></div><div class="b"></div><div class="b"></div>
+          <div class="b"></div><div class="b"></div>
         </div>
       </div>
-
-      <div id="stations"></div>
-
-      <div id="np-bar">
-        <div id="np-label">Now Playing</div>
+      <div id="stn-list"></div>
+      <div id="np">
+        <div id="np-lbl">Now Playing</div>
         <div id="np-name">Select a station</div>
         <div id="vol-row">
           <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
@@ -459,23 +525,43 @@
 
   </div>
 
-  <!-- MAP (right, full height) -->
-  <div class="panel" id="map-panel">
-    <div id="map-hud">
-      <div id="app-name">CarPlayer</div>
-      <div id="spd-box">
-        <div id="spd-num">0</div>
-        <div id="spd-unit">km/h</div>
+  <!-- RIGHT: NAV LAUNCHER -->
+  <div class="panel" id="nav-panel">
+
+    <div id="nav-head">
+      <div id="nav-head-top">
+        <div id="nav-title">Navigation</div>
+        <div id="spd-box">
+          <div id="spd-num">0</div>
+          <div id="spd-unit">km/h</div>
+        </div>
+      </div>
+      <div id="search-wrap">
+        <input type="text" id="dest-input" placeholder="Search a destination…">
+        <button id="search-btn" title="Search">→</button>
       </div>
     </div>
-    <div id="map-search-wrap">
-      <input type="text" id="map-search" placeholder="Search destination…">
+
+    <!-- App launcher buttons -->
+    <div id="nav-apps">
+      <a class="app-btn" id="waze-btn" href="#" onclick="return false;">
+        <div class="app-icon">🗺</div>
+        <div class="app-name">Waze</div>
+        <div class="app-sub">Live traffic & alerts</div>
+      </a>
+      <a class="app-btn" id="gmaps-btn" href="#" onclick="return false;">
+        <div class="app-icon">📍</div>
+        <div class="app-name">Google Maps</div>
+        <div class="app-sub">Directions & explore</div>
+      </a>
     </div>
-    <iframe id="map-frame"
-      src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15932!2d101.603!3d3.024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2smy!4v1700000000000!5m2!1sen!2smy"
-      allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-    <div id="map-fade"></div>
+
+    <div id="quick-head">Quick Destinations</div>
+
+    <div id="quick-list">
+      <!-- filled by JS -->
+    </div>
+
   </div>
 
 </div>
@@ -485,33 +571,33 @@
 <script>
 // ── STATIONS ──
 const STATIONS = [
-  { name:"iRadio Malaysia", genre:"Pop / Top 40",    abbr:"iR",  url:"https://stream.zeno.fm/fn3uu9peerruv" },
-  { name:"Hitz FM",         genre:"Pop / Hits",      abbr:"HZ",  url:"https://stream.zeno.fm/7yw0sjy1y0zuv" },
-  { name:"Fly FM",          genre:"Pop / R&B",       abbr:"FLY", url:"https://stream.zeno.fm/sbcv00q7rcvuv" },
-  { name:"ERA FM",          genre:"Malay Pop",       abbr:"ERA", url:"https://stream.zeno.fm/54ydnx2d0nfuv" },
-  { name:"MY FM",           genre:"Chinese Pop",     abbr:"MY",  url:"https://stream.zeno.fm/g5b6s4t3b6zuv" }
+  { name:"iRadio Malaysia", genre:"Pop / Top 40", abbr:"iR",  url:"https://stream.zeno.fm/fn3uu9peerruv" },
+  { name:"Hitz FM",         genre:"Pop / Hits",   abbr:"HZ",  url:"https://stream.zeno.fm/7yw0sjy1y0zuv" },
+  { name:"Fly FM",          genre:"Pop / R&B",    abbr:"FLY", url:"https://stream.zeno.fm/sbcv00q7rcvuv" },
+  { name:"ERA FM",          genre:"Malay Pop",    abbr:"ERA", url:"https://stream.zeno.fm/54ydnx2d0nfuv" },
+  { name:"MY FM",           genre:"Chinese Pop",  abbr:"MY",  url:"https://stream.zeno.fm/g5b6s4t3b6zuv" }
 ];
 
-const audio = document.getElementById('audio-el');
-const eqBars = document.getElementById('eq-bars');
+const audio  = document.getElementById('audio-el');
+const eqEl   = document.getElementById('eq');
 const npName = document.getElementById('np-name');
 const volEl  = document.getElementById('vol');
 let cur = -1, playing = false;
 
 function buildStations() {
-  const wrap = document.getElementById('stations');
+  const wrap = document.getElementById('stn-list');
   STATIONS.forEach((s,i) => {
     const el = document.createElement('div');
     el.className = 'stn'; el.dataset.i = i;
     el.innerHTML = `
-      <div class="stn-logo">${s.abbr}</div>
+      <div class="stn-abbr">${s.abbr}</div>
       <div class="stn-info">
         <div class="stn-name">${s.name}</div>
         <div class="stn-genre">${s.genre}</div>
       </div>
       <div class="stn-ring"></div>
       <button class="stn-btn" aria-label="Play ${s.name}">
-        <svg viewBox="0 0 24 24"><path class="ico" d="M8 5v14l11-7z"/></svg>
+        <svg viewBox="0 0 24 24"><path class="btn-ico" d="M8 5v14l11-7z"/></svg>
       </button>`;
     el.addEventListener('click', () => toggle(i));
     wrap.appendChild(el);
@@ -523,7 +609,7 @@ function toggle(i) {
   if (cur === i && playing) {
     audio.pause(); playing = false;
     all[i].classList.remove('active');
-    eqBars.classList.remove('on');
+    eqEl.classList.remove('on');
     npName.textContent = 'Paused';
     setIcon(i, false); return;
   }
@@ -536,8 +622,7 @@ function toggle(i) {
   audio.play().then(() => {
     all[i].classList.remove('loading');
     all[i].classList.add('active');
-    playing = true;
-    eqBars.classList.add('on');
+    playing = true; eqEl.classList.add('on');
     npName.textContent = STATIONS[i].name + ' · ' + STATIONS[i].genre;
     setIcon(i, true);
   }).catch(() => {
@@ -550,8 +635,8 @@ function toggle(i) {
 function setIcon(i, p) {
   const btn = document.querySelectorAll('.stn')[i].querySelector('.stn-btn');
   btn.innerHTML = p
-    ? `<svg viewBox="0 0 24 24"><path class="ico" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`
-    : `<svg viewBox="0 0 24 24"><path class="ico" d="M8 5v14l11-7z"/></svg>`;
+    ? `<svg viewBox="0 0 24 24"><path class="btn-ico" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`
+    : `<svg viewBox="0 0 24 24"><path class="btn-ico" d="M8 5v14l11-7z"/></svg>`;
 }
 
 volEl.addEventListener('input', () => { audio.volume = +volEl.value; });
@@ -563,17 +648,17 @@ function tick() {
   const ap = h >= 12 ? 'PM' : 'AM';
   h = h%12||12;
   document.getElementById('clock').textContent = h+':'+m;
-  document.getElementById('ampm').textContent = ap;
+  document.getElementById('ampm').textContent  = ap;
   const D=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  document.getElementById('date-line').textContent =
+  document.getElementById('dateline').textContent =
     D[n.getDay()]+' · '+n.getDate()+' '+M[n.getMonth()]+' '+n.getFullYear();
 }
 setInterval(tick, 1000); tick();
 
-// ── WEATHER (Open-Meteo, free) ──
+// ── WEATHER ──
 const WI={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',80:'🌦',81:'🌧',82:'⛈',95:'⛈',99:'⛈'};
-const WD={0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Icy fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',80:'Showers',81:'Heavy showers',82:'Violent showers',95:'Thunderstorm',99:'Hail storm'};
+const WD={0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',80:'Showers',81:'Heavy showers',82:'Violent showers',95:'Thunderstorm',99:'Hail storm'};
 
 async function fetchWeather() {
   try {
@@ -581,12 +666,12 @@ async function fetchWeather() {
     const d = await r.json(); const cw = d.current_weather; const hr = new Date().getHours();
     document.getElementById('w-icon').textContent  = WI[cw.weathercode]||'🌡';
     document.getElementById('w-temp').textContent  = Math.round(cw.temperature)+'°C';
-    document.getElementById('w-desc').textContent  = WD[cw.weathercode]||'';
+    document.getElementById('w-cond').textContent  = WD[cw.weathercode]||'';
     document.getElementById('ws-hum').textContent  = (d.hourly.relativehumidity_2m[hr]||'--')+'%';
     document.getElementById('ws-wind').textContent = Math.round(cw.windspeed)+' km/h';
     document.getElementById('ws-feel').textContent = Math.round(d.hourly.apparent_temperature[hr]||cw.temperature)+'°C';
     document.getElementById('ws-uv').textContent   = (d.hourly.uv_index?.[hr]??'--');
-  } catch(e) { document.getElementById('w-desc').textContent = 'Unavailable'; }
+  } catch(e) { document.getElementById('w-cond').textContent = 'Unavailable'; }
 }
 fetchWeather(); setInterval(fetchWeather, 5*60*1000);
 
@@ -597,16 +682,61 @@ if(navigator.geolocation)
     document.getElementById('spd-num').textContent = kmh;
   }, ()=>{}, {enableHighAccuracy:true,maximumAge:1000});
 
-// ── MAP SEARCH ──
-document.getElementById('map-search').addEventListener('keydown', function(e){
-  if(e.key==='Enter'&&this.value.trim()){
-    document.getElementById('map-frame').src =
-      'https://maps.google.com/maps?q='+encodeURIComponent(this.value.trim())+'&output=embed&z=14';
-    this.blur();
-  }
+// ── NAV LAUNCHER ──
+const PLACES = [
+  { icon:'🏠', name:'Home',          addr:'Putra Heights, Selangor',        q:'Putra Heights Selangor' },
+  { icon:'⛽', name:'Nearest Petrol',addr:'Find nearby petrol stations',     q:'petrol station near Putra Heights' },
+  { icon:'🍽', name:'Restaurants',   addr:'Food near current location',      q:'restaurants near Putra Heights' },
+  { icon:'🏥', name:'Hospital',      addr:'Nearest hospital or clinic',      q:'hospital near Putra Heights' },
+  { icon:'🛒', name:'Supermarket',   addr:'Grocery & hypermarkets nearby',   q:'supermarket near Putra Heights' },
+  { icon:'☕', name:'Café',          addr:'Coffee shops nearby',             q:'cafe near Putra Heights' },
+];
+
+function wazeUrl(q)  { return 'waze://?q='+encodeURIComponent(q)+'&navigate=yes'; }
+function gmapsUrl(q) { return 'https://maps.google.com/?q='+encodeURIComponent(q); }
+
+function buildQuick() {
+  const list = document.getElementById('quick-list');
+  PLACES.forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'quick-item';
+    el.innerHTML = `
+      <div class="qi-icon">${p.icon}</div>
+      <div class="qi-info">
+        <div class="qi-name">${p.name}</div>
+        <div class="qi-addr">${p.addr}</div>
+      </div>
+      <div class="qi-actions">
+        <button class="qi-app-btn" data-q="${p.q}" data-app="waze">Waze</button>
+        <button class="qi-app-btn" data-q="${p.q}" data-app="maps">Maps</button>
+      </div>`;
+    list.appendChild(el);
+  });
+
+  list.addEventListener('click', e => {
+    const btn = e.target.closest('.qi-app-btn');
+    if (!btn) return;
+    const q = btn.dataset.q, app = btn.dataset.app;
+    window.location.href = app === 'waze' ? wazeUrl(q) : gmapsUrl(q);
+  });
+}
+
+// Main app buttons
+function launchSearch(app) {
+  const q = document.getElementById('dest-input').value.trim() || 'Putra Heights Selangor';
+  window.location.href = app === 'waze' ? wazeUrl(q) : gmapsUrl(q);
+}
+
+document.getElementById('waze-btn').addEventListener('click', () => launchSearch('waze'));
+document.getElementById('gmaps-btn').addEventListener('click', () => launchSearch('maps'));
+
+document.getElementById('search-btn').addEventListener('click', () => launchSearch('maps'));
+document.getElementById('dest-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') launchSearch('maps');
 });
 
 buildStations();
+buildQuick();
 </script>
 </body>
 </html>
