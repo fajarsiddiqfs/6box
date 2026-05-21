@@ -4,393 +4,387 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>MyDash</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 html, body {
   width: 100%; height: 100%;
   background: #000;
   color: #fff;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ══════════════════════════════
-   LAYOUT: two columns, full screen
-══════════════════════════════ */
 #app {
-  display: flex;
   width: 100vw;
   height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  grid-template-rows: 1fr;
 }
 
-/* ── LEFT: Clock / Weather ── */
+.divider {
+  background: rgba(255,255,255,0.12);
+  height: 100%;
+}
+
+/* ═══════════════════
+   LEFT — CLOCK + WEATHER
+═══════════════════ */
 #left {
-  flex: 1 1 55%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 52px 56px 48px;
-  border-right: 1px solid rgba(255,255,255,0.08);
-  position: relative;
-  overflow: hidden;
+  padding: 5vh 5vw;
+  height: 100vh;
 }
 
-/* Subtle vertical label */
-#left::after {
-  content: 'WEATHER';
-  position: absolute;
-  right: 28px; top: 50%;
-  transform: translateY(-50%) rotate(90deg);
-  font-size: 0.55rem;
-  letter-spacing: 4px;
-  color: rgba(255,255,255,0.1);
-  font-weight: 500;
-  pointer-events: none;
-}
-
-/* Time */
+/* TIME */
 #time {
-  font-family: 'DM Mono', monospace;
-  font-size: clamp(5rem, 13vw, 11rem);
-  font-weight: 300;
+  font-size: clamp(5rem, 18vw, 16rem);
+  font-weight: 900;
   letter-spacing: -4px;
-  line-height: 1;
+  line-height: 0.9;
   color: #fff;
 }
 
-/* Day + Date */
-#day-date {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-top: 18px;
-}
+/* DAY */
 #day {
-  font-size: clamp(1.1rem, 2.4vw, 2rem);
-  font-weight: 300;
+  font-size: clamp(1.4rem, 3.5vw, 3.5rem);
+  font-weight: 700;
   color: rgba(255,255,255,0.45);
-  letter-spacing: 1px;
   text-transform: uppercase;
-}
-#date {
-  font-size: clamp(1.6rem, 3.2vw, 2.8rem);
-  font-weight: 300;
-  color: #fff;
-  letter-spacing: -0.5px;
+  letter-spacing: 3px;
+  margin-top: 2vh;
 }
 
-/* Weather block */
+/* DATE */
+#date {
+  font-size: clamp(1.6rem, 4vw, 4rem);
+  font-weight: 800;
+  color: #fff;
+  margin-top: 0.5vh;
+  line-height: 1.1;
+}
+
+/* WEATHER BLOCK */
 #weather-block {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1.2vh;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  padding-top: 3vh;
 }
 
-#location {
-  font-size: clamp(0.75rem, 1.2vw, 1rem);
-  color: rgba(255,255,255,0.35);
-  letter-spacing: 1px;
-  text-transform: uppercase;
+#loc-row {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
+  font-size: clamp(0.9rem, 1.8vw, 1.6rem);
+  font-weight: 600;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
-#location svg { width:13px;height:13px; opacity:0.5; flex-shrink:0; }
+#loc-row svg { width: 1.3em; height: 1.3em; flex-shrink: 0; }
 
-#temp-row {
+#temp-line {
   display: flex;
   align-items: flex-end;
-  gap: 24px;
+  gap: 3vw;
 }
 
 #temp {
-  font-size: clamp(3.5rem, 8vw, 7rem);
-  font-weight: 200;
+  font-size: clamp(3.5rem, 10vw, 9rem);
+  font-weight: 900;
   letter-spacing: -3px;
   line-height: 1;
   color: #fff;
 }
 
-#weather-right {
+#wx-right {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding-bottom: 10px;
+  gap: 0.6vh;
+  padding-bottom: 0.8vh;
 }
 
-#weather-desc {
-  font-size: clamp(1rem, 1.8vw, 1.5rem);
-  font-weight: 400;
+#wx-desc {
+  font-size: clamp(1.2rem, 2.8vw, 2.5rem);
+  font-weight: 800;
   color: #fff;
+  line-height: 1.1;
 }
 
-#weather-meta {
-  display: flex;
-  gap: 14px;
-}
-.wmeta {
-  font-size: clamp(0.72rem, 1.1vw, 0.9rem);
+.wx-stat {
+  font-size: clamp(0.85rem, 1.6vw, 1.4rem);
+  font-weight: 600;
   color: rgba(255,255,255,0.4);
 }
-.wmeta span { color: rgba(255,255,255,0.75); }
+.wx-stat b { color: rgba(255,255,255,0.8); font-weight: 700; }
 
-/* ── RIGHT: Radio ── */
+
+/* ═══════════════════
+   RIGHT — RADIO
+═══════════════════ */
 #right {
-  flex: 0 0 45%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 52px 52px 48px;
+  padding: 5vh 5vw;
+  height: 100vh;
 }
 
-#radio-top {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-#radio-eyebrow {
-  font-size: 0.62rem;
+#radio-label {
+  font-size: clamp(0.75rem, 1.5vw, 1.2rem);
+  font-weight: 700;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: rgba(255,255,255,0.3);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 .live-dot {
-  width: 6px; height: 6px;
+  width: 9px; height: 9px;
   border-radius: 50%;
   background: #fff;
-  animation: blink 2s ease infinite;
+  animation: blink 1.8s ease infinite;
+  flex-shrink: 0;
 }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
-#station-name {
-  font-size: clamp(2rem, 5vw, 4.2rem);
-  font-weight: 200;
-  letter-spacing: -1px;
-  line-height: 1.05;
-  color: #fff;
-  transition: opacity 0.25s ease;
-}
-#station-freq {
-  font-family: 'DM Mono', monospace;
-  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
-  font-weight: 300;
-  color: rgba(255,255,255,0.35);
-  margin-top: 4px;
-}
-#stream-status {
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.3);
-  margin-top: 2px;
-  min-height: 1.1em;
-  transition: color 0.3s;
-}
-#stream-status.live { color: rgba(255,255,255,0.55); }
-
-/* Station list */
-#station-list {
+/* Now playing */
+#now-playing {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1px;
-  flex: 1;
-  margin: 28px 0;
-  overflow-y: auto;
+  justify-content: center;
+  gap: 1.5vh;
 }
-#station-list::-webkit-scrollbar { width: 2px; }
-#station-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
 
-.st-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  cursor: pointer;
-  transition: opacity 0.15s;
-  border-radius: 4px;
-}
-.st-row:hover .st-name { opacity: 1; }
-.st-row:last-child { border-bottom: none; }
-
-.st-name {
-  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
-  font-weight: 400;
+#station-name {
+  font-size: clamp(2.4rem, 7vw, 6.5rem);
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1.0;
   color: #fff;
-  opacity: 0.45;
-  transition: opacity 0.2s;
-}
-.st-freq {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.25);
-}
-.st-row.active .st-name { opacity: 1; }
-.st-row.active .st-freq { color: rgba(255,255,255,0.55); }
-.st-row.active::before {
-  content: '';
-  display: inline-block;
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: #fff;
-  margin-right: 12px;
-  flex-shrink: 0;
-}
-.st-row:not(.active)::before {
-  content: '';
-  display: inline-block;
-  width: 5px; height: 5px;
-  margin-right: 12px;
-  flex-shrink: 0;
 }
 
-/* Controls */
+#station-tag {
+  font-size: clamp(1rem, 2.2vw, 2rem);
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 1px;
+}
+
+#stream-status {
+  font-size: clamp(0.85rem, 1.6vw, 1.4rem);
+  font-weight: 600;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 1px;
+  min-height: 1.5em;
+  transition: color 0.4s;
+}
+#stream-status.on { color: rgba(255,255,255,0.65); }
+
+/* Station switch buttons */
+#station-btns {
+  display: flex;
+  gap: 2vw;
+  margin-bottom: 2vh;
+}
+
+.st-btn {
+  flex: 1;
+  padding: 2.2vh 0;
+  border-radius: 18px;
+  border: 2px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.9rem, 1.8vw, 1.6rem);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1.2;
+  text-align: center;
+}
+.st-btn:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+.st-btn.active {
+  background: #fff;
+  border-color: #fff;
+  color: #000;
+}
+
+/* Play controls */
 #controls {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 2.5vh;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  padding-top: 3vh;
 }
 
-#btn-row {
+#play-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 2vw;
 }
-
-.ctrl-btn {
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: transparent;
-  color: #fff;
-  cursor: pointer;
-  display: flex; align-items:center; justify-content:center;
-  transition: background 0.15s, border-color 0.15s;
-  flex-shrink: 0;
-}
-.ctrl-btn svg { width:18px; height:18px; }
-.ctrl-btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.35); }
-.ctrl-btn:active { background: rgba(255,255,255,0.14); }
 
 #play-btn {
-  width: 64px; height: 64px;
-  background: #fff;
+  width: clamp(68px, 10vw, 100px);
+  height: clamp(68px, 10vw, 100px);
+  border-radius: 50%;
   border: none;
+  background: #fff;
   color: #000;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, transform 0.1s;
 }
 #play-btn:hover { background: rgba(255,255,255,0.88); }
-#play-btn:active { background: rgba(255,255,255,0.72); }
-#play-btn svg { width:22px;height:22px; }
+#play-btn:active { transform: scale(0.95); }
+#play-btn svg { width: 38%; height: 38%; }
+
+#play-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+#play-info-title {
+  font-size: clamp(1rem, 2vw, 1.8rem);
+  font-weight: 800;
+  color: #fff;
+}
+#play-info-sub {
+  font-size: clamp(0.75rem, 1.3vw, 1.1rem);
+  font-weight: 600;
+  color: rgba(255,255,255,0.35);
+}
 
 /* Volume */
 #vol-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
-#vol-row svg { width:15px;height:15px; color:rgba(255,255,255,0.35); flex-shrink:0; }
+#vol-row svg { width: clamp(18px,2.5vw,28px); height: clamp(18px,2.5vw,28px); color: rgba(255,255,255,0.35); flex-shrink: 0; }
 #vol-slider {
   flex: 1;
   -webkit-appearance: none;
-  height: 1px;
-  background: rgba(255,255,255,0.18);
-  border-radius: 1px;
+  height: 5px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 3px;
   cursor: pointer;
   outline: none;
 }
 #vol-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px; height: 16px;
+  width: clamp(22px, 3vw, 32px);
+  height: clamp(22px, 3vw, 32px);
   border-radius: 50%;
   background: #fff;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+#vol-label {
+  font-size: clamp(0.8rem, 1.3vw, 1.1rem);
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  min-width: 3ch;
+  text-align: right;
 }
 
-/* Fullscreen */
+/* Fullscreen btn */
 #fs-btn {
   position: fixed;
-  bottom: 20px; right: 22px;
-  width: 40px; height: 40px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(12px);
+  bottom: 18px; right: 20px;
+  width: clamp(42px, 5vw, 54px);
+  height: clamp(42px, 5vw, 54px);
+  border-radius: 14px;
+  border: 2px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(10px);
   color: #fff;
   cursor: pointer;
-  display: flex; align-items:center; justify-content:center;
+  display: flex; align-items: center; justify-content: center;
   z-index: 999;
   transition: border-color 0.2s;
 }
-#fs-btn:hover { border-color: rgba(255,255,255,0.4); }
-#fs-btn svg { width:16px;height:16px; }
+#fs-btn:hover { border-color: rgba(255,255,255,0.5); }
+#fs-btn svg { width: 45%; height: 45%; }
 </style>
 </head>
 <body>
-
 <div id="app">
 
-  <!-- ── LEFT PANEL ── -->
+  <!-- LEFT: Clock + Weather -->
   <div id="left">
     <div>
       <div id="time">00:00</div>
-      <div id="day-date">
-        <div id="day">—</div>
-        <div id="date">—</div>
-      </div>
+      <div id="day">—</div>
+      <div id="date">—</div>
     </div>
 
     <div id="weather-block">
-      <div id="location">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div id="loc-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         <span id="loc-text">Locating...</span>
       </div>
-      <div id="temp-row">
+      <div id="temp-line">
         <div id="temp">—°</div>
-        <div id="weather-right">
-          <div id="weather-desc">—</div>
-          <div id="weather-meta">
-            <div class="wmeta">Humidity <span id="w-hum">—</span></div>
-            <div class="wmeta">Wind <span id="w-wind">—</span></div>
-          </div>
+        <div id="wx-right">
+          <div id="wx-desc">—</div>
+          <div class="wx-stat">Humidity <b id="w-hum">—</b></div>
+          <div class="wx-stat">Wind <b id="w-wind">—</b></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ── RIGHT PANEL ── -->
+  <div class="divider"></div>
+
+  <!-- RIGHT: Radio -->
   <div id="right">
-    <div id="radio-top">
-      <div id="radio-eyebrow"><span class="live-dot"></span> Live Radio</div>
-      <div id="station-name">ERA FM</div>
-      <div id="station-freq">99.6 FM</div>
-      <div id="stream-status">Tap play to start</div>
+    <div id="radio-label">
+      <span class="live-dot"></span> Live Radio
     </div>
 
-    <div id="station-list"></div>
+    <div id="now-playing">
+      <div id="station-name">Quran Radio</div>
+      <div id="station-tag">Tarateel Quran · Live</div>
+      <div id="stream-status">Tap play to begin</div>
+    </div>
+
+    <div id="station-btns">
+      <button class="st-btn active" id="btn-0" onclick="switchStation(0)">
+        Quran<br>Radio
+      </button>
+      <button class="st-btn" id="btn-1" onclick="switchStation(1)">
+        SomaFM<br>Drone Zone
+      </button>
+    </div>
 
     <div id="controls">
-      <div id="btn-row">
-        <button class="ctrl-btn" onclick="skip(-1)" title="Previous">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <button class="ctrl-btn" id="play-btn" onclick="togglePlay()">
+      <div id="play-row">
+        <button id="play-btn" onclick="togglePlay()">
           <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"/></svg>
         </button>
-        <button class="ctrl-btn" onclick="skip(1)" title="Next">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
+        <div id="play-info">
+          <div id="play-info-title">Play</div>
+          <div id="play-info-sub">Select station above</div>
+        </div>
       </div>
       <div id="vol-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>
-        <input type="range" id="vol-slider" min="0" max="100" value="80" oninput="setVol(this.value)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>
+        <input type="range" id="vol-slider" min="0" max="100" value="85" oninput="setVol(this.value)">
+        <div id="vol-label">85</div>
       </div>
     </div>
   </div>
@@ -398,7 +392,7 @@ html, body {
 </div>
 
 <button id="fs-btn" onclick="toggleFS()">
-  <svg id="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+  <svg id="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
     <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
     <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
   </svg>
@@ -407,48 +401,48 @@ html, body {
 <audio id="aud" preload="none"></audio>
 
 <script>
-// ══════════════════════════════
+// ══════════════════════
 //  CLOCK
-// ══════════════════════════════
+// ══════════════════════
 const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 function tick() {
-  const n = new Date();
+  const n  = new Date();
   const hh = String(n.getHours()).padStart(2,'0');
   const mm = String(n.getMinutes()).padStart(2,'0');
-  document.getElementById('time').textContent = `${hh}:${mm}`;
-  document.getElementById('day').textContent  = DAYS[n.getDay()];
-  document.getElementById('date').textContent = `${n.getDate()} ${MONTHS[n.getMonth()]} ${n.getFullYear()}`;
+  document.getElementById('time').textContent = hh + ':' + mm;
+  document.getElementById('day').textContent  = DAYS[n.getDay()].toUpperCase();
+  document.getElementById('date').textContent = n.getDate() + ' ' + MONTHS[n.getMonth()] + ' ' + n.getFullYear();
 }
 tick();
 setInterval(tick, 1000);
 
-// ══════════════════════════════
+// ══════════════════════
 //  WEATHER
-// ══════════════════════════════
-const WX = {0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Icy fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',80:'Rain showers',81:'Heavy showers',82:'Violent showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
+// ══════════════════════
+const WX = {0:'Clear Sky',1:'Mostly Clear',2:'Partly Cloudy',3:'Overcast',45:'Foggy',48:'Icy Fog',51:'Light Drizzle',53:'Drizzle',55:'Heavy Drizzle',61:'Light Rain',63:'Raining',65:'Heavy Rain',71:'Light Snow',73:'Snowing',75:'Heavy Snow',80:'Rain Showers',81:'Heavy Showers',82:'Storm Showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
 
 async function getWeather(lat, lon) {
   try {
-    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&wind_speed_unit=kmh&timezone=auto`);
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&wind_speed_unit=kmh&timezone=auto');
     const d = await r.json();
     const c = d.current;
-    document.getElementById('temp').textContent       = `${Math.round(c.temperature_2m)}°`;
-    document.getElementById('weather-desc').textContent = WX[c.weather_code] || 'Unknown';
-    document.getElementById('w-hum').textContent       = `${c.relative_humidity_2m}%`;
-    document.getElementById('w-wind').textContent      = `${Math.round(c.wind_speed_10m)} km/h`;
+    document.getElementById('temp').textContent    = Math.round(c.temperature_2m) + '°';
+    document.getElementById('wx-desc').textContent = WX[c.weather_code] || 'Unknown';
+    document.getElementById('w-hum').textContent   = c.relative_humidity_2m + '%';
+    document.getElementById('w-wind').textContent  = Math.round(c.wind_speed_10m) + ' km/h';
   } catch(e) {
-    document.getElementById('weather-desc').textContent = 'Unavailable';
+    document.getElementById('wx-desc').textContent = 'Unavailable';
   }
 }
 
-async function getLocation(lat, lon) {
+async function getLocName(lat, lon) {
   try {
-    const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+    const r = await fetch('https://nominatim.openstreetmap.org/reverse?lat='+lat+'&lon='+lon+'&format=json');
     const d = await r.json();
     const a = d.address;
-    const name = a.suburb || a.village || a.town || a.city || a.county || '';
+    const name  = a.suburb || a.village || a.town || a.city || a.county || '';
     const state = a.state || '';
     document.getElementById('loc-text').textContent = [name, state].filter(Boolean).join(', ');
   } catch(e) {}
@@ -456,127 +450,147 @@ async function getLocation(lat, lon) {
 
 function initGeo() {
   if (!navigator.geolocation) {
-    document.getElementById('loc-text').textContent = 'Location unavailable';
-    getWeather(2.9980, 101.5850); // fallback Putra Heights
+    document.getElementById('loc-text').textContent = 'Selangor, MY';
+    getWeather(2.9980, 101.5850);
     return;
   }
-  navigator.geolocation.getCurrentPosition(pos => {
-    const {latitude: lat, longitude: lon} = pos.coords;
-    getLocation(lat, lon);
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    const lat = pos.coords.latitude, lon = pos.coords.longitude;
+    getLocName(lat, lon);
     getWeather(lat, lon);
-    setInterval(() => getWeather(lat, lon), 5 * 60 * 1000);
-  }, () => {
+    setInterval(function(){ getWeather(lat, lon); }, 5 * 60 * 1000);
+  }, function() {
     document.getElementById('loc-text').textContent = 'Putra Heights, Selangor';
     getWeather(2.9980, 101.5850);
   }, { timeout: 10000, enableHighAccuracy: true });
 }
 
-// ══════════════════════════════
+// ══════════════════════
 //  RADIO
-// ══════════════════════════════
+// ══════════════════════
 const STATIONS = [
-  { name:'ERA FM',     freq:'99.6 FM',   url:'https://hls-radio.rtm.gov.my/era/era.m3u8' },
-  { name:'MY FM',      freq:'101.8 FM',  url:'https://myfm.my/radio/8012/radio.mp3' },
-  { name:'Fly FM',     freq:'95.8 FM',   url:'https://9413.live.streamtheworld.com/FLYFLIVE.mp3' },
-  { name:'Hot FM',     freq:'95.5 FM',   url:'https://streaming.hotfm.com.my/hotfm' },
-  { name:'Hitz FM',    freq:'92.9 FM',   url:'https://hitzfm.my/radio/8002/radio.mp3' },
-  { name:'Sinar FM',   freq:'96.7 FM',   url:'https://streaming.sinarfm.com.my/sinarfm' },
-  { name:'TraXX FM',   freq:'90.3 FM',   url:'https://traxxfm.rtm.gov.my/traxxfm' },
-  { name:'IKIM FM',    freq:'91.5 FM',   url:'https://ikim.gov.my/radio/8000/radio.mp3' },
+  {
+    name: 'Quran Radio',
+    tag:  'Tarateel Quran · Live',
+    url:  'https://qurango.net/radio/tarateel'
+  },
+  {
+    name: 'SomaFM',
+    tag:  'Drone Zone · Ambient',
+    url:  'https://ice1.somafm.com/dronezone-128-mp3'
+  }
 ];
 
-let idx = 0, isPlaying = false;
-const aud = document.getElementById('aud');
+let stIdx     = 0;
+let isPlaying = false;
+const aud     = document.getElementById('aud');
 
-// Build station list rows
-function buildList() {
-  const list = document.getElementById('station-list');
-  list.innerHTML = '';
-  STATIONS.forEach((s, i) => {
-    const row = document.createElement('div');
-    row.className = 'st-row' + (i === idx ? ' active' : '');
-    row.id = `st-${i}`;
-    row.innerHTML = `<span class="st-name">${s.name}</span><span class="st-freq">${s.freq}</span>`;
-    row.onclick = () => { goTo(i); if (!isPlaying) togglePlay(); };
-    list.appendChild(row);
-  });
-}
-buildList();
-
-function setStatus(txt, live = false) {
+function setStatus(txt, on) {
   const el = document.getElementById('stream-status');
   el.textContent = txt;
-  el.className = live ? 'live' : '';
+  el.className   = on ? 'on' : '';
 }
 
-function updateUI() {
-  const s = STATIONS[idx];
-  document.getElementById('station-name').textContent = s.name;
-  document.getElementById('station-freq').textContent = s.freq;
-  document.querySelectorAll('.st-row').forEach((r,i) => r.classList.toggle('active', i === idx));
-  // scroll into view
-  document.getElementById(`st-${idx}`)?.scrollIntoView({block:'nearest',behavior:'smooth'});
+function updateNowPlaying() {
+  const s = STATIONS[stIdx];
+  document.getElementById('station-name').textContent  = s.name;
+  document.getElementById('station-tag').textContent   = s.tag;
+  document.getElementById('play-info-title').textContent = s.name;
+  document.getElementById('play-info-sub').textContent   = s.tag;
+  document.querySelectorAll('.st-btn').forEach(function(b, i) {
+    b.classList.toggle('active', i === stIdx);
+  });
 }
 
-function goTo(i) {
-  idx = (i + STATIONS.length) % STATIONS.length;
-  updateUI();
-  if (isPlaying) startStream();
+function switchStation(i) {
+  stIdx = i;
+  updateNowPlaying();
+  setStatus('Tap play to begin', false);
+  if (isPlaying) {
+    aud.pause();
+    startStream();
+  }
 }
 
 function startStream() {
-  setStatus('Connecting...');
-  aud.src = STATIONS[idx].url;
+  setStatus('Connecting...', false);
+  aud.src    = STATIONS[stIdx].url;
   aud.volume = document.getElementById('vol-slider').value / 100;
   aud.load();
-  aud.play().catch(() => setStatus('Stream unavailable — try next'));
+  aud.play().catch(function() {
+    setStatus('Could not connect — check network', false);
+    isPlaying = false;
+    setPlayIcon(false);
+  });
+}
+
+function setPlayIcon(playing) {
+  document.getElementById('play-icon').innerHTML = playing
+    ? '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>'
+    : '<polygon points="6 3 20 12 6 21 6 3"/>';
 }
 
 function togglePlay() {
-  const icon = document.getElementById('play-icon');
   if (!isPlaying) {
     isPlaying = true;
-    icon.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+    setPlayIcon(true);
     startStream();
   } else {
     isPlaying = false;
     aud.pause();
-    icon.innerHTML = '<polygon points="6 3 20 12 6 21 6 3"/>';
-    setStatus('Paused');
+    setPlayIcon(false);
+    setStatus('Paused', false);
   }
 }
 
-function skip(dir) { goTo(idx + dir); }
-function setVol(v)  { aud.volume = v / 100; }
-
-aud.addEventListener('playing', () => setStatus('Live — ' + STATIONS[idx].freq, true));
-aud.addEventListener('waiting', () => setStatus('Buffering...'));
-aud.addEventListener('error',   () => setStatus('Stream unavailable — try next'));
-aud.addEventListener('stalled', () => setStatus('Stream stalled...'));
-
-// ══════════════════════════════
-//  FULLSCREEN
-// ══════════════════════════════
-function toggleFS() {
-  const expand = `<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>`;
-  const shrink = `<path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>`;
-  if (!document.fullscreenElement) {
-    (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen).call(document.documentElement);
-    document.getElementById('fs-icon').innerHTML = shrink;
-  } else {
-    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
-    document.getElementById('fs-icon').innerHTML = expand;
-  }
+function setVol(v) {
+  aud.volume = v / 100;
+  document.getElementById('vol-label').textContent = v;
 }
-document.addEventListener('fullscreenchange', () => {
-  if (!document.fullscreenElement)
-    document.getElementById('fs-icon').innerHTML = `<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>`;
+
+aud.addEventListener('playing', function() { setStatus('Playing Live', true); });
+aud.addEventListener('waiting', function() { setStatus('Buffering...', false); });
+aud.addEventListener('stalled', function() { setStatus('Stream stalled — retrying...', false); });
+aud.addEventListener('error',   function() {
+  setStatus('Stream error — check connection', false);
+  isPlaying = false;
+  setPlayIcon(false);
 });
 
-// ══════════════════════════════
+// Auto-retry on stall
+let retryTimer = null;
+aud.addEventListener('stalled', function() {
+  clearTimeout(retryTimer);
+  retryTimer = setTimeout(function() {
+    if (isPlaying) startStream();
+  }, 4000);
+});
+
+// ══════════════════════
+//  FULLSCREEN
+// ══════════════════════
+const FS_EXPAND = '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>';
+const FS_SHRINK = '<path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>';
+
+function toggleFS() {
+  if (!document.fullscreenElement) {
+    (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen).call(document.documentElement);
+    document.getElementById('fs-icon').innerHTML = FS_SHRINK;
+  } else {
+    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    document.getElementById('fs-icon').innerHTML = FS_EXPAND;
+  }
+}
+document.addEventListener('fullscreenchange', function() {
+  if (!document.fullscreenElement)
+    document.getElementById('fs-icon').innerHTML = FS_EXPAND;
+});
+
+// ══════════════════════
 //  INIT
-// ══════════════════════════════
+// ══════════════════════
 initGeo();
+updateNowPlaying();
 </script>
 </body>
 </html>
