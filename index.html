@@ -50,15 +50,15 @@ html, body {
 }
 
 #day-name {
-  font-size: clamp(0.55rem, 1.1vw, 1rem);
+  font-size: clamp(0.9rem, 1.8vw, 1.6rem);
   font-weight: 800;
-  color: rgba(255,255,255,0.3);
+  color: #fff;
   text-transform: uppercase;
   letter-spacing: 2px;
   white-space: nowrap;
 }
 #full-date {
-  font-size: clamp(0.6rem, 1.2vw, 1.1rem);
+  font-size: clamp(0.9rem, 1.8vw, 1.6rem);
   font-weight: 800;
   color: #fff;
   white-space: nowrap;
@@ -73,22 +73,22 @@ html, body {
   display: flex; align-items: center; gap: 0.4vw;
 }
 #loc-wrap svg {
-  width: clamp(10px,1.1vw,14px); height: clamp(10px,1.1vw,14px);
-  color: rgba(255,255,255,0.28); flex-shrink: 0;
+  width: clamp(14px,1.6vw,20px); height: clamp(14px,1.6vw,20px);
+  color: #fff; flex-shrink: 0;
 }
 #loc-text {
-  font-size: clamp(0.55rem, 1.1vw, 1rem);
-  font-weight: 700; color: rgba(255,255,255,0.35); white-space: nowrap;
+  font-size: clamp(0.9rem, 1.8vw, 1.6rem);
+  font-weight: 700; color: #fff; white-space: nowrap;
 }
 #temp-wrap {
   display: flex; align-items: center; gap: 0.4vw;
 }
 #temp-wrap svg {
-  width: clamp(10px,1.1vw,14px); height: clamp(10px,1.1vw,14px);
-  color: rgba(255,255,255,0.28); flex-shrink: 0;
+  width: clamp(14px,1.6vw,20px); height: clamp(14px,1.6vw,20px);
+  color: #fff; flex-shrink: 0;
 }
 #wx-temp {
-  font-size: clamp(0.6rem, 1.2vw, 1.1rem);
+  font-size: clamp(0.9rem, 1.8vw, 1.6rem);
   font-weight: 800; color: #fff; white-space: nowrap;
 }
 
@@ -107,19 +107,19 @@ html, body {
 .prayer-item:last-child { border-right: none; }
 
 .prayer-name {
-  font-size: clamp(0.48rem, 0.85vw, 0.8rem);
+  font-size: clamp(0.75rem, 1.3vw, 1.2rem);
   font-weight: 700;
-  color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.7);
   text-transform: uppercase;
   letter-spacing: 1.5px;
 }
 .prayer-time {
-  font-size: clamp(0.7rem, 1.4vw, 1.3rem);
+  font-size: clamp(1rem, 2vw, 1.8rem);
   font-weight: 900;
-  color: rgba(255,255,255,0.2);
+  color: #fff;
   letter-spacing: -0.3px;
 }
-.prayer-item.active .prayer-name { color: rgba(255,255,255,0.6); }
+.prayer-item.active .prayer-name { color: #fff; }
 .prayer-item.active .prayer-time { color: #fff; }
 .prayer-item.active::before {
   content: '';
@@ -129,10 +129,10 @@ html, body {
   width: 3px; height: 3px;
   border-radius: 50%; background: #fff;
 }
-.prayer-item.next .prayer-time  { color: rgba(255,255,255,0.45); }
-.prayer-item.next .prayer-name  { color: rgba(255,255,255,0.4); }
-.prayer-item.past .prayer-time  { color: rgba(255,255,255,0.12); }
-.prayer-item.past .prayer-name  { color: rgba(255,255,255,0.15); }
+.prayer-item.next .prayer-time  { color: rgba(255,255,255,0.75); }
+.prayer-item.next .prayer-name  { color: rgba(255,255,255,0.65); }
+.prayer-item.past .prayer-time  { color: rgba(255,255,255,0.35); }
+.prayer-item.past .prayer-name  { color: rgba(255,255,255,0.35); }
 
 /* ─── CLOCK ─── */
 #row-time {
@@ -142,6 +142,7 @@ html, body {
   justify-content: center;
   overflow: hidden;
   min-height: 0;
+  padding: 0 4vw;
 }
 #time {
   font-weight: 900;
@@ -186,8 +187,8 @@ html, body {
 #station-label { display: flex; flex-direction: column; gap: 0.1vh; }
 #live-badge {
   display: flex; align-items: center; gap: 5px;
-  font-size: clamp(0.45rem,0.85vw,0.75rem); font-weight: 700;
-  letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.22);
+  font-size: clamp(0.6rem,1.1vw,1rem); font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; color: #fff;
 }
 .live-dot {
   width: 5px; height: 5px; border-radius: 50%; background: #fff;
@@ -195,14 +196,14 @@ html, body {
 }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.12} }
 #station-name {
-  font-size: clamp(1rem,2.8vw,2.6rem); font-weight: 900;
+  font-size: clamp(1.2rem,3.2vw,3rem); font-weight: 900;
   letter-spacing: -1px; line-height: 1; color: #fff; white-space: nowrap;
 }
 #stream-status {
-  font-size: clamp(0.5rem,0.85vw,0.8rem); font-weight: 600;
-  color: rgba(255,255,255,0.18); letter-spacing: 0.5px; transition: color 0.3s;
+  font-size: clamp(0.7rem,1.2vw,1.1rem); font-weight: 600;
+  color: rgba(255,255,255,0.6); letter-spacing: 0.5px; transition: color 0.3s;
 }
-#stream-status.on { color: rgba(255,255,255,0.55); }
+#stream-status.on { color: #fff; }
 
 /* Station buttons — right side */
 #station-toggle {
@@ -364,7 +365,7 @@ const MONTHS = ['January','February','March','April','May','June','July','August
 function fitClock() {
   var el = document.getElementById('time');
   var container = document.getElementById('row-time');
-  var w = container.clientWidth, h = container.clientHeight;
+  var w = container.clientWidth * 0.96, h = container.clientHeight;
   var lo = 10, hi = 2000, fs = 400;
   for (var i = 0; i < 22; i++) {
     fs = (lo + hi) / 2;
