@@ -2,740 +2,870 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>CarPlayer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MyDash — Car Display</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root {
+    --bg:       #080c12;
+    --panel:    #0d1320;
+    --border:   rgba(255,255,255,0.08);
+    --accent:   #4fc3f7;
+    --accent2:  #81d4fa;
+    --dim:      rgba(255,255,255,0.35);
+    --text:     #ffffff;
+    --green:    #69f0ae;
+    --orange:   #ffb74d;
+    --red:      #ef5350;
+    --radius:   18px;
+    --glow:     0 0 20px rgba(79,195,247,0.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root{
-  --bg:#0b0b0b;
-  --s1:#141414;
-  --s2:#1c1c1c;
-  --s3:#242424;
-  --bdr:#2e2e2e;
-  --w:#ffffff;
-  --w70:rgba(255,255,255,.7);
-  --w40:rgba(255,255,255,.4);
-  --w15:rgba(255,255,255,.15);
-  --w08:rgba(255,255,255,.08);
-  --w04:rgba(255,255,255,.04);
-  --font:'DM Sans',sans-serif;
-  --mono:'DM Mono',monospace;
-}
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
 
-html,body{
-  width:100%;height:100%;
-  background:var(--bg);
-  color:var(--w);
-  font-family:var(--font);
-  overflow:hidden;
-  -webkit-tap-highlight-color:transparent;
-  user-select:none;
-}
+  /* === FULLSCREEN === */
+  #app {
+    width: 100vw; height: 100vh;
+    display: flex; flex-direction: column;
+    padding: 14px 16px 12px;
+    gap: 12px;
+    position: relative;
+    background:
+      radial-gradient(ellipse 80% 40% at 50% -10%, rgba(79,195,247,0.07) 0%, transparent 70%),
+      var(--bg);
+  }
 
-/* ══════════════════════════════
-   ROOT LAYOUT  —  3 columns
-   Left: clock+weather  |  Mid: radio  |  Right: nav
-   ══════════════════════════════ */
-#app{
-  display:grid;
-  grid-template-columns:1fr 1fr 1.6fr;
-  grid-template-rows:100vh;
-  gap:10px;
-  padding:10px;
-  height:100vh;
-}
+  /* === TOP BAR === */
+  #topbar {
+    display: flex; align-items: center; gap: 14px;
+    flex-shrink: 0;
+  }
 
-.card{
-  background:var(--s1);
-  border-radius:22px;
-  border:1px solid var(--bdr);
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-}
+  /* Clock */
+  #clock-block {
+    display: flex; flex-direction: column; line-height: 1;
+    min-width: 210px;
+  }
+  #clock-time {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 3.8rem;
+    color: var(--text);
+    letter-spacing: 2px;
+    text-shadow: 0 0 30px rgba(79,195,247,0.4);
+  }
+  #clock-date {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.05rem;
+    color: var(--dim);
+    letter-spacing: 1px;
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
 
-/* ══════════════════════════════
-   COLUMN 1 — CLOCK + WEATHER
-   ══════════════════════════════ */
-#col-left{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
+  /* Divider */
+  .vdiv {
+    width: 1px; height: 60px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
 
-/* Clock card */
-#clock-card{
-  padding:28px 26px 22px;
-  flex-shrink:0;
-  justify-content:center;
-}
+  /* Weather */
+  #weather-block {
+    display: flex; align-items: center; gap: 14px;
+    flex: 1;
+  }
+  #weather-icon { font-size: 2.6rem; line-height:1; }
+  #weather-text { display: flex; flex-direction: column; }
+  #weather-temp {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 2.4rem; font-weight: 700;
+    line-height: 1;
+  }
+  #weather-desc { font-size: 0.78rem; color: var(--dim); margin-top:2px; text-transform:uppercase; letter-spacing:1px; }
+  #weather-loc {
+    font-size: 0.72rem; color: var(--accent); margin-top:3px;
+    display:flex; align-items:center; gap:4px;
+  }
+  #weather-extra {
+    display: flex; flex-direction: column; gap: 4px;
+    margin-left: 10px;
+  }
+  .w-row { font-size: 0.78rem; color: var(--dim); display:flex; gap:6px; align-items:center; }
+  .w-row span { color: var(--text); font-weight:600; }
 
-#time{
-  font-family:var(--mono);
-  font-size:72px;
-  font-weight:500;
-  letter-spacing:-2px;
-  line-height:1;
-  color:var(--w);
-}
+  /* Radio */
+  #radio-block {
+    display: flex; flex-direction: column;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    min-width: 280px;
+    position: relative;
+    overflow: hidden;
+  }
+  #radio-block::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse at top left, rgba(79,195,247,0.06), transparent 60%);
+    pointer-events:none;
+  }
+  #radio-label {
+    font-size: 0.65rem; font-weight:700;
+    color: var(--accent); letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  #radio-label .dot {
+    width:7px;height:7px;border-radius:50%;
+    background: var(--red);
+    box-shadow: 0 0 8px var(--red);
+    animation: blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  #radio-station {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.3rem; font-weight:700; line-height:1;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  #radio-song {
+    font-size: 0.72rem; color: var(--dim); margin-top:3px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  #radio-controls {
+    display: flex; align-items: center; gap: 10px; margin-top: 8px;
+  }
+  .radio-btn {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    cursor: pointer;
+    padding: 6px 12px;
+    font-size: 0.72rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight:600; letter-spacing:1px;
+    transition: background 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  .radio-btn:hover { background: rgba(79,195,247,0.15); border-color: var(--accent); }
+  .radio-btn.active { background: rgba(79,195,247,0.2); border-color: var(--accent); color: var(--accent); }
+  #vol-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 3px; border-radius: 2px;
+    background: linear-gradient(to right, var(--accent) 0%, var(--accent) 70%, rgba(255,255,255,0.1) 70%);
+    cursor: pointer;
+  }
+  #vol-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
 
-#time-sub{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-top:6px;
-}
+  /* === MIDDLE ROW === */
+  #mid {
+    display: flex; flex: 1; gap: 12px; min-height: 0;
+  }
 
-#ampm{
-  font-size:18px;
-  font-weight:500;
-  color:var(--w40);
-}
+  /* === NEARBY PANEL === */
+  #nearby {
+    flex: 1; display: flex; flex-direction: column; gap: 10px;
+    min-width: 0;
+  }
 
-#dateline{
-  font-size:15px;
-  font-weight:400;
-  color:var(--w40);
-}
+  #nearby-header {
+    display: flex; align-items: center; gap: 10px;
+  }
+  #nearby-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.72rem; font-weight:700;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
+  }
+  #nearby-status {
+    font-size: 0.65rem; color: var(--accent);
+    margin-left: auto; display:flex; align-items:center; gap:5px;
+  }
+  .spin { animation: spin 1.5s linear infinite; display:inline-block; }
+  @keyframes spin { to { transform:rotate(360deg); } }
 
-/* Speed badge */
-#spd-badge{
-  display:inline-flex;
-  align-items:baseline;
-  gap:4px;
-  background:var(--w08);
-  border:1px solid var(--bdr);
-  border-radius:10px;
-  padding:5px 12px;
-  margin-top:14px;
-}
-#spd-num{font-family:var(--mono);font-size:28px;font-weight:500;color:var(--w);}
-#spd-unit{font-size:12px;color:var(--w40);letter-spacing:1px;}
+  /* Category tabs */
+  #cat-tabs {
+    display: flex; gap: 8px; flex-shrink:0;
+  }
+  .cat-btn {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    color: var(--dim);
+    cursor: pointer;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-family: 'Rajdhani', sans-serif; font-weight:600;
+    letter-spacing:0.5px;
+    transition: all 0.2s;
+    display: flex; align-items:center; gap:6px;
+    flex-shrink: 0;
+  }
+  .cat-btn svg { width:14px; height:14px; }
+  .cat-btn.active {
+    background: rgba(79,195,247,0.15);
+    border-color: var(--accent); color: var(--accent);
+  }
+  .cat-btn:hover:not(.active) { border-color: rgba(255,255,255,0.2); color: var(--text); }
 
-/* Weather card */
-#wx-card{
-  flex:1;
-  padding:24px 26px 20px;
-}
+  /* Places list */
+  #places-list {
+    flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
+    padding-right: 4px;
+  }
+  #places-list::-webkit-scrollbar { width: 3px; }
+  #places-list::-webkit-scrollbar-track { background: transparent; }
+  #places-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius:2px; }
 
-#wx-top{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  margin-bottom:20px;
-}
+  .place-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 12px;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .place-card:hover { border-color: rgba(79,195,247,0.3); background: rgba(79,195,247,0.05); }
+  .place-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .place-icon svg { width: 20px; height: 20px; }
+  .place-info { flex:1; min-width:0; }
+  .place-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.0rem; font-weight:700;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .place-sub { font-size: 0.72rem; color: var(--dim); margin-top:1px; }
+  .place-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink:0; }
+  .place-dist {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem; color: var(--accent);
+  }
+  .place-open {
+    font-size: 0.65rem; font-weight:700; letter-spacing:0.5px;
+    padding: 2px 7px; border-radius:4px;
+  }
+  .open { background: rgba(105,240,174,0.12); color: var(--green); }
+  .closed { background: rgba(239,83,80,0.12); color: var(--red); }
 
-#wx-icon{font-size:52px;line-height:1;}
+  /* Loading / empty */
+  #places-loading, #places-empty {
+    display: flex; flex-direction:column; align-items:center; justify-content:center;
+    flex:1; color: var(--dim); gap:10px; font-size:0.85rem;
+    letter-spacing:1px; text-transform:uppercase;
+  }
 
-#wx-right{text-align:right;}
-#wx-temp{
-  font-family:var(--mono);
-  font-size:52px;
-  font-weight:500;
-  line-height:1;
-  color:var(--w);
-  letter-spacing:-1px;
-}
-#wx-cond{
-  font-size:14px;
-  color:var(--w40);
-  margin-top:4px;
-  text-transform:uppercase;
-  letter-spacing:1px;
-}
+  /* === PETROL PANEL === */
+  #petrol-panel {
+    width: 220px; flex-shrink:0;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    display: flex; flex-direction: column; gap: 10px;
+    box-shadow: var(--glow);
+    overflow-y: auto;
+  }
+  #petrol-panel::-webkit-scrollbar { width:3px; }
+  #petrol-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+  #petrol-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.68rem; font-weight:700;
+    letter-spacing:2px; text-transform:uppercase; color: var(--dim);
+    display:flex; align-items:center; gap:6px;
+  }
+  #petrol-title svg { width:14px;height:14px; color: var(--orange); }
+  .petrol-item {
+    display: flex; flex-direction:column;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    gap: 2px;
+  }
+  .petrol-grade {
+    font-family:'Rajdhani',sans-serif; font-size:0.78rem; font-weight:700;
+    letter-spacing:1px; color: var(--dim); text-transform:uppercase;
+  }
+  .petrol-price {
+    font-family:'Share Tech Mono',monospace;
+    font-size: 1.9rem; line-height:1;
+    color: var(--orange);
+    text-shadow: 0 0 20px rgba(255,183,77,0.3);
+  }
+  .petrol-price span { font-size:0.85rem; opacity:0.7; }
+  .petrol-bar-wrap { height:3px; background: rgba(255,255,255,0.06); border-radius:2px; margin-top:4px; }
+  .petrol-bar { height:100%; border-radius:2px; background: linear-gradient(to right, var(--orange), #ffcc80); }
+  .petrol-note { font-size:0.62rem; color: var(--dim); margin-top:3px; }
+  .petrol-updated { font-size:0.62rem; color: var(--dim); text-align:center; letter-spacing:1px; }
 
-#wx-divider{height:1px;background:var(--bdr);margin:0 0 18px;}
+  /* === FULLSCREEN BTN === */
+  #fs-btn {
+    position: fixed; bottom: 16px; right: 16px;
+    width: 46px; height: 46px;
+    background: rgba(13,19,32,0.9);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    display: flex; align-items:center; justify-content:center;
+    cursor: pointer;
+    z-index: 9999;
+    transition: border-color 0.2s, background 0.2s;
+    backdrop-filter: blur(8px);
+  }
+  #fs-btn:hover { border-color: var(--accent); background: rgba(79,195,247,0.1); }
+  #fs-btn svg { width:20px; height:20px; color: var(--text); }
 
-#wx-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
+  /* === SCAN LINE OVERLAY === */
+  #scanlines {
+    position: fixed; inset:0; pointer-events:none; z-index:9998;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+  }
 
-.wx-stat{
-  background:var(--w04);
-  border-radius:12px;
-  padding:12px 14px;
-}
-.wx-stat-lbl{font-size:11px;color:var(--w40);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
-.wx-stat-val{font-size:20px;font-weight:600;color:var(--w);}
-
-#wx-loc{
-  margin-top:16px;
-  font-size:12px;
-  color:var(--w40);
-  letter-spacing:1px;
-  text-transform:uppercase;
-  display:flex;
-  align-items:center;
-  gap:7px;
-}
-.loc-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--w);opacity:.35;
-  animation:pulse 2.5s infinite;
-  flex-shrink:0;
-}
-@keyframes pulse{0%,100%{opacity:.35}50%{opacity:.1}}
-
-/* ══════════════════════════════
-   COLUMN 2 — RADIO
-   ══════════════════════════════ */
-#radio-card{
-  padding:0;
-}
-
-#r-header{
-  padding:24px 24px 18px;
-  border-bottom:1px solid var(--bdr);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-shrink:0;
-}
-
-#r-label{
-  font-size:12px;
-  font-weight:600;
-  letter-spacing:2px;
-  color:var(--w40);
-  text-transform:uppercase;
-}
-
-#eq-wrap{
-  display:flex;
-  align-items:flex-end;
-  gap:3px;
-  height:18px;
-  opacity:0;
-  transition:opacity .3s;
-}
-#eq-wrap.on{opacity:1;}
-.eq{width:4px;background:var(--w);border-radius:2px;}
-.eq:nth-child(1){height:7px; animation:eqa .65s 0s   infinite alternate ease-in-out;}
-.eq:nth-child(2){height:16px;animation:eqa .65s .1s  infinite alternate ease-in-out;}
-.eq:nth-child(3){height:10px;animation:eqa .65s .2s  infinite alternate ease-in-out;}
-.eq:nth-child(4){height:16px;animation:eqa .65s .05s infinite alternate ease-in-out;}
-.eq:nth-child(5){height:6px; animation:eqa .65s .15s infinite alternate ease-in-out;}
-@keyframes eqa{from{transform:scaleY(.15)}to{transform:scaleY(1)}}
-
-#stations{
-  flex:1;
-  overflow-y:auto;
-  padding:12px;
-  scrollbar-width:none;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-#stations::-webkit-scrollbar{display:none;}
-
-.stn{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:16px 16px;
-  border-radius:16px;
-  cursor:pointer;
-  border:1.5px solid transparent;
-  background:var(--w04);
-  transition:background .15s,border-color .15s;
-  flex-shrink:0;
-}
-.stn:active{opacity:.7;}
-.stn.active{
-  background:var(--w08);
-  border-color:var(--w15);
-}
-
-.stn-logo{
-  width:54px;height:54px;
-  border-radius:12px;
-  background:var(--s3);
-  border:1.5px solid var(--bdr);
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;
-  color:var(--w70);
-  flex-shrink:0;
-  letter-spacing:.5px;
-}
-.stn.active .stn-logo{background:var(--w);color:#000;border-color:var(--w);}
-
-.stn-info{flex:1;min-width:0;}
-.stn-name{font-size:17px;font-weight:600;color:var(--w70);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stn.active .stn-name{color:var(--w);}
-.stn-genre{font-size:12px;color:var(--w40);margin-top:3px;text-transform:uppercase;letter-spacing:.5px;}
-
-.stn-spinner{
-  display:none;
-  width:32px;height:32px;
-  border:2px solid var(--bdr);
-  border-top-color:var(--w40);
-  border-radius:50%;
-  animation:spin .7s linear infinite;
-  flex-shrink:0;
-}
-.stn.loading .stn-spinner{display:block;}
-.stn.loading .stn-play{display:none;}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-.stn-play{
-  width:44px;height:44px;
-  border-radius:50%;
-  border:1.5px solid var(--bdr);
-  background:transparent;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;flex-shrink:0;padding:0;
-  transition:background .15s,border-color .15s;
-}
-.stn.active .stn-play{background:var(--w);border-color:var(--w);}
-.stn-play svg{width:16px;height:16px;}
-.play-ico{fill:var(--w40);}
-.stn.active .stn-play .play-ico{fill:#000;}
-
-#np-bar{
-  padding:16px 20px 18px;
-  border-top:1px solid var(--bdr);
-  flex-shrink:0;
-}
-#np-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-#np-lbl{font-size:11px;color:var(--w40);letter-spacing:2px;text-transform:uppercase;}
-#np-name{font-size:17px;font-weight:600;color:var(--w70);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;margin:0 14px;}
-#vol-row{display:flex;align-items:center;gap:10px;}
-#vol-row svg{width:16px;height:16px;fill:var(--w40);flex-shrink:0;}
-#vol{
-  flex:1;-webkit-appearance:none;
-  height:3px;border-radius:2px;background:var(--s3);outline:none;cursor:pointer;
-}
-#vol::-webkit-slider-thumb{
-  -webkit-appearance:none;
-  width:18px;height:18px;border-radius:50%;background:var(--w);cursor:pointer;
-}
-
-/* ══════════════════════════════
-   COLUMN 3 — NAVIGATION
-   ══════════════════════════════ */
-#nav-card{padding:0;}
-
-#nav-header{
-  padding:22px 22px 16px;
-  border-bottom:1px solid var(--bdr);
-  flex-shrink:0;
-}
-
-#nav-header-top{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:14px;
-}
-
-#nav-title{font-size:12px;font-weight:600;letter-spacing:2px;color:var(--w40);text-transform:uppercase;}
-
-/* App launch buttons */
-#app-btns{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-bottom:14px;
-}
-
-.app-launch{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-  padding:16px 10px;
-  background:var(--w04);
-  border:1.5px solid var(--bdr);
-  border-radius:14px;
-  cursor:pointer;
-  transition:background .15s,border-color .15s;
-  text-decoration:none;
-  color:inherit;
-}
-.app-launch:active{opacity:.7;}
-.app-launch:hover{background:var(--w08);border-color:var(--w15);}
-.app-launch-icon{font-size:28px;line-height:1;}
-.app-launch-name{font-size:14px;font-weight:600;color:var(--w70);}
-.app-launch-sub{font-size:11px;color:var(--w40);text-align:center;}
-
-/* Search */
-#search-row{
-  display:flex;gap:8px;
-}
-#dest{
-  flex:1;
-  padding:13px 16px;
-  background:var(--w08);
-  border:1.5px solid var(--bdr);
-  border-radius:12px;
-  color:var(--w);
-  font-family:var(--font);
-  font-size:15px;
-  outline:none;
-}
-#dest::placeholder{color:var(--w40);}
-#dest:focus{border-color:var(--w15);}
-#go-btn{
-  padding:13px 18px;
-  background:var(--w);
-  border:none;
-  border-radius:12px;
-  color:#000;
-  font-family:var(--font);
-  font-size:15px;
-  font-weight:700;
-  cursor:pointer;
-  flex-shrink:0;
-  transition:opacity .15s;
-}
-#go-btn:active{opacity:.7;}
-
-/* Places grid */
-#places-section{
-  flex:1;
-  overflow-y:auto;
-  padding:10px 14px 14px;
-  scrollbar-width:none;
-}
-#places-section::-webkit-scrollbar{display:none;}
-
-#places-label{
-  font-size:11px;
-  font-weight:600;
-  letter-spacing:2px;
-  color:var(--w40);
-  text-transform:uppercase;
-  padding:4px 6px 10px;
-}
-
-#places-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:8px;
-}
-
-.place-btn{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:8px;
-  padding:18px 8px 14px;
-  background:var(--w04);
-  border:1.5px solid var(--bdr);
-  border-radius:16px;
-  cursor:pointer;
-  transition:background .15s,border-color .15s;
-  text-decoration:none;
-  color:inherit;
-  -webkit-tap-highlight-color:transparent;
-  position:relative;
-  overflow:hidden;
-}
-.place-btn:active{opacity:.65;}
-.place-btn:hover{background:var(--w08);border-color:var(--w15);}
-
-.place-icon{font-size:30px;line-height:1;}
-.place-name{
-  font-size:13px;
-  font-weight:600;
-  color:var(--w70);
-  text-align:center;
-  line-height:1.3;
-}
-
-/* Sub-action row per place */
-.place-actions{
-  display:flex;gap:5px;width:100%;margin-top:2px;
-}
-.pa-btn{
-  flex:1;
-  padding:6px 0;
-  background:var(--w08);
-  border:1px solid var(--bdr);
-  border-radius:8px;
-  color:var(--w40);
-  font-family:var(--font);
-  font-size:11px;
-  font-weight:600;
-  cursor:pointer;
-  transition:background .12s,color .12s;
-  letter-spacing:.3px;
-}
-.pa-btn:active{opacity:.6;}
-.pa-btn:hover{background:var(--w15);color:var(--w);}
-
-#audio-el{display:none;}
+  /* === RESPONSIVE === */
+  @media (max-width: 900px) {
+    #clock-time { font-size: 2.8rem; }
+    #petrol-panel { width: 180px; }
+    .radio-btn { padding: 5px 9px; font-size: 0.68rem; }
+  }
 </style>
 </head>
 <body>
+
+<div id="scanlines"></div>
+
 <div id="app">
 
-  <!-- ── COL 1: CLOCK + WEATHER ── -->
-  <div id="col-left">
+  <!-- TOP BAR -->
+  <div id="topbar">
 
-    <div class="card" id="clock-card">
-      <div id="time">00:00</div>
-      <div id="time-sub">
-        <div id="ampm">AM</div>
-        <div id="dateline">—</div>
-      </div>
-      <div id="spd-badge">
-        <span id="spd-num">0</span>
-        <span id="spd-unit">km/h</span>
-      </div>
+    <!-- Clock -->
+    <div id="clock-block">
+      <div id="clock-time">00:00:00</div>
+      <div id="clock-date">Loading...</div>
     </div>
 
-    <div class="card" id="wx-card">
-      <div id="wx-top">
-        <div id="wx-icon">⛅</div>
-        <div id="wx-right">
-          <div id="wx-temp">—°</div>
-          <div id="wx-cond">Loading</div>
+    <div class="vdiv"></div>
+
+    <!-- Weather -->
+    <div id="weather-block">
+      <div id="weather-icon">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </div>
+      <div id="weather-text">
+        <div id="weather-temp">--°C</div>
+        <div id="weather-desc">Fetching weather...</div>
+        <div id="weather-loc">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span id="loc-text">Locating...</span>
         </div>
       </div>
-      <div id="wx-divider"></div>
-      <div id="wx-grid">
-        <div class="wx-stat"><div class="wx-stat-lbl">Humidity</div><div class="wx-stat-val" id="wx-hum">--%</div></div>
-        <div class="wx-stat"><div class="wx-stat-lbl">Wind</div><div class="wx-stat-val" id="wx-wind">--</div></div>
-        <div class="wx-stat"><div class="wx-stat-lbl">Feels Like</div><div class="wx-stat-val" id="wx-feel">--°</div></div>
-        <div class="wx-stat"><div class="wx-stat-lbl">UV Index</div><div class="wx-stat-val" id="wx-uv">--</div></div>
+      <div id="weather-extra">
+        <div class="w-row">Humidity <span id="w-humidity">--%</span></div>
+        <div class="w-row">Wind <span id="w-wind">-- km/h</span></div>
+        <div class="w-row">Feels <span id="w-feels">--°C</span></div>
       </div>
-      <div id="wx-loc"><div class="loc-dot"></div>Putra Heights, Selangor</div>
+    </div>
+
+    <div class="vdiv"></div>
+
+    <!-- Radio -->
+    <div id="radio-block">
+      <div id="radio-label"><span class="dot"></span> LIVE RADIO</div>
+      <div id="radio-station">Select a Station</div>
+      <div id="radio-song" id="radio-song">Press play to start</div>
+      <div id="radio-controls">
+        <button class="radio-btn" id="btn-prev" onclick="prevStation()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+        </button>
+        <button class="radio-btn active" id="btn-play" onclick="togglePlay()">
+          <svg id="play-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+        <button class="radio-btn" id="btn-next" onclick="nextStation()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+        </button>
+        <input id="vol-slider" type="range" min="0" max="100" value="70" oninput="setVolume(this.value)">
+      </div>
     </div>
 
   </div>
 
-  <!-- ── COL 2: RADIO ── -->
-  <div class="card" id="radio-card">
-    <div id="r-header">
-      <div id="r-label">Radio</div>
-      <div id="eq-wrap">
-        <div class="eq"></div><div class="eq"></div><div class="eq"></div>
-        <div class="eq"></div><div class="eq"></div>
+  <!-- MIDDLE -->
+  <div id="mid">
+
+    <!-- Nearby places -->
+    <div id="nearby">
+      <div id="nearby-header">
+        <div id="nearby-title">Nearby Places</div>
+        <div id="nearby-status">
+          <svg class="spin" id="loc-spin" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          <span id="loc-status-text">Getting location...</span>
+        </div>
+      </div>
+
+      <!-- Category tabs -->
+      <div id="cat-tabs">
+        <button class="cat-btn active" onclick="setCategory('petrolstation')" id="cat-petrolstation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 22V8l6-6 6 6v14"/><path d="M14 22V16h4v6"/><path d="M3 11h12"/><path d="M18 10h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-2"/><path d="M21 14v3a1 1 0 0 1-1 1"/></svg>
+          Petrol
+        </button>
+        <button class="cat-btn" onclick="setCategory('restaurant')" id="cat-restaurant">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+          Food
+        </button>
+        <button class="cat-btn" onclick="setCategory('rr')" id="cat-rr">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          R&R
+        </button>
+        <button class="cat-btn" onclick="setCategory('cafe')" id="cat-cafe">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+          Cafe
+        </button>
+        <button class="cat-btn" onclick="setCategory('mosque')" id="cat-mosque">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8 2 5 5 5 8c0 1.5.5 3 1.5 4L12 22l5.5-10c1-1 1.5-2.5 1.5-4 0-3-3-6-7-6z"/><circle cx="12" cy="8" r="2"/></svg>
+          Masjid
+        </button>
+        <button class="cat-btn" onclick="setCategory('surau')" id="cat-surau">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v13H4V7z"/><polyline points="9 22 9 12 15 12 15 22"/><path d="M12 3v3"/><circle cx="12" cy="2" r="1"/></svg>
+          Surau
+        </button>
+      </div>
+
+      <!-- List -->
+      <div id="places-list">
+        <div id="places-loading">
+          <svg class="spin" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          Waiting for location
+        </div>
       </div>
     </div>
 
-    <div id="stations"></div>
-
-    <div id="np-bar">
-      <div id="np-top">
-        <div id="np-lbl">Playing</div>
-        <div id="np-name">Select a station</div>
+    <!-- Petrol Prices -->
+    <div id="petrol-panel">
+      <div id="petrol-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 22V8l6-6 6 6v14"/><path d="M3 11h12"/></svg>
+        MY Petrol Price
       </div>
-      <div id="vol-row">
-        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-        <input type="range" id="vol" min="0" max="1" step="0.05" value="0.8">
+      <div class="petrol-item">
+        <div class="petrol-grade">RON 95</div>
+        <div class="petrol-price" id="price-ron95">-- <span>RM/L</span></div>
+        <div class="petrol-bar-wrap"><div class="petrol-bar" style="width:65%"></div></div>
+        <div class="petrol-note">Subsidised — MyKad required</div>
       </div>
-    </div>
-  </div>
-
-  <!-- ── COL 3: NAVIGATION ── -->
-  <div class="card" id="nav-card">
-    <div id="nav-header">
-      <div id="nav-header-top">
-        <div id="nav-title">Navigation</div>
+      <div class="petrol-item">
+        <div class="petrol-grade">RON 97</div>
+        <div class="petrol-price" id="price-ron97">-- <span>RM/L</span></div>
+        <div class="petrol-bar-wrap"><div class="petrol-bar" style="width:85%"></div></div>
+        <div class="petrol-note">Market price</div>
       </div>
-      <div id="app-btns">
-        <a class="app-launch" id="waze-btn" href="#">
-          <div class="app-launch-icon">🗺</div>
-          <div class="app-launch-name">Waze</div>
-          <div class="app-launch-sub">Traffic alerts</div>
-        </a>
-        <a class="app-launch" id="gmaps-btn" href="#">
-          <div class="app-launch-icon">📍</div>
-          <div class="app-launch-name">Google Maps</div>
-          <div class="app-launch-sub">Directions</div>
-        </a>
+      <div class="petrol-item">
+        <div class="petrol-grade">Diesel</div>
+        <div class="petrol-price" id="price-diesel">-- <span>RM/L</span></div>
+        <div class="petrol-bar-wrap"><div class="petrol-bar" style="width:55%"></div></div>
+        <div class="petrol-note">Subsidised</div>
       </div>
-      <div id="search-row">
-        <input type="text" id="dest" placeholder="Type a destination…">
-        <button id="go-btn">GO</button>
+      <div class="petrol-item">
+        <div class="petrol-grade">Diesel Euro 5</div>
+        <div class="petrol-price" id="price-diesel5">-- <span>RM/L</span></div>
+        <div class="petrol-bar-wrap"><div class="petrol-bar" style="width:70%"></div></div>
+        <div class="petrol-note">Market price</div>
       </div>
+      <div class="petrol-updated" id="petrol-updated">Fetching prices...</div>
     </div>
 
-    <div id="places-section">
-      <div id="places-label">Near Me</div>
-      <div id="places-grid"></div>
-    </div>
   </div>
 
 </div>
-<audio id="audio-el" preload="none"></audio>
+
+<!-- Fullscreen Button -->
+<button id="fs-btn" onclick="toggleFullscreen()" title="Fullscreen">
+  <svg id="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+    <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+  </svg>
+</button>
+
+<audio id="radio-audio" preload="none"></audio>
 
 <script>
-// ── STATIONS (3 great driving stations) ──
-const STATIONS=[
-  {
-    name:"Hitz FM",
-    genre:"Pop · Top 40",
-    abbr:"HZ",
-    url:"https://stream.zeno.fm/7yw0sjy1y0zuv"
-  },
-  {
-    name:"Fly FM",
-    genre:"R&B · Pop Hits",
-    abbr:"FLY",
-    url:"https://stream.zeno.fm/sbcv00q7rcvuv"
-  },
-  {
-    name:"ERA FM",
-    genre:"Malay · Hits",
-    abbr:"ERA",
-    url:"https://stream.zeno.fm/54ydnx2d0nfuv"
+// ============ CLOCK ============
+function updateClock() {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const ss = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clock-time').textContent = `${hh}:${mm}:${ss}`;
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('clock-date').textContent =
+    `${days[now.getDay()]}  ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// ============ WEATHER ============
+let userLat = null, userLon = null;
+
+function getWeatherIcon(code) {
+  const c = parseInt(code);
+  if (c === 0) return `<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`;
+  if (c <= 3) return `<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>`;
+  if (c <= 67) return `<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#81d4fa" stroke-width="1.5"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/><path d="M8 19v3M12 19v3M16 19v3" stroke-dasharray="2 2"/></svg>`;
+  if (c <= 77) return `<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/><path d="M8 20l1-4M12 20l1-4M16 20l1-4"/></svg>`;
+  return `<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#ffb74d" stroke-width="1.5"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>`;
+}
+
+function weatherDesc(code) {
+  const c = parseInt(code);
+  if (c === 0) return 'Clear Sky';
+  if (c === 1) return 'Mainly Clear';
+  if (c === 2) return 'Partly Cloudy';
+  if (c === 3) return 'Overcast';
+  if (c <= 48) return 'Foggy';
+  if (c <= 57) return 'Drizzle';
+  if (c <= 67) return 'Rainy';
+  if (c <= 77) return 'Snow';
+  if (c <= 82) return 'Rain Showers';
+  if (c <= 99) return 'Thunderstorm';
+  return 'Unknown';
+}
+
+async function fetchWeather(lat, lon) {
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&wind_speed_unit=kmh&timezone=auto`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const c = data.current;
+    document.getElementById('weather-temp').textContent = `${Math.round(c.temperature_2m)}°C`;
+    document.getElementById('weather-desc').textContent = weatherDesc(c.weather_code);
+    document.getElementById('w-humidity').textContent = `${c.relative_humidity_2m}%`;
+    document.getElementById('w-wind').textContent = `${Math.round(c.wind_speed_10m)} km/h`;
+    document.getElementById('w-feels').textContent = `${Math.round(c.apparent_temperature)}°C`;
+    document.getElementById('weather-icon').innerHTML = getWeatherIcon(c.weather_code);
+  } catch(e) {
+    document.getElementById('weather-desc').textContent = 'Weather unavailable';
   }
+}
+
+async function reverseGeocode(lat, lon) {
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+    const data = await res.json();
+    const addr = data.address;
+    const loc = addr.suburb || addr.village || addr.town || addr.city || addr.county || 'Your Location';
+    const state = addr.state || '';
+    document.getElementById('loc-text').textContent = state ? `${loc}, ${state}` : loc;
+  } catch(e) {
+    document.getElementById('loc-text').textContent = 'Location found';
+  }
+}
+
+function initLocation() {
+  if (!navigator.geolocation) {
+    document.getElementById('loc-text').textContent = 'GPS not supported';
+    loadStaticData();
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(pos => {
+    userLat = pos.coords.latitude;
+    userLon = pos.coords.longitude;
+    reverseGeocode(userLat, userLon);
+    fetchWeather(userLat, userLon);
+    document.getElementById('loc-spin').style.display='none';
+    document.getElementById('loc-status-text').textContent = 'Location found';
+    setCategory(currentCategory);
+    setInterval(() => fetchWeather(userLat, userLon), 5*60*1000);
+  }, err => {
+    document.getElementById('loc-text').textContent = 'Selangor, MY';
+    document.getElementById('loc-status-text').textContent = 'Using default location';
+    document.getElementById('loc-spin').style.display='none';
+    // Use Putrajaya coords as default
+    userLat = 2.9264;
+    userLon = 101.6964;
+    fetchWeather(userLat, userLon);
+    setCategory(currentCategory);
+  }, { timeout: 10000 });
+}
+
+// ============ PETROL PRICES (Malaysia — static weekly prices) ============
+async function fetchPetrolPrices() {
+  // Try to get from API; fallback to last known prices
+  try {
+    // Use a CORS-friendly endpoint - opis or data.gov.my
+    const res = await fetch('https://api.data.gov.my/data-catalogue?id=fuelprice&limit=1&sort=-date');
+    const data = await res.json();
+    if (data && data.length > 0) {
+      const d = data[0];
+      document.getElementById('price-ron95').innerHTML = `${d.ron95} <span>RM/L</span>`;
+      document.getElementById('price-ron97').innerHTML = `${d.ron97} <span>RM/L</span>`;
+      document.getElementById('price-diesel').innerHTML = `${d.diesel} <span>RM/L</span>`;
+      document.getElementById('price-diesel5').innerHTML = `${d.diesel_euro5} <span>RM/L</span>`;
+      document.getElementById('petrol-updated').textContent = `Updated: ${d.date}`;
+      return;
+    }
+  } catch(e) {}
+  // Fallback — current known prices (as of May 2025)
+  document.getElementById('price-ron95').innerHTML = `2.05 <span>RM/L</span>`;
+  document.getElementById('price-ron97').innerHTML = `3.47 <span>RM/L</span>`;
+  document.getElementById('price-diesel').innerHTML = `2.15 <span>RM/L</span>`;
+  document.getElementById('price-diesel5').innerHTML = `3.35 <span>RM/L</span>`;
+  document.getElementById('petrol-updated').textContent = `Cached — May 2025`;
+}
+
+// ============ NEARBY PLACES via Overpass API ============
+let currentCategory = 'petrolstation';
+
+const categoryConfig = {
+  petrolstation: {
+    query: (lat,lon,r) => `[out:json][timeout:15];(node["amenity"="fuel"](around:${r},${lat},${lon});way["amenity"="fuel"](around:${r},${lat},${lon}););out center 10;`,
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M3 22V8l6-6 6 6v14"/><path d="M3 11h12"/><path d="M14 22V16h4v6"/></svg>`,
+    color: '#ffb74d', bg: 'rgba(255,183,77,0.12)',
+    getName: t => t.brand || t.name || t.operator || 'Petrol Station',
+    getSub: t => t['brand:wikidata'] ? t.brand : (t.opening_hours || 'Fuel Station')
+  },
+  restaurant: {
+    query: (lat,lon,r) => `[out:json][timeout:15];(node["amenity"~"restaurant|food_court|fast_food|cafe"](around:${r},${lat},${lon});way["amenity"~"restaurant|food_court|fast_food"](around:${r},${lat},${lon}););out center 15;`,
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>`,
+    color: '#ef5350', bg: 'rgba(239,83,80,0.12)',
+    getName: t => t.name || t.brand || 'Restaurant',
+    getSub: t => t.cuisine || t.amenity || 'Food'
+  },
+  rr: {
+    query: (lat,lon,r) => `[out:json][timeout:15];(node["highway"="rest_area"](around:${r},${lat},${lon});node["amenity"="rest_area"](around:${r},${lat},${lon});way["highway"="rest_area"](around:${r},${lat},${lon});node["name"~"[Rr]&[Rr]|[Rr]est [Aa]rea|[Pp]laza"](around:${r},${lat},${lon}););out center 10;`,
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`,
+    color: '#69f0ae', bg: 'rgba(105,240,174,0.12)',
+    getName: t => t.name || 'R&R Area',
+    getSub: t => t.operator || t.description || 'Rest & Recreational Area'
+  },
+  cafe: {
+    query: (lat,lon,r) => `[out:json][timeout:15];(node["amenity"="cafe"](around:${r},${lat},${lon});way["amenity"="cafe"](around:${r},${lat},${lon}););out center 15;`,
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg>`,
+    color: '#ce93d8', bg: 'rgba(206,147,216,0.12)',
+    getName: t => t.name || 'Cafe',
+    getSub: t => t.cuisine || t.brand || 'Coffee & Drinks'
+  },
+  mosque: {
+    query: (lat,lon,r) => `[out:json][timeout:15];(node["amenity"="place_of_worship"]["religion"="muslim"](around:${r},${lat},${lon});way["amenity"="place_of_worship"]["religion"="muslim"](around:${r},${lat},${lon}););out center 15;`,
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 2C8 2 5 5 5 8c0 1.5.5 3 1.5 4L12 22l5.5-10c1-1 1.5-2.5 1.5-4 0-3-3-6-7-6z"/><circle cx="12" cy="8" r="2"/></svg>`,
+    color: '#4fc3f7', bg: 'rgba(79,195,247,0.12)',
+    getName: t => t.name || 'Masjid',
+    getSub: t => t['name:en'] || t.operator || 'Mosque'
+  },
+  surau: {
+    query: (lat,lon,r) => `[out:json][timeout:15];(node["amenity"="place_of_worship"]["place_of_worship"="surau"](around:${r},${lat},${lon});node["amenity"="place_of_worship"]["religion"="muslim"]["name"~"[Ss]urau"](around:${r},${lat},${lon});way["amenity"="place_of_worship"]["religion"="muslim"]["name"~"[Ss]urau"](around:${r},${lat},${lon}););out center 15;`,
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 3l8 4v13H4V7z"/><polyline points="9 22 9 12 15 12 15 22"/><path d="M12 3v3"/></svg>`,
+    color: '#80cbc4', bg: 'rgba(128,203,196,0.12)',
+    getName: t => t.name || 'Surau',
+    getSub: t => t.operator || 'Prayer Room'
+  }
+};
+
+function calcDist(lat1,lon1,lat2,lon2) {
+  const R=6371000, dLat=(lat2-lat1)*Math.PI/180, dLon=(lon2-lon1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function formatDist(m) {
+  return m < 1000 ? `${Math.round(m)} m` : `${(m/1000).toFixed(1)} km`;
+}
+
+function isLikelyOpen(tags) {
+  if (!tags.opening_hours) return null;
+  return null; // Let user verify
+}
+
+async function fetchPlaces(cat) {
+  const list = document.getElementById('places-list');
+  list.innerHTML = `<div id="places-loading"><svg class="spin" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>Searching nearby...</div>`;
+
+  const cfg = categoryConfig[cat];
+  const radius = (cat === 'rr') ? 50000 : (cat === 'mosque' || cat === 'surau') ? 5000 : 3000;
+  const query = cfg.query(userLat, userLon, radius);
+
+  try {
+    const res = await fetch('https://overpass-api.de/api/interpreter', {
+      method: 'POST',
+      body: query
+    });
+    const data = await res.json();
+    let elements = data.elements || [];
+
+    // Deduplicate by name
+    const seen = new Set();
+    elements = elements.filter(el => {
+      const name = (el.tags && (el.tags.name || el.tags.brand)) || el.id;
+      if (seen.has(name)) return false;
+      seen.add(name); return true;
+    });
+
+    // Compute distance & sort
+    elements = elements.map(el => {
+      const lat = el.lat || el.center?.lat;
+      const lon = el.lon || el.center?.lon;
+      const dist = (lat && lon) ? calcDist(userLat, userLon, lat, lon) : 999999;
+      return { ...el, _dist: dist };
+    }).sort((a,b) => a._dist - b._dist).slice(0,20);
+
+    if (elements.length === 0) {
+      list.innerHTML = `<div id="places-empty"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>None found nearby</div>`;
+      return;
+    }
+
+    list.innerHTML = '';
+    elements.forEach(el => {
+      const tags = el.tags || {};
+      const name = cfg.getName(tags);
+      const sub = cfg.getSub(tags);
+      const dist = formatDist(el._dist);
+      const open = isLikelyOpen(tags);
+
+      const card = document.createElement('div');
+      card.className = 'place-card';
+      card.innerHTML = `
+        <div class="place-icon" style="background:${cfg.bg}; color:${cfg.color}">${cfg.icon}</div>
+        <div class="place-info">
+          <div class="place-name">${name}</div>
+          <div class="place-sub">${sub}</div>
+        </div>
+        <div class="place-meta">
+          <div class="place-dist">${dist}</div>
+          ${open === true ? '<div class="place-open open">OPEN</div>' : open === false ? '<div class="place-open closed">CLOSED</div>' : ''}
+        </div>
+      `;
+      const lat = el.lat || el.center?.lat;
+      const lon = el.lon || el.center?.lon;
+      if (lat && lon) {
+        card.onclick = () => window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`, '_blank');
+      }
+      list.appendChild(card);
+    });
+
+  } catch(e) {
+    list.innerHTML = `<div id="places-empty"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Could not load — check connection</div>`;
+  }
+}
+
+function setCategory(cat) {
+  currentCategory = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`cat-${cat}`)?.classList.add('active');
+  if (userLat) fetchPlaces(cat);
+}
+
+// ============ RADIO ============
+const stations = [
+  { name: 'ERA FM', freq: 'ERA 99.6 FM', url: 'https://stream.era.fm/era' },
+  { name: 'MY FM', freq: 'MY 101.8 FM', url: 'https://myfm.my/radio/8012/radio.mp3' },
+  { name: 'Fly FM', freq: 'FLY 95.8 FM', url: 'https://stream.flyfm.com.my/flyfm' },
+  { name: 'Hot FM', freq: 'HOT 95.5 FM', url: 'https://hotfm.my/radio/8000/radio.mp3' },
+  { name: 'Hitz FM', freq: 'HITZ 92.9 FM', url: 'https://hitzfm.my/radio/8002/radio.mp3' },
+  { name: 'Sinar FM', freq: 'SINAR 96.7 FM', url: 'https://stream.sinarfm.com.my/sinarfm' },
+  { name: 'TraXX FM', freq: 'TRAXX 90.3 FM', url: 'https://traxxfm.rtm.gov.my/traxxfm' },
+  { name: 'IKIM FM', freq: 'IKIM 91.5 FM', url: 'https://stream.ikim.gov.my/ikimfm' },
 ];
 
-const audio=document.getElementById('audio-el');
-const eqWrap=document.getElementById('eq-wrap');
-const npName=document.getElementById('np-name');
-const volEl=document.getElementById('vol');
-let cur=-1,playing=false;
+let stationIdx = 0;
+let isPlaying = false;
+const audio = document.getElementById('radio-audio');
 
-function buildStations(){
-  const wrap=document.getElementById('stations');
-  STATIONS.forEach((s,i)=>{
-    const el=document.createElement('div');
-    el.className='stn';
-    el.innerHTML=`
-      <div class="stn-logo">${s.abbr}</div>
-      <div class="stn-info">
-        <div class="stn-name">${s.name}</div>
-        <div class="stn-genre">${s.genre}</div>
-      </div>
-      <div class="stn-spinner"></div>
-      <button class="stn-play" aria-label="Play ${s.name}">
-        <svg viewBox="0 0 24 24"><path class="play-ico" d="M8 5v14l11-7z"/></svg>
-      </button>`;
-    el.addEventListener('click',()=>toggle(i));
-    wrap.appendChild(el);
-  });
-}
-
-function toggle(i){
-  const all=document.querySelectorAll('.stn');
-  if(cur===i&&playing){
-    audio.pause();playing=false;
-    all[i].classList.remove('active');
-    eqWrap.classList.remove('on');
-    npName.textContent='Paused';
-    setIcon(i,false);return;
+function loadStation(idx) {
+  stationIdx = (idx + stations.length) % stations.length;
+  const s = stations[stationIdx];
+  document.getElementById('radio-station').textContent = s.name;
+  document.getElementById('radio-song').textContent = s.freq;
+  if (isPlaying) {
+    audio.src = s.url;
+    audio.play().catch(() => {
+      document.getElementById('radio-song').textContent = 'Tap play to connect';
+    });
   }
-  if(cur!==-1){all[cur].classList.remove('active','loading');setIcon(cur,false);}
-  cur=i;
-  all[i].classList.add('loading');
-  npName.textContent='Connecting…';
-  audio.src=STATIONS[i].url;
-  audio.volume=+volEl.value;
-  audio.play().then(()=>{
-    all[i].classList.remove('loading');
-    all[i].classList.add('active');
-    playing=true;eqWrap.classList.add('on');
-    npName.textContent=STATIONS[i].name+' — '+STATIONS[i].genre;
-    setIcon(i,true);
-  }).catch(()=>{
-    all[i].classList.remove('loading');
-    npName.textContent='Stream unavailable';
-    cur=-1;
-  });
 }
 
-function setIcon(i,p){
-  const btn=document.querySelectorAll('.stn')[i].querySelector('.stn-play');
-  btn.innerHTML=p
-    ?`<svg viewBox="0 0 24 24"><path class="play-ico" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`
-    :`<svg viewBox="0 0 24 24"><path class="play-ico" d="M8 5v14l11-7z"/></svg>`;
+function togglePlay() {
+  const icon = document.getElementById('play-icon');
+  if (!isPlaying) {
+    isPlaying = true;
+    audio.src = stations[stationIdx].url;
+    audio.volume = document.getElementById('vol-slider').value / 100;
+    audio.play().catch(() => {
+      document.getElementById('radio-song').textContent = 'Stream unavailable';
+      isPlaying = false;
+    });
+    icon.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+    document.getElementById('radio-song').textContent = 'Connecting...';
+  } else {
+    isPlaying = false;
+    audio.pause();
+    icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+    document.getElementById('radio-song').textContent = stations[stationIdx].freq;
+  }
 }
 
-volEl.addEventListener('input',()=>{audio.volume=+volEl.value;});
+audio.addEventListener('playing', () => {
+  document.getElementById('radio-song').textContent = 'Live — ' + stations[stationIdx].freq;
+});
+audio.addEventListener('error', () => {
+  document.getElementById('radio-song').textContent = 'Stream unavailable';
+});
 
-// ── CLOCK ──
-function tick(){
-  const n=new Date();
-  let h=n.getHours(),m=String(n.getMinutes()).padStart(2,'0');
-  const ap=h>=12?'PM':'AM';h=h%12||12;
-  document.getElementById('time').textContent=h+':'+m;
-  document.getElementById('ampm').textContent=ap;
-  const D=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  const M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  document.getElementById('dateline').textContent=D[n.getDay()]+', '+n.getDate()+' '+M[n.getMonth()]+' '+n.getFullYear();
-}
-setInterval(tick,1000);tick();
-
-// ── WEATHER ──
-const WI={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',80:'🌦',81:'🌧',82:'⛈',95:'⛈',99:'⛈'};
-const WD={0:'Clear',1:'Mainly Clear',2:'Partly Cloudy',3:'Overcast',45:'Foggy',51:'Light Drizzle',53:'Drizzle',55:'Heavy Drizzle',61:'Light Rain',63:'Rain',65:'Heavy Rain',80:'Showers',81:'Heavy Showers',82:'Violent Showers',95:'Thunderstorm',99:'Hail Storm'};
-
-async function fetchWeather(){
-  try{
-    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=3.024&longitude=101.603&current_weather=true&hourly=relativehumidity_2m,apparent_temperature,windspeed_10m,uv_index&timezone=Asia%2FKuala_Lumpur&forecast_days=1');
-    const d=await r.json();const cw=d.current_weather;const hr=new Date().getHours();
-    document.getElementById('wx-icon').textContent=WI[cw.weathercode]||'🌡';
-    document.getElementById('wx-temp').textContent=Math.round(cw.temperature)+'°';
-    document.getElementById('wx-cond').textContent=WD[cw.weathercode]||'';
-    document.getElementById('wx-hum').textContent=(d.hourly.relativehumidity_2m[hr]||'--')+'%';
-    document.getElementById('wx-wind').textContent=Math.round(cw.windspeed)+' km/h';
-    document.getElementById('wx-feel').textContent=Math.round(d.hourly.apparent_temperature[hr]||cw.temperature)+'°';
-    document.getElementById('wx-uv').textContent=(d.hourly.uv_index?.[hr]??'--');
-  }catch(e){document.getElementById('wx-cond').textContent='Unavailable';}
-}
-fetchWeather();setInterval(fetchWeather,5*60*1000);
-
-// ── GPS SPEED ──
-if(navigator.geolocation)
-  navigator.geolocation.watchPosition(p=>{
-    document.getElementById('spd-num').textContent=p.coords.speed!==null?Math.round(p.coords.speed*3.6):0;
-  },()=>{},{enableHighAccuracy:true,maximumAge:1000});
-
-// ── NAVIGATION ──
-const PLACES=[
-  {icon:'⛽',name:'Petrol',    q:'petrol station near Putra Heights Selangor'},
-  {icon:'🍽',name:'Food',      q:'restaurant near Putra Heights Selangor'},
-  {icon:'🛣',name:'R&R',       q:'rest area highway near Putra Heights Selangor'},
-  {icon:'☕',name:'Café',      q:'cafe near Putra Heights Selangor'},
-  {icon:'🕌',name:'Masjid',    q:'masjid near Putra Heights Selangor'},
-  {icon:'🛐',name:'Surau',     q:'surau near Putra Heights Selangor'},
-];
-
-function wazeUrl(q){return 'waze://?q='+encodeURIComponent(q)+'&navigate=yes';}
-function gmapsUrl(q){return 'https://maps.google.com/?q='+encodeURIComponent(q);}
-
-function buildPlaces(){
-  const grid=document.getElementById('places-grid');
-  PLACES.forEach(p=>{
-    const el=document.createElement('div');
-    el.className='place-btn';
-    el.innerHTML=`
-      <div class="place-icon">${p.icon}</div>
-      <div class="place-name">${p.name}</div>
-      <div class="place-actions">
-        <button class="pa-btn" data-q="${p.q}" data-app="waze">Waze</button>
-        <button class="pa-btn" data-q="${p.q}" data-app="maps">Maps</button>
-      </div>`;
-    grid.appendChild(el);
-  });
-  grid.addEventListener('click',e=>{
-    const btn=e.target.closest('.pa-btn');
-    if(!btn)return;
-    e.preventDefault();
-    window.location.href=btn.dataset.app==='waze'?wazeUrl(btn.dataset.q):gmapsUrl(btn.dataset.q);
-  });
+function prevStation() { loadStation(stationIdx - 1); }
+function nextStation() { loadStation(stationIdx + 1); }
+function setVolume(val) {
+  audio.volume = val / 100;
+  const s = document.getElementById('vol-slider');
+  s.style.background = `linear-gradient(to right, var(--accent) 0%, var(--accent) ${val}%, rgba(255,255,255,0.1) ${val}%)`;
 }
 
-function launchNav(app){
-  const q=document.getElementById('dest').value.trim()||'Putra Heights Selangor';
-  window.location.href=app==='waze'?wazeUrl(q):gmapsUrl(q);
+// ============ FULLSCREEN ============
+function toggleFullscreen() {
+  const el = document.documentElement;
+  const fsIcon = document.getElementById('fs-icon');
+  if (!document.fullscreenElement) {
+    el.requestFullscreen?.() || el.webkitRequestFullscreen?.();
+    fsIcon.innerHTML = `<path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>`;
+  } else {
+    document.exitFullscreen?.() || document.webkitExitFullscreen?.();
+    fsIcon.innerHTML = `<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>`;
+  }
 }
 
-document.getElementById('waze-btn').addEventListener('click',e=>{e.preventDefault();launchNav('waze');});
-document.getElementById('gmaps-btn').addEventListener('click',e=>{e.preventDefault();launchNav('maps');});
-document.getElementById('go-btn').addEventListener('click',()=>launchNav('maps'));
-document.getElementById('dest').addEventListener('keydown',e=>{if(e.key==='Enter')launchNav('maps');});
+document.addEventListener('fullscreenchange', () => {
+  const fsIcon = document.getElementById('fs-icon');
+  if (!document.fullscreenElement) {
+    fsIcon.innerHTML = `<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>`;
+  }
+});
 
-buildStations();
-buildPlaces();
+// ============ INIT ============
+loadStation(0);
+fetchPetrolPrices();
+initLocation();
 </script>
 </body>
 </html>
