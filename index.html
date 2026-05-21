@@ -25,35 +25,50 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 5vw 6vw;
+  padding: 4vw 6vw 4vw;
 }
 
-/* ─── ROW 1: Time ─── */
+/* ─── ROW 1: BIG CLOCK ─── */
 #row-time {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
   flex-shrink: 0;
+  text-align: center;
 }
 
 #time {
-  font-size: clamp(5rem, 22vw, 18rem);
+  font-size: clamp(6rem, 28vw, 22rem);
   font-weight: 900;
-  letter-spacing: -6px;
+  letter-spacing: -8px;
   line-height: 0.88;
   color: #fff;
+  width: 100%;
+  text-align: center;
 }
 
+/* ─── ROW 2: Info strip (Day / Date / Weather / Location) ─── */
+#row-info {
+  display: flex;
+  align-items: center;
+  gap: 3vw;
+  flex-shrink: 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 1.8vh 0;
+  flex-wrap: wrap;
+}
+
+/* Day + Date block */
 #date-block {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-  padding-bottom: 1.2vw;
+  align-items: baseline;
+  gap: 1.2vw;
+  flex-shrink: 0;
 }
 
 #day-name {
-  font-size: clamp(1rem, 3vw, 2.8rem);
+  font-size: clamp(0.8rem, 2vw, 1.8rem);
   font-weight: 800;
   color: rgba(255,255,255,0.38);
   text-transform: uppercase;
@@ -61,112 +76,127 @@ html, body {
 }
 
 #full-date {
-  font-size: clamp(1.2rem, 3.5vw, 3.2rem);
+  font-size: clamp(0.9rem, 2.2vw, 2rem);
   font-weight: 800;
   color: #fff;
   letter-spacing: -0.5px;
 }
 
-/* ─── ROW 2: Weather strip ─── */
-#row-weather {
-  display: flex;
-  align-items: center;
-  gap: 4vw;
+/* Divider pip */
+.info-sep {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
   flex-shrink: 0;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  padding: 2.5vh 0;
 }
 
+/* Weather items */
 .wx-item {
   display: flex;
   align-items: center;
-  gap: 1vw;
+  gap: 0.6vw;
 }
 
 .wx-item svg {
-  width: clamp(22px, 3.5vw, 42px);
-  height: clamp(22px, 3.5vw, 42px);
-  color: rgba(255,255,255,0.45);
+  width: clamp(16px, 2.2vw, 28px);
+  height: clamp(16px, 2.2vw, 28px);
+  color: rgba(255,255,255,0.4);
   flex-shrink: 0;
 }
 
 .wx-val {
-  font-size: clamp(1.1rem, 3vw, 2.8rem);
+  font-size: clamp(0.85rem, 2vw, 1.8rem);
   font-weight: 800;
   color: #fff;
 }
 
 .wx-lbl {
-  font-size: clamp(0.65rem, 1.4vw, 1.2rem);
+  font-size: clamp(0.55rem, 1.1vw, 0.95rem);
   font-weight: 700;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.3);
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-top: 2px;
+  margin-left: 2px;
 }
 
-#wx-sep { flex: 1; }
+#info-spacer { flex: 1; }
 
 #loc-item {
   display: flex;
   align-items: center;
-  gap: 0.8vw;
-  margin-left: auto;
+  gap: 0.6vw;
 }
 #loc-item svg {
-  width: clamp(18px, 2.5vw, 32px);
-  height: clamp(18px, 2.5vw, 32px);
-  color: rgba(255,255,255,0.35);
+  width: clamp(14px, 1.8vw, 24px);
+  height: clamp(14px, 1.8vw, 24px);
+  color: rgba(255,255,255,0.3);
   flex-shrink: 0;
 }
 #loc-text {
-  font-size: clamp(0.85rem, 2vw, 1.8rem);
+  font-size: clamp(0.75rem, 1.6vw, 1.4rem);
   font-weight: 700;
-  color: rgba(255,255,255,0.45);
-  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.3px;
 }
 
 /* ─── ROW 3: Radio ─── */
 #row-radio {
   display: flex;
   flex-direction: column;
-  gap: 2.5vh;
+  gap: 2vh;
   flex-shrink: 0;
 }
 
-#radio-top {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-}
-
-#radio-left {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6vh;
-}
-
+/* Live badge */
 #live-badge {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: clamp(0.6rem, 1.2vw, 1rem);
+  font-size: clamp(0.55rem, 1.1vw, 0.9rem);
   font-weight: 700;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.28);
 }
 .live-dot {
-  width: 8px; height: 8px;
+  width: 7px; height: 7px;
   border-radius: 50%;
   background: #fff;
   animation: blink 2s ease infinite;
 }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
 
+/* Now-playing row: play btn LEFT + station info */
+#now-playing {
+  display: flex;
+  align-items: center;
+  gap: 2.5vw;
+}
+
+#play-btn {
+  width: clamp(56px, 7.5vw, 96px);
+  height: clamp(56px, 7.5vw, 96px);
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, transform 0.1s;
+}
+#play-btn:hover { background: rgba(255,255,255,0.85); }
+#play-btn:active { transform: scale(0.94); }
+#play-btn svg { width: 36%; height: 36%; }
+
+#station-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3vh;
+}
+
 #station-name {
-  font-size: clamp(1.8rem, 6vw, 5.5rem);
+  font-size: clamp(1.6rem, 5.5vw, 5rem);
   font-weight: 900;
   letter-spacing: -2px;
   line-height: 1;
@@ -174,72 +204,50 @@ html, body {
 }
 
 #station-sub {
-  font-size: clamp(0.8rem, 1.8vw, 1.6rem);
+  font-size: clamp(0.7rem, 1.5vw, 1.4rem);
   font-weight: 700;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.32);
 }
 
 #stream-status {
-  font-size: clamp(0.7rem, 1.3vw, 1.1rem);
+  font-size: clamp(0.65rem, 1.1vw, 1rem);
   font-weight: 600;
-  color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.22);
   letter-spacing: 1px;
   min-height: 1em;
   transition: color 0.3s;
 }
 #stream-status.on { color: rgba(255,255,255,0.6); }
 
-/* Controls right side */
-#radio-controls {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2vh;
-}
-
-#play-btn {
-  width: clamp(64px, 9vw, 110px);
-  height: clamp(64px, 9vw, 110px);
-  border-radius: 50%;
-  border: none;
-  background: #fff;
-  color: #000;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.15s, transform 0.1s;
-}
-#play-btn:hover { background: rgba(255,255,255,0.85); }
-#play-btn:active { transform: scale(0.94); }
-#play-btn svg { width: 36%; height: 36%; }
-
-/* Station toggle */
+/* Station toggle buttons */
 #station-toggle {
   display: flex;
-  gap: 1.5vw;
+  gap: 1.2vw;
+  flex-wrap: wrap;
 }
 
 .st-btn {
   display: flex;
   align-items: center;
-  gap: 0.8vw;
-  padding: clamp(10px,1.5vh,18px) clamp(16px,2.5vw,32px);
+  gap: 0.7vw;
+  padding: clamp(8px,1.3vh,16px) clamp(14px,2vw,28px);
   border-radius: 50px;
-  border: 2px solid rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.14);
   background: transparent;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.38);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.8rem, 1.6vw, 1.4rem);
+  font-size: clamp(0.72rem, 1.4vw, 1.2rem);
   font-weight: 800;
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
 }
 .st-btn svg {
-  width: clamp(16px, 2.2vw, 26px);
-  height: clamp(16px, 2.2vw, 26px);
+  width: clamp(14px, 1.8vw, 22px);
+  height: clamp(14px, 1.8vw, 22px);
   flex-shrink: 0;
 }
-.st-btn:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
+.st-btn:hover { color: #fff; border-color: rgba(255,255,255,0.38); }
 .st-btn.active {
   background: #fff;
   border-color: #fff;
@@ -254,32 +262,32 @@ html, body {
   width: 100%;
 }
 #vol-row svg {
-  width: clamp(18px, 2.5vw, 30px);
-  height: clamp(18px, 2.5vw, 30px);
-  color: rgba(255,255,255,0.3);
+  width: clamp(16px, 2.2vw, 28px);
+  height: clamp(16px, 2.2vw, 28px);
+  color: rgba(255,255,255,0.28);
   flex-shrink: 0;
 }
 #vol-slider {
   flex: 1;
   -webkit-appearance: none;
   height: 4px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.14);
   border-radius: 2px;
   cursor: pointer;
   outline: none;
 }
 #vol-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: clamp(20px, 3vw, 34px);
-  height: clamp(20px, 3vw, 34px);
+  width: clamp(18px, 2.6vw, 30px);
+  height: clamp(18px, 2.6vw, 30px);
   border-radius: 50%;
   background: #fff;
   cursor: pointer;
 }
 #vol-num {
-  font-size: clamp(0.8rem, 1.4vw, 1.2rem);
+  font-size: clamp(0.75rem, 1.2vw, 1.1rem);
   font-weight: 800;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.32);
   min-width: 3ch;
   text-align: right;
 }
@@ -308,62 +316,63 @@ html, body {
 
 <div id="app">
 
-  <!-- TIME + DATE -->
+  <!-- BIG CLOCK -->
   <div id="row-time">
     <div id="time">00:00</div>
+  </div>
+
+  <!-- INFO STRIP: Day · Date · Weather · Location -->
+  <div id="row-info">
+    <!-- Day + Date -->
     <div id="date-block">
       <div id="day-name">—</div>
       <div id="full-date">—</div>
     </div>
-  </div>
 
-  <!-- WEATHER STRIP -->
-  <div id="row-weather">
+    <div class="info-sep"></div>
+
     <!-- Temp -->
     <div class="wx-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
         <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
       </svg>
-      <div>
-        <div class="wx-val" id="wx-temp">—°</div>
-        <div class="wx-lbl">Feels</div>
-      </div>
+      <div class="wx-val" id="wx-temp">—°</div>
+      <div class="wx-lbl">Feels</div>
     </div>
+
+    <div class="info-sep"></div>
 
     <!-- Weather desc -->
     <div class="wx-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
         <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
       </svg>
-      <div>
-        <div class="wx-val" id="wx-desc" style="font-size:clamp(1rem,2.4vw,2.2rem)">—</div>
-        <div class="wx-lbl">Weather</div>
-      </div>
+      <div class="wx-val" id="wx-desc">—</div>
     </div>
+
+    <div class="info-sep"></div>
 
     <!-- Humidity -->
     <div class="wx-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
         <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
       </svg>
-      <div>
-        <div class="wx-val" id="wx-hum">—</div>
-        <div class="wx-lbl">Humidity</div>
-      </div>
+      <div class="wx-val" id="wx-hum">—</div>
+      <div class="wx-lbl">Humidity</div>
     </div>
+
+    <div class="info-sep"></div>
 
     <!-- Wind -->
     <div class="wx-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
         <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>
       </svg>
-      <div>
-        <div class="wx-val" id="wx-wind">—</div>
-        <div class="wx-lbl">Wind</div>
-      </div>
+      <div class="wx-val" id="wx-wind">—</div>
+      <div class="wx-lbl">Wind</div>
     </div>
 
-    <div id="wx-sep"></div>
+    <div id="info-spacer"></div>
 
     <!-- Location -->
     <div id="loc-item">
@@ -377,37 +386,67 @@ html, body {
 
   <!-- RADIO -->
   <div id="row-radio">
-    <div id="radio-top">
-      <div id="radio-left">
-        <div id="live-badge"><span class="live-dot"></span> Live Radio</div>
+
+    <div id="live-badge"><span class="live-dot"></span> Live Radio</div>
+
+    <!-- Play btn LEFT + station name RIGHT -->
+    <div id="now-playing">
+      <button id="play-btn" onclick="togglePlay()">
+        <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+          <polygon points="6 3 20 12 6 21 6 3"/>
+        </svg>
+      </button>
+      <div id="station-info">
         <div id="station-name">Quran Radio</div>
         <div id="station-sub">Tarateel · Live Stream</div>
         <div id="stream-status">Tap play to begin</div>
       </div>
-      <div id="radio-controls">
-        <button id="play-btn" onclick="togglePlay()">
-          <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-            <polygon points="6 3 20 12 6 21 6 3"/>
-          </svg>
-        </button>
-        <div id="station-toggle">
-          <button class="st-btn active" id="btn-0" onclick="switchStation(0)">
-            <!-- Moon / Quran icon -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-            Quran
-          </button>
-          <button class="st-btn" id="btn-1" onclick="switchStation(1)">
-            <!-- Music / wave icon -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <path d="M9 18V5l12-2v13"/>
-              <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
-            </svg>
-            SomaFM
-          </button>
-        </div>
-      </div>
+    </div>
+
+    <!-- Station selector -->
+    <div id="station-toggle">
+      <button class="st-btn active" id="btn-0" onclick="switchStation(0)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        Quran FM
+      </button>
+      <button class="st-btn" id="btn-1" onclick="switchStation(1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M9 18V5l12-2v13"/>
+          <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+        </svg>
+        SomaFM
+      </button>
+      <button class="st-btn" id="btn-2" onclick="switchStation(2)">
+        <!-- Lofi / headphones icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+          <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/>
+          <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+        </svg>
+        Lofi Hip-Hop
+      </button>
+      <button class="st-btn" id="btn-3" onclick="switchStation(3)">
+        <!-- Radio tower icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/>
+          <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.4"/>
+          <circle cx="12" cy="12" r="2"/>
+          <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.4"/>
+          <path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/>
+        </svg>
+        Jazz Radio
+      </button>
+      <button class="st-btn" id="btn-4" onclick="switchStation(4)">
+        <!-- Nature / ambient icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M12 22V12"/>
+          <path d="M5 12H2a10 10 0 0 0 20 0h-3"/>
+          <path d="M12 12a5 5 0 0 0 5-5c0-2-1-3.9-2.5-5C13.4 3.6 12 6 12 6s-1.4-2.4-2.5-4C8 3.1 7 5 7 7a5 5 0 0 0 5 5z"/>
+        </svg>
+        Nature FM
+      </button>
     </div>
 
     <!-- Volume -->
@@ -447,9 +486,9 @@ const MONTHS = ['January','February','March','April','May','June','July','August
 
 function tick() {
   const n  = new Date();
-  document.getElementById('time').textContent     = String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
-  document.getElementById('day-name').textContent = DAYS[n.getDay()].toUpperCase();
-  document.getElementById('full-date').textContent= n.getDate() + ' ' + MONTHS[n.getMonth()] + ' ' + n.getFullYear();
+  document.getElementById('time').textContent      = String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
+  document.getElementById('day-name').textContent  = DAYS[n.getDay()].toUpperCase();
+  document.getElementById('full-date').textContent = n.getDate() + ' ' + MONTHS[n.getMonth()] + ' ' + n.getFullYear();
 }
 tick();
 setInterval(tick, 1000);
@@ -512,8 +551,11 @@ function initGeo() {
 //  RADIO
 // ════════════════════
 var STATIONS = [
-  { name:'Quran Radio',  sub:'Tarateel · Live Stream',  url:'https://qurango.net/radio/tarateel' },
-  { name:'SomaFM',       sub:'Drone Zone · Ambient',     url:'https://ice1.somafm.com/dronezone-128-mp3' }
+  { name:'Quran FM',      sub:'Tarateel · Live Stream',        url:'https://qurango.net/radio/tarateel' },
+  { name:'SomaFM',        sub:'Drone Zone · Ambient',           url:'https://ice1.somafm.com/dronezone-128-mp3' },
+  { name:'Lofi Hip-Hop',  sub:'Chillhop · 24/7 Beats',         url:'https://streams.fluxfm.de/Chillhop/mp3-320/audio/' },
+  { name:'Jazz Radio',    sub:'Smooth Jazz · Live',             url:'https://streaming.radio.co/s3f6a75f88/listen' },
+  { name:'Nature FM',     sub:'Ambient Sounds · Relaxation',    url:'https://ice4.somafm.com/deepspaceone-128-mp3' }
 ];
 
 var stIdx = 0, isPlaying = false;
