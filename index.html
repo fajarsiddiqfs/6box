@@ -21,11 +21,18 @@ html, body {
 
 #app {
   width: 100vw;
+  height: 100vh;
   height: 100svh;
   display: flex;
   flex-direction: column;
   padding: 2vh 5vw 3vh;
   position: relative;
+  overflow: hidden;
+}
+
+:fullscreen #app, :-webkit-full-screen #app {
+  width: 100vw;
+  height: 100vh;
 }
 
 /* ─── PRAYER / INFO ROW ─── */
@@ -125,6 +132,7 @@ html, body {
   justify-content: center;
   overflow: hidden;
   min-height: 0;
+  max-height: 55vh;
 }
 #clock-wrap {
   display: flex;
@@ -415,7 +423,6 @@ function tick() {
   document.getElementById('full-date').textContent = String(n.getDate()).padStart(2,'0') + '/' + String(n.getMonth()+1).padStart(2,'0');
   highlightPrayer();
 }
-window.addEventListener('resize', fitClock);
 tick();
 setInterval(tick, 1000);
 
@@ -564,9 +571,16 @@ function toggleFS() {
     setFSIcon(FSE);
   }
 }
+function fixAppHeight() {
+  var app = document.getElementById('app');
+  app.style.height = window.innerHeight + 'px';
+  setTimeout(fitClock, 50);
+}
 document.addEventListener('fullscreenchange', function(){
   if (!document.fullscreenElement) setFSIcon(FSE);
+  fixAppHeight();
 });
+window.addEventListener('resize', fixAppHeight);
 
 // ── KEYBOARD ──
 document.addEventListener('keydown', function(e) {
