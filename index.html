@@ -14,7 +14,6 @@
       font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
     }
 
-    /* layered grey depth — no black, no colour */
     body::before {
       content: '';
       position: fixed; inset: 0;
@@ -34,7 +33,6 @@
       width: 100vw; height: 100vh;
     }
 
-    /* ── glass panel ── */
     .box {
       background: rgba(38,38,42,0.55);
       border: 1px solid rgba(255,255,255,0.08);
@@ -45,16 +43,12 @@
       display: flex; align-items: center; justify-content: center;
       transition: background 0.2s, border-color 0.2s;
     }
-    .box:hover {
-      background: rgba(50,50,56,0.65);
-      border-color: rgba(255,255,255,0.13);
-    }
-    /* top shine */
+    .box:hover { background: rgba(50,50,56,0.65); border-color: rgba(255,255,255,0.13); }
     .box::after {
       content: '';
       position: absolute; top: 0; left: 16px; right: 16px; height: 1px;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
-      pointer-events: none;
+      pointer-events: none; z-index: 20;
     }
 
     /* ── + button ── */
@@ -64,23 +58,77 @@
       border: 1px solid rgba(255,255,255,0.1);
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; color: rgba(255,255,255,0.22);
-      backdrop-filter: blur(8px);
       transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.18s;
     }
-    .add-btn:hover {
-      background: rgba(255,255,255,0.09);
-      border-color: rgba(255,255,255,0.22);
-      color: rgba(255,255,255,0.6);
-      transform: scale(1.1);
-    }
+    .add-btn:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.22); color: rgba(255,255,255,0.6); transform: scale(1.1); }
     .add-btn:active { transform: scale(0.94); }
     .add-btn svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 1.9; stroke-linecap: round; }
 
     /* ── iframe ── */
-    .box iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: none; }
+    .box iframe {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      border: none; display: none; z-index: 1;
+    }
     .box.loaded iframe { display: block; }
 
-    /* ── icon buttons ── */
+    /* ── blocked fallback ── */
+    .blocked-msg {
+      display: none;
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 14px; text-align: center; padding: 24px;
+      position: absolute; inset: 0; z-index: 2;
+    }
+    .box.blocked .blocked-msg { display: flex; }
+    .box.blocked .add-btn { display: none; }
+
+    .blocked-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.09);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.25);
+    }
+    .blocked-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    .blocked-domain {
+      font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.01em;
+      max-width: 180px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .blocked-sub {
+      font-size: 11px; color: rgba(255,255,255,0.22);
+      line-height: 1.5; max-width: 200px;
+    }
+
+    .blocked-actions { display: flex; gap: 8px; margin-top: 2px; }
+
+    .pill-btn {
+      border-radius: 8px; font-size: 11px; font-weight: 500;
+      padding: 7px 13px; cursor: pointer; font-family: inherit;
+      letter-spacing: 0.02em;
+      transition: background 0.14s, color 0.14s, border-color 0.14s, transform 0.12s;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .pill-btn:active { transform: scale(0.95); }
+    .pill-btn svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    .pill-open {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.6);
+    }
+    .pill-open:hover { background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.24); color: rgba(255,255,255,0.9); }
+
+    .pill-remove {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.28);
+    }
+    .pill-remove:hover { background: rgba(180,40,40,0.2); border-color: rgba(220,80,80,0.3); color: rgba(255,110,110,0.8); }
+
+    /* ── overlay icon buttons ── */
     .icon-btn {
       position: absolute;
       width: 30px; height: 30px;
@@ -99,24 +147,13 @@
     .box.loaded:hover .close-btn { display: flex !important; }
     .enlarge-btn { bottom: 10px; left: 10px; }
     .fs-btn      { bottom: 10px; right: 10px; }
-
     .icon-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-    .icon-btn:hover {
-      background: rgba(70,70,78,0.85);
-      color: rgba(255,255,255,0.8);
-      border-color: rgba(255,255,255,0.18);
-      transform: scale(1.08);
-    }
+    .icon-btn:hover { background: rgba(70,70,78,0.85); color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.18); transform: scale(1.08); }
     .icon-btn:active { transform: scale(0.93); }
     .close-btn:hover { background: rgba(160,40,40,0.3); border-color: rgba(220,80,80,0.35); color: rgba(255,110,110,0.85); }
 
     /* ── enlarged ── */
-    .box.enlarged {
-      position: fixed; inset: 10px; z-index: 4000;
-      width: auto; height: auto;
-      border-color: rgba(255,255,255,0.15);
-    }
+    .box.enlarged { position: fixed; inset: 10px; z-index: 4000; width: auto; height: auto; border-color: rgba(255,255,255,0.15); }
 
     /* ── fullscreen overlay ── */
     #overlay { display: none; position: fixed; inset: 0; z-index: 9000; background: #111; }
@@ -147,7 +184,6 @@
     }
     #modal-bg.open { display: flex; }
 
-    /* ── modal ── */
     #modal {
       background: rgba(36,36,40,0.82);
       border: 1px solid rgba(255,255,255,0.1);
@@ -156,9 +192,7 @@
       width: 420px; max-width: 90vw;
       backdrop-filter: blur(40px) saturate(1.3) brightness(1.08);
       -webkit-backdrop-filter: blur(40px) saturate(1.3) brightness(1.08);
-      box-shadow:
-        0 2px 0 rgba(255,255,255,0.06) inset,
-        0 40px 80px rgba(0,0,0,0.55);
+      box-shadow: 0 2px 0 rgba(255,255,255,0.06) inset, 0 40px 80px rgba(0,0,0,0.55);
       animation: pop 0.22s cubic-bezier(0.34,1.4,0.64,1) both;
     }
     @keyframes pop {
@@ -169,10 +203,8 @@
     .modal-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
     .modal-icon {
       width: 30px; height: 30px; border-radius: 8px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      display: flex; align-items: center; justify-content: center;
-      color: rgba(255,255,255,0.32);
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.32);
     }
     .modal-icon svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
     .modal-title { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.42); letter-spacing: 0.02em; }
@@ -186,7 +218,6 @@
     }
     .input-wrap:focus-within { border-color: rgba(255,255,255,0.2); background: rgba(18,18,22,0.8); }
     .input-wrap svg { width: 13px; height: 13px; stroke: rgba(255,255,255,0.2); fill: none; stroke-width: 2; stroke-linecap: round; flex-shrink: 0; }
-
     #url-field {
       flex: 1; background: none; border: none; outline: none;
       color: rgba(255,255,255,0.68); font-size: 13px; font-family: inherit;
@@ -194,25 +225,15 @@
     #url-field::placeholder { color: rgba(255,255,255,0.18); }
 
     .modal-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
-
     .btn {
       border-radius: 10px; font-size: 12px; font-weight: 500;
-      padding: 9px 18px; cursor: pointer; font-family: inherit;
-      letter-spacing: 0.02em;
+      padding: 9px 18px; cursor: pointer; font-family: inherit; letter-spacing: 0.02em;
       transition: background 0.14s, color 0.14s, border-color 0.14s, transform 0.12s;
     }
     .btn:active { transform: scale(0.96); }
-    .btn-cancel {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.28);
-    }
+    .btn-cancel { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.28); }
     .btn-cancel:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.55); }
-    .btn-ok {
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.16);
-      color: rgba(255,255,255,0.72);
-    }
+    .btn-ok { background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.16); color: rgba(255,255,255,0.72); }
     .btn-ok:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.26); color: rgba(255,255,255,0.95); }
   </style>
 </head>
@@ -250,6 +271,7 @@
 <script>
   const board = document.getElementById('board');
   let activeIdx = null, enlargedIdx = null;
+  const urls = {};
 
   for (let i = 0; i < 6; i++) {
     const box = document.createElement('div');
@@ -258,7 +280,27 @@
       <button class="add-btn" onclick="openModal(${i})" aria-label="Add website">
         <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
       </button>
-      <iframe id="fr${i}" title="Panel ${i+1}" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe>
+
+      <iframe id="fr${i}" title="Panel ${i+1}"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe>
+
+      <div class="blocked-msg" id="bm${i}">
+        <div class="blocked-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div>
+          <div class="blocked-domain" id="bd${i}"></div>
+          <div class="blocked-sub">This site blocks embedding.<br>Open it in a new tab instead.</div>
+        </div>
+        <div class="blocked-actions">
+          <button class="pill-btn pill-open" onclick="openExternal(${i})">
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Open
+          </button>
+          <button class="pill-btn pill-remove" onclick="clearBox(${i})">Remove</button>
+        </div>
+      </div>
+
       <div class="icon-btn close-btn" onclick="clearBox(${i})" title="Remove">
         <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </div>
@@ -269,6 +311,63 @@
         <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
       </div>`;
     board.appendChild(box);
+  }
+
+  function getDomain(url) {
+    try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return url; }
+  }
+
+  function loadFrame(idx, url) {
+    const box = document.getElementById('b' + idx);
+    const fr  = document.getElementById('fr' + idx);
+    urls[idx] = url;
+
+    // reset state
+    box.classList.remove('loaded', 'blocked');
+    fr.src = '';
+
+    // use a fresh iframe to detect load vs error
+    const testFr = document.getElementById('fr' + idx);
+    testFr.src = url;
+    box.classList.add('loaded');
+
+    // detect block: if the frame fires an error event, or if after load
+    // the contentDocument is inaccessible and the frame is empty, show fallback
+    testFr.onerror = () => showBlocked(idx);
+
+    // Heuristic: after a short delay, check if cross-origin load appears empty
+    // We can't read cross-origin contentDocument, so we rely on a load event
+    // where the frame becomes 0-height or about:blank equivalent.
+    // Instead: use the 'load' event — if the frame loaded but shows refusal,
+    // the load still fires. We try accessing contentDocument; if cross-origin
+    // it throws — that means it DID load (just cross-origin, likely fine).
+    // If it's same-origin about:blank after a URL set = blocked.
+    testFr.onload = () => {
+      try {
+        const doc = testFr.contentDocument;
+        // accessible = same-origin; if it's about:blank, the site blocked us
+        if (doc && (doc.URL === 'about:blank' || doc.URL === '')) {
+          showBlocked(idx);
+        }
+        // if doc.URL is something else same-origin, it loaded fine
+      } catch(e) {
+        // cross-origin — frame loaded successfully, site allowed it
+        // do nothing, keep loaded state
+      }
+    };
+  }
+
+  function showBlocked(idx) {
+    const box = document.getElementById('b' + idx);
+    const fr  = document.getElementById('fr' + idx);
+    fr.src = '';
+    box.classList.remove('loaded');
+    box.classList.add('blocked');
+    document.getElementById('bd' + idx).textContent = getDomain(urls[idx]);
+  }
+
+  function openExternal(idx) {
+    if (urls[idx]) window.open(urls[idx], '_blank', 'noopener');
   }
 
   function toggleEnlarge(idx) {
@@ -303,26 +402,31 @@
     let url = document.getElementById('url-field').value.trim();
     if (!url) return;
     if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-    document.getElementById('fr' + activeIdx).src = url;
-    document.getElementById('b' + activeIdx).classList.add('loaded');
+    loadFrame(activeIdx, url);
     closeModal();
   }
 
   function clearBox(idx) {
+    const box = document.getElementById('b' + idx);
     document.getElementById('fr' + idx).src = '';
-    document.getElementById('b' + idx).classList.remove('loaded');
-    if (enlargedIdx === idx) { document.getElementById('b' + idx).classList.remove('enlarged'); enlargedIdx = null; }
+    box.classList.remove('loaded', 'blocked', 'enlarged');
+    delete urls[idx];
+    if (enlargedIdx === idx) enlargedIdx = null;
   }
 
   function openOverlay(idx) {
-    const src = document.getElementById('fr' + idx).src;
-    if (!src) return;
-    document.getElementById('ov-frame').src = src;
+    if (!urls[idx]) return;
+    document.getElementById('ov-frame').src = urls[idx];
     document.getElementById('overlay').classList.add('active');
   }
-  function closeOverlay() { document.getElementById('overlay').classList.remove('active'); document.getElementById('ov-frame').src = ''; }
+  function closeOverlay() {
+    document.getElementById('overlay').classList.remove('active');
+    document.getElementById('ov-frame').src = '';
+  }
 
-  document.getElementById('modal-bg').addEventListener('click', e => { if (e.target === document.getElementById('modal-bg')) closeModal(); });
+  document.getElementById('modal-bg').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal-bg')) closeModal();
+  });
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
     document.getElementById('overlay').classList.contains('active') ? closeOverlay() : closeModal();
