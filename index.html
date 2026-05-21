@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Focus Board</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0a0a;
+      --box:      #111111;
+      --box-h:    #161616;
+      --border:   #222222;
+      --border-h: #333333;
+      --icon:     #555555;
+      --icon-h:   #999999;
+      --text:     #888888;
+      --radius:   14px;
+    }
+
+    html, body {
+      width: 100vw; height: 100vh;
+      overflow: hidden;
+      background: var(--bg);
+      font-family: system-ui, sans-serif;
+      color: var(--text);
+    }
+
+    /* ── fixed 3×2 grid that always fills the viewport ── */
+    #board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 8px;
+      padding: 8px;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* ── box ── */
+    .box {
+      background: var(--box);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s;
+    }
+    .box:hover { border-color: var(--border-h); }
+
+    /* ── empty: + button ── */
+    .add-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--icon);
+      transition: color 0.15s;
+      padding: 0;
+    }
+    .add-btn:hover { color: var(--icon-h); }
+
+    .plus-icon {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1px solid currentColor;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      line-height: 1;
+      transition: border-color 0.15s;
+    }
+
+    .add-label {
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: inherit;
+    }
+
+    /* ── iframe ── */
+    .box iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      border: none;
+      display: none;
+    }
+    .box.loaded iframe { display: block; }
+
+    /* ── overlay icons (shown when loaded) ── */
+    .icon-btn {
+      position: absolute;
+      width: 28px; height: 28px;
+      background: rgba(10,10,10,0.75);
+      border: 1px solid #2a2a2a;
+      border-radius: 7px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--icon);
+      font-size: 14px;
+      z-index: 10;
+      transition: background 0.12s, color 0.12s, border-color 0.12s;
+      backdrop-filter: blur(4px);
+    }
+    .box.loaded .icon-btn { display: flex; }
+
+    /* hide close until hover */
+    .close-btn { top: 8px; left: 8px; display: none !important; }
+    .box.loaded:hover .close-btn { display: flex !important; }
+
+    .fs-btn { bottom: 8px; right: 8px; }
+
+    .icon-btn:hover {
+      background: rgba(30,30,30,0.9);
+      color: var(--icon-h);
+      border-color: #444;
+    }
+
+    /* SVG icons */
+    .icon-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .plus-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; }
+
+    /* ── fullscreen overlay ── */
+    #overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: #000;
+    }
+    #overlay.active { display: block; }
+    #overlay iframe { width: 100%; height: 100%; border: none; }
+
+    #exit-fs {
+      position: fixed;
+      top: 12px; right: 12px;
+      width: 32px; height: 32px;
+      background: rgba(10,10,10,0.85);
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--icon);
+      z-index: 9001;
+      transition: color 0.12s, background 0.12s;
+      backdrop-filter: blur(6px);
+    }
+    #exit-fs:hover { color: var(--icon-h); background: rgba(30,30,30,0.95); }
+    #exit-fs svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; }
+
+    /* ── modal backdrop ── */
+    #modal-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      z-index: 8000;
+      align-items: center;
+      justify-content: center;
+    }
+    #modal-bg.open { display: flex; }
+
+    /* ── modal card ── */
+    #modal {
+      background: #111111;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 24px;
+      width: 400px;
+      max-width: 90vw;
+      animation: pop 0.2s cubic-bezier(0.34,1.4,0.64,1) both;
+    }
+    @keyframes pop {
+      from { opacity: 0; transform: scale(0.93) translateY(8px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    #modal h2 { font-size: 14px; font-weight: 500; color: #888; margin-bottom: 16px; letter-spacing: 0.03em; }
+
+    .input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #0d0d0d;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      padding: 0 12px;
+      height: 44px;
+      transition: border-color 0.15s;
+    }
+    .input-wrap:focus-within { border-color: #444; }
+    .input-wrap svg { width: 15px; height: 15px; stroke: #444; fill: none; stroke-width: 1.8; stroke-linecap: round; flex-shrink: 0; }
+
+    #url-field {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: #aaa;
+      font-size: 13px;
+    }
+    #url-field::placeholder { color: #333; }
+
+    .modal-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 8px 16px;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: background 0.12s, color 0.12s, border-color 0.12s;
+    }
+    .btn-cancel {
+      background: none;
+      border: 1px solid #2a2a2a;
+      color: #555;
+    }
+    .btn-cancel:hover { border-color: #444; color: #888; }
+
+    .btn-ok {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      color: #aaa;
+    }
+    .btn-ok:hover { background: #2a2a2a; color: #ccc; border-color: #555; }
+  </style>
+</head>
+<body>
+
+<div id="board"></div>
+
+<!-- fullscreen overlay -->
+<div id="overlay">
+  <div id="exit-fs" onclick="closeOverlay()" title="Exit fullscreen">
+    <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+  </div>
+  <iframe id="ov-frame" src="" title="Fullscreen" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe>
+</div>
+
+<!-- modal -->
+<div id="modal-bg">
+  <div id="modal">
+    <h2>Paste a link</h2>
+    <div class="input-wrap">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <input id="url-field" type="url" placeholder="https://..." autocomplete="off" spellcheck="false"
+        onkeydown="if(event.key==='Enter')confirm()">
+    </div>
+    <div class="modal-row">
+      <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-ok" onclick="confirm()">Embed</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const board = document.getElementById('board');
+  let activeIdx = null;
+
+  for (let i = 0; i < 6; i++) {
+    const box = document.createElement('div');
+    box.className = 'box';
+    box.id = 'b' + i;
+
+    // + button
+    box.innerHTML = `
+      <button class="add-btn" onclick="openModal(${i})" aria-label="Add website">
+        <div class="plus-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+        <span class="add-label">add</span>
+      </button>
+
+      <iframe id="fr${i}" title="Panel ${i+1}"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe>
+
+      <!-- close top-left -->
+      <div class="icon-btn close-btn" onclick="clearBox(${i})" title="Remove">
+        <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </div>
+
+      <!-- fullscreen bottom-right -->
+      <div class="icon-btn fs-btn" onclick="openOverlay(${i})" title="Fullscreen">
+        <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      </div>
+    `;
+
+    board.appendChild(box);
+  }
+
+  function openModal(idx) {
+    activeIdx = idx;
+    document.getElementById('url-field').value = '';
+    document.getElementById('modal-bg').classList.add('open');
+    setTimeout(() => document.getElementById('url-field').focus(), 60);
+  }
+
+  function closeModal() {
+    document.getElementById('modal-bg').classList.remove('open');
+    activeIdx = null;
+  }
+
+  function confirm() {
+    let url = document.getElementById('url-field').value.trim();
+    if (!url) return;
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    const box = document.getElementById('b' + activeIdx);
+    const fr  = document.getElementById('fr' + activeIdx);
+    fr.src = url;
+    box.classList.add('loaded');
+    closeModal();
+  }
+
+  function clearBox(idx) {
+    const box = document.getElementById('b' + idx);
+    const fr  = document.getElementById('fr' + idx);
+    fr.src = '';
+    box.classList.remove('loaded');
+  }
+
+  function openOverlay(idx) {
+    const src = document.getElementById('fr' + idx).src;
+    if (!src) return;
+    document.getElementById('ov-frame').src = src;
+    document.getElementById('overlay').classList.add('active');
+  }
+
+  function closeOverlay() {
+    document.getElementById('overlay').classList.remove('active');
+    document.getElementById('ov-frame').src = '';
+  }
+
+  // backdrop click
+  document.getElementById('modal-bg').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal-bg')) closeModal();
+  });
+
+  // ESC
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (document.getElementById('overlay').classList.contains('active')) closeOverlay();
+    else closeModal();
+  });
+</script>
+</body>
+</html>
